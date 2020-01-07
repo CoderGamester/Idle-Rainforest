@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd62075426c346d3a4f274602371481, type: 3}
+  m_Name: AddressableConfigs
+  m_EditorClassIdentifier: 
+  _assetConfigs:
+  - Id: 0
+    Address: Configs/AddressableConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/AddressableConfigs.asset
+    AssetType: Frameworks.Configs.AddressableConfigs, AddressableConfigs, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    AssetGroup:
+    - Configs
+  - Id: 1
+    Address: Configs/BuildingConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/BuildingConfigs.asset
+    AssetType: Configs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Configs
+  - Id: 2
+    Address: Configs/UiConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/UiConfigs.asset
+    AssetType: Configs.UiConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Configs
+  - Id: 3
+    Address: Prefabs/Building.prefab
+    Path: Assets/Art/Prefabs/Building.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+  - Id: 4
+    Address: Prefabs/Ui/Building Panel.prefab
+    Path: Assets/Art/Prefabs/Ui/Building Panel.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Ui
+    - Building
+  - Id: 5
+    Address: Prefabs/Ui/Hud.prefab
+    Path: Assets/Art/Prefabs/Ui/Hud.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Ui
+  - Id: 6
+    Address: Prefabs/Ui/Loading Screen.prefab
+    Path: Assets/Art/Prefabs/Ui/Loading Screen.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Ui
+    - Loading
+  - Id: 7
+    Address: Prefabs/Ui/Orders Panel.prefab
+    Path: Assets/Art/Prefabs/Ui/Orders Panel.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Ui
+    - Orders
