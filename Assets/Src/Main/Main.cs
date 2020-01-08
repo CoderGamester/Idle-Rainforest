@@ -38,6 +38,6 @@ namespace Main
 			_gameServices.MessageBrokerService.Publish(new ApplicationPauseEvent { IsPaused = pauseStatus });
 		}
 		
-		// TODO: GameObjectLogic??? GameIdLogic???
+		// TODO: Enum serialize as string
 	}
 }

@@ -20,7 +20,7 @@ namespace MonoComponent
 
 		private void Start()
 		{
-			_buildingName.text = _gameDataProvider.EntityDataProvider.GetGameId(_entityMonoComponent.Entity).ToString();
+			_buildingName.text = _gameDataProvider.GameIdDataProvider.GetGameId(_entityMonoComponent.Entity).ToString();
 		}
 
 		public void OnPointerClick(PointerEventData eventData)

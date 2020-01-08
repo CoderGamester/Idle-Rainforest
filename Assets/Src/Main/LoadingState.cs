@@ -59,11 +59,9 @@ namespace Main
 		private async Task LoadUiConfigsConfigs()
 		{
 			var address = _gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_UiConfigs).Address;
-			var configTask = LoaderUtil.LoadAssetAsync<UiConfigs>(address, true);
-
-			await configTask;
+			var configs = await LoaderUtil.LoadAssetAsync<UiConfigs>(address, true);
 			
-			_uiService.Init(configTask.Result);
+			_uiService.Init(configs);
 		}
 
 		private async Task LoadOpenLoadingScreen()

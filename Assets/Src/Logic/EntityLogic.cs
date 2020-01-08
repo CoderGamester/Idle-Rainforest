@@ -15,15 +15,6 @@ namespace Logic
 	/// </remarks>
 	public interface IEntityDataProvider
 	{
-		/// <summary>
-		/// Requests the <see cref="GameId"/> of the given <paramref name="entity"/>
-		/// </summary>
-		GameId GetGameId(EntityId entity);
-		
-		/// <summary>
-		/// Requests the <see cref="GameObject"/> of the given <paramref name="entity"/>
-		/// </summary>
-		GameObject GetGameObject(EntityId entity);
 	}
 	
 	/// <inheritdoc />
@@ -56,20 +47,9 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public GameId GetGameId(EntityId entity)
-		{
-			return _sessionDataProvider.GetSessionData<GameId>()[entity];
-		}
-
-		/// <inheritdoc />
-		public GameObject GetGameObject(EntityId entity)
-		{
-			return _sessionDataProvider.GetSessionData<GameObject>()[entity];
-		}
-
-		/// <inheritdoc />
 		public void DestroyEntity(EntityId entity)
-		{
+		{ 
+			// This boxing simplifies the scalability of the code. Refactor (ex: GameObjectLogic) if there is too many entity destruction
 			foreach (var data in _sessionDataProvider.SessionData)
 			{
 				data.Value.Remove(entity);
@@ -89,7 +69,7 @@ namespace Logic
 			var entity = _sessionDataProvider.EntityCounter++;
 			
 			CreateGameIdData(entity, gameId);
-			CreateBuildingData(entity, gameId);
+			CreateBuildingData(entity, gameId, position);
 
 			return entity;
 		}
@@ -99,11 +79,12 @@ namespace Logic
 			_sessionDataProvider.GetSessionData<GameId>().Add(entity, gameId);
 		}
 
-		private void CreateBuildingData(EntityId entity, GameId gameId)
+		private void CreateBuildingData(EntityId entity, GameId gameId, Vector3 position)
 		{
 			_sessionDataProvider.GetSessionData<BuildingData>().Add(entity, new BuildingData
 			{
-				Id = gameId
+				Id = gameId,
+				Position = position
 			});
 		}
 	}

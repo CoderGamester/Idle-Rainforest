@@ -17,7 +17,10 @@ namespace Logic
 		
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
-		
+		/// <inheritdoc cref="IGameObjectDataProvider"/>
+		IGameObjectDataProvider GameObjectDataProvider { get; }
+		/// <inheritdoc cref="IGameIdDataProvider"/>
+		IGameIdDataProvider GameIdDataProvider { get; }
 		/// <inheritdoc cref="IBuildingDataProvider"/>
 		IBuildingDataProvider BuildingDataProvider { get; }
 	}
@@ -34,7 +37,10 @@ namespace Logic
 		
 		/// <inheritdoc cref="IEntityLogic"/>
 		IEntityLogic EntityLogic { get; }
-		
+		/// <inheritdoc cref="IGameObjectLogic"/>
+		IGameObjectLogic GameObjectLogic { get; }
+		/// <inheritdoc cref="IGameIdLogic"/>
+		IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc cref="IBuildingLogic"/>
 		IBuildingLogic BuildingLogic { get; }
 	}
@@ -64,10 +70,18 @@ namespace Logic
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
+		public IGameObjectDataProvider GameObjectDataProvider => GameObjectLogic;
+		/// <inheritdoc />
+		public IGameIdDataProvider GameIdDataProvider => GameIdLogic;
+		/// <inheritdoc />
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
+		/// <inheritdoc />
+		public IGameObjectLogic GameObjectLogic { get; }
+		/// <inheritdoc />
+		public IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
 
@@ -80,6 +94,8 @@ namespace Logic
 
 			DataProviderLogic = dataProviderLogic;
 			EntityLogic = new EntityLogic(this, dataProviderLogic);
+			GameObjectLogic = new GameObjectLogic(this);
+			GameIdLogic = new GameIdLogic(this, dataProviderLogic.GetSessionData<GameId>());
 			BuildingLogic = new BuildingLogic(this, dataProviderLogic.GetSessionData<BuildingData>());
 		}
 	}

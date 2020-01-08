@@ -7,6 +7,6 @@ namespace SheetImporters
 	public class BuildingsImporter : GoogleSheetConfigsImporter<BuildingConfig, BuildingConfigs>
 	{
 		/// <inheritdoc />
-		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1pxV7Fp8T9ea-Bp1ts0kn0JwAi1M3RyLpibq4LyOYQT8/edit#gid=0";
+		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=880604694";
 	}
 }

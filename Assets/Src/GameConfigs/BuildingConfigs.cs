@@ -10,8 +10,8 @@ namespace GameConfigs
 	public struct BuildingConfig : IConfig
 	{
 		public GameId Id;
-		public GameId ProductionType;
 		public int ProductionAmountBase;
+		public int ProductionAmountLevelIncrease;
 		public float ProductionTimeBase;
 		
 		public int ConfigId => (int) Id;
