@@ -8,8 +8,7 @@ namespace Data
 	[Serializable]
 	public class AppData
 	{
-		public DateTime LastLoginTime;
-		public DateTime FirstLoginTime;
-		public ulong IdCounter;
+		public DateTime LastLoginTime = DateTime.Now;
+		public DateTime FirstLoginTime = DateTime.Now;
 	}
 }

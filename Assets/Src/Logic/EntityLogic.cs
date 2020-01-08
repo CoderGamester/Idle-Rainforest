@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using Data;
 using Events;
 using Ids;
 using UnityEngine;
@@ -19,6 +19,11 @@ namespace Logic
 		/// Requests the <see cref="GameId"/> of the given <paramref name="entity"/>
 		/// </summary>
 		GameId GetGameId(EntityId entity);
+		
+		/// <summary>
+		/// Requests the <see cref="GameObject"/> of the given <paramref name="entity"/>
+		/// </summary>
+		GameObject GetGameObject(EntityId entity);
 	}
 	
 	/// <inheritdoc />
@@ -40,25 +45,36 @@ namespace Logic
 	public class EntityLogic : IEntityLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IDictionary<EntityId, GameId> _gameIdMap = new Dictionary<EntityId, GameId>();
+		private readonly ISessionDataProvider _sessionDataProvider;
 		
 		private EntityLogic() {}
 
-		public EntityLogic(IGameInternalLogic gameLogic)
+		public EntityLogic(IGameInternalLogic gameLogic, ISessionDataProvider sessionDataProvider)
 		{
 			_gameLogic = gameLogic;
+			_sessionDataProvider = sessionDataProvider;
 		}
 
 		/// <inheritdoc />
 		public GameId GetGameId(EntityId entity)
 		{
-			return _gameIdMap[entity];
+			return _sessionDataProvider.GetSessionData<GameId>()[entity];
+		}
+
+		/// <inheritdoc />
+		public GameObject GetGameObject(EntityId entity)
+		{
+			return _sessionDataProvider.GetSessionData<GameObject>()[entity];
 		}
 
 		/// <inheritdoc />
 		public void DestroyEntity(EntityId entity)
 		{
-			_gameIdMap.Remove(entity);
+			foreach (var data in _sessionDataProvider.SessionData)
+			{
+				data.Value.Remove(entity);
+			}
+			
 			_gameLogic.MessageBrokerService.Publish(new EntityDestroyEvent { Entity = entity });
 		}
 
@@ -70,20 +86,25 @@ namespace Logic
 				throw new ArgumentException($"The game id {gameId} is not a building type game id");
 			}
 			
-			var entity = CreateEntity(gameId);
+			var entity = _sessionDataProvider.EntityCounter++;
 			
-			// TODO: Building Data & Logic
+			CreateGameIdData(entity, gameId);
+			CreateBuildingData(entity, gameId);
 
 			return entity;
 		}
 
-		private EntityId CreateEntity(GameId gameId)
+		private void CreateGameIdData(EntityId entity, GameId gameId)
 		{
-			var id = _gameLogic.DataProviderLogic.AppData.IdCounter++;
-			
-			_gameIdMap.Add(id, gameId);
-			
-			return id;
+			_sessionDataProvider.GetSessionData<GameId>().Add(entity, gameId);
+		}
+
+		private void CreateBuildingData(EntityId entity, GameId gameId)
+		{
+			_sessionDataProvider.GetSessionData<BuildingData>().Add(entity, new BuildingData
+			{
+				Id = gameId
+			});
 		}
 	}
 }

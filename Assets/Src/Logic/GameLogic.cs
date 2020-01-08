@@ -1,5 +1,7 @@
+using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
+using Ids;
 using Services;
 
 namespace Logic
@@ -52,10 +54,13 @@ namespace Logic
 	{
 		/// <inheritdoc />
 		public IConfigs Configs { get; }
+		
+		/// <inheritdoc />
+		public IMessageBrokerService MessageBrokerService { get; }
 
 		/// <inheritdoc />
 		public IDataProviderLogic DataProviderLogic { get; }
-
+		
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
@@ -66,18 +71,16 @@ namespace Logic
 		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
 
-		/// <inheritdoc />
-		public IMessageBrokerService MessageBrokerService { get; }
-
 		public GameLogic(IMessageBrokerService messageBroker)
 		{
-			MessageBrokerService = messageBroker;
+			var dataProviderLogic = new DataProviderLogic(messageBroker);
 			
 			Configs = new Configs();
-			
-			DataProviderLogic = new DataProviderLogic(this);
-			EntityLogic = new EntityLogic(this);
-			BuildingLogic = new BuildingLogic(this);
+			MessageBrokerService = messageBroker;
+
+			DataProviderLogic = dataProviderLogic;
+			EntityLogic = new EntityLogic(this, dataProviderLogic);
+			BuildingLogic = new BuildingLogic(this, dataProviderLogic.GetSessionData<BuildingData>());
 		}
 	}
 }

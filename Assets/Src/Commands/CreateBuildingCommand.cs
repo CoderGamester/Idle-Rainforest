@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Commands
 {
+	/// <inheritdoc cref="IGameCommand" />
 	public struct CreateBuildingCommand : IGameCommand
 	{
 		public GameId BuildingId;

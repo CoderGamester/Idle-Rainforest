@@ -38,9 +38,6 @@ namespace Main
 			_gameServices.MessageBrokerService.Publish(new ApplicationPauseEvent { IsPaused = pauseStatus });
 		}
 		
-		// TODO: GameObject <-> Entity map
-		// TODO: DataProvider handles persistent & runtime data
-		// TODO: Create IDataProvider
-		// TODO: EntityLogic creates BuildingData
+		// TODO: GameObjectLogic??? GameIdLogic???
 	}
 }
