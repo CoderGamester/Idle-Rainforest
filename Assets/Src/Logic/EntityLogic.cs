@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Data;
+using Events;
 using Ids;
 using UnityEngine;
 
@@ -16,9 +16,9 @@ namespace Logic
 	public interface IEntityDataProvider
 	{
 		/// <summary>
-		/// Requests the <see cref="EntityData"/> represented by the given <paramref name="entity"/>
+		/// Requests the <see cref="GameId"/> of the given <paramref name="entity"/>
 		/// </summary>
-		EntityData GetEntityData(UniqueId entity);
+		GameId GetGameId(EntityId entity);
 	}
 	
 	/// <inheritdoc />
@@ -27,21 +27,20 @@ namespace Logic
 		/// <summary>
 		/// Destroys and unloads the given <paramref name="entity"/>
 		/// </summary>
-		void DestroyEntity(UniqueId entity);
+		void DestroyEntity(EntityId entity);
 		
 		/// <summary>
 		/// Creates a new Building of the given <paramref name="gameId"/> type on the  given <paramref name="position"/>
-		/// and <paramref name="rotation"/>
 		/// Returns the Entity representing the new building
 		/// </summary>
-		UniqueId CreateBuilding(GameId gameId, Vector3 position, Quaternion rotation);
+		EntityId CreateBuilding(GameId gameId, Vector3 position);
 	}
 	
 	/// <inheritdoc />
 	public class EntityLogic : IEntityLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IDictionary<UniqueId, EntityData> _gameObjectEntityMap = new Dictionary<UniqueId, EntityData>();
+		private readonly IDictionary<EntityId, GameId> _gameIdMap = new Dictionary<EntityId, GameId>();
 		
 		private EntityLogic() {}
 
@@ -51,19 +50,20 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public EntityData GetEntityData(UniqueId entity)
+		public GameId GetGameId(EntityId entity)
 		{
-			return _gameObjectEntityMap[entity];
+			return _gameIdMap[entity];
 		}
 
 		/// <inheritdoc />
-		public void DestroyEntity(UniqueId entity)
+		public void DestroyEntity(EntityId entity)
 		{
-			_gameObjectEntityMap.Remove(entity);
+			_gameIdMap.Remove(entity);
+			_gameLogic.MessageBrokerService.Publish(new EntityDestroyEvent { Entity = entity });
 		}
 
 		/// <inheritdoc />
-		public UniqueId CreateBuilding(GameId gameId, Vector3 position, Quaternion rotation)
+		public EntityId CreateBuilding(GameId gameId, Vector3 position)
 		{
 			if (!gameId.IsInGroup(GameIdGroup.Building))
 			{
@@ -77,11 +77,11 @@ namespace Logic
 			return entity;
 		}
 
-		private UniqueId CreateEntity(GameId gameId)
+		private EntityId CreateEntity(GameId gameId)
 		{
 			var id = _gameLogic.DataProviderLogic.AppData.IdCounter++;
 			
-			_gameObjectEntityMap.Add(id, new EntityData { Id = id, GameId = gameId });
+			_gameIdMap.Add(id, gameId);
 			
 			return id;
 		}

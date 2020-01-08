@@ -12,36 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd62075426c346d3a4f274602371481, type: 3}
   m_Name: AddressableConfigs
   m_EditorClassIdentifier: 
-  _assetConfigs:
+  _configs:
   - Id: 0
-    Address: Configs/AddressableConfigs.asset
-    Path: Assets/ScriptableObjects/Configs/AddressableConfigs.asset
-    AssetType: Frameworks.Configs.AddressableConfigs, AddressableConfigs, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    AssetGroup:
-    - Configs
-  - Id: 1
-    Address: Configs/BuildingConfigs.asset
-    Path: Assets/ScriptableObjects/Configs/BuildingConfigs.asset
-    AssetType: Configs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    AssetGroup:
-    - Configs
-  - Id: 2
-    Address: Configs/UiConfigs.asset
-    Path: Assets/ScriptableObjects/Configs/UiConfigs.asset
-    AssetType: Configs.UiConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    AssetGroup:
-    - Configs
-  - Id: 3
     Address: Prefabs/Building.prefab
     Path: Assets/Art/Prefabs/Building.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Prefabs
-  - Id: 4
+  - Id: 1
     Address: Prefabs/Ui/Building Panel.prefab
     Path: Assets/Art/Prefabs/Ui/Building Panel.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -50,7 +29,7 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Building
-  - Id: 5
+  - Id: 2
     Address: Prefabs/Ui/Hud.prefab
     Path: Assets/Art/Prefabs/Ui/Hud.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -58,7 +37,7 @@ MonoBehaviour:
     AssetGroup:
     - Prefabs
     - Ui
-  - Id: 6
+  - Id: 3
     Address: Prefabs/Ui/Loading Screen.prefab
     Path: Assets/Art/Prefabs/Ui/Loading Screen.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -67,12 +46,24 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Loading
-  - Id: 7
-    Address: Prefabs/Ui/Orders Panel.prefab
-    Path: Assets/Art/Prefabs/Ui/Orders Panel.prefab
-    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+  - Id: 4
+    Address: Configs/AddressableConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/AddressableConfigs.asset
+    AssetType: GameLovers.AddressableIdsScriptGenerator.AddressableConfigs, GameLovers.AddressableIdsScriptGenerator,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    AssetGroup:
+    - Configs
+  - Id: 5
+    Address: Configs/BuildingConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/BuildingConfigs.asset
+    AssetType: GameConfigs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
-    - Prefabs
-    - Ui
-    - Orders
+    - Configs
+  - Id: 6
+    Address: Configs/UiConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/UiConfigs.asset
+    AssetType: GameLovers.UiService.UiConfigs, UiService, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Configs

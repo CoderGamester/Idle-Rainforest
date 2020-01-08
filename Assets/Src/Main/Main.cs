@@ -38,13 +38,9 @@ namespace Main
 			_gameServices.MessageBrokerService.Publish(new ApplicationPauseEvent { IsPaused = pauseStatus });
 		}
 		
-		// TODO: Idle Produce Resources (Wood, Iron, Cloth, Food)
-		// TODO: Complete Request With Produced Goods & collect rewarded Gold
-		// TODO: Upgrade Building with Gold
-
-		// TODO: SRDebugger Plugin
-		// TODO: DOTween Plugin
-		
-		// TODO: UnitTest UI
+		// TODO: GameObject <-> Entity map
+		// TODO: DataProvider handles persistent & runtime data
+		// TODO: Create IDataProvider
+		// TODO: EntityLogic creates BuildingData
 	}
 }

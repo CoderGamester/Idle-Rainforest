@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6782851835694825687}
   - component: {fileID: 6782851835694825680}
   - component: {fileID: 6782851835694825681}
+  - component: {fileID: -2000310258285587237}
   - component: {fileID: -454216918607948275}
   m_Layer: 0
   m_Name: Building
@@ -57,6 +58,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,6 +96,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-2000310258285587237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6782851835694825682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f9f9d5b0424c1f8474db7638bd1e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameId: 3
 --- !u!114 &-454216918607948275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d780c2593c242e7a5a1e4211dbd7c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entityMonoComponent: {fileID: -2000310258285587237}
   _buildingName: {fileID: 6782851836321262634}
 --- !u!1 &6782851836321262628
 GameObject:
@@ -160,6 +176,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -218,8 +235,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Building Names
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

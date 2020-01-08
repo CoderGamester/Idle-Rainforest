@@ -12,9 +12,11 @@ namespace SheetImporters
 	{
 		private const string _name = "GameId";
 		private const string _nameGroup = "GameIdGroup";
+		private const string _idTag = "Id";
+		private const string _groupsTag = "Groups";
 		
 		/// <inheritdoc />
-		public string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1pxV7Fp8T9ea-Bp1ts0kn0JwAi1M3RyLpibq4LyOYQT8/edit#gid=1793530949";
+		public string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=0";
 		
 		/// <inheritdoc />
 		public void Import(List<Dictionary<string, string>> data)
@@ -26,8 +28,8 @@ namespace SheetImporters
 			
 			foreach (var entry in data)
 			{
-				var groups = new List<string>(CsvParser.ArrayParse<string>(entry["Groups"]));
-				var id = GetCleanName(entry["Id"]);
+				var groups = new List<string>(CsvParser.ArrayParse<string>(entry[_groupsTag]));
+				var id = GetCleanName(entry[_idTag]);
 				
 				idList.Add(id);
 				mapGroups.Add(id, groups);

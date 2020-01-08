@@ -15,6 +15,9 @@ namespace Logic
 		
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
+		
+		/// <inheritdoc cref="IBuildingDataProvider"/>
+		IBuildingDataProvider BuildingDataProvider { get; }
 	}
 
 	/// <summary>
@@ -24,6 +27,14 @@ namespace Logic
 	/// </summary>
 	public interface IGameLogic : IGameDataProvider
 	{
+		/// <inheritdoc cref="IMessageBrokerService"/>
+		IMessageBrokerService MessageBrokerService { get; }
+		
+		/// <inheritdoc cref="IEntityLogic"/>
+		IEntityLogic EntityLogic { get; }
+		
+		/// <inheritdoc cref="IBuildingLogic"/>
+		IBuildingLogic BuildingLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -34,12 +45,6 @@ namespace Logic
 	{
 		/// <inheritdoc cref="IDataProviderLogic"/>
 		IDataProviderLogic DataProviderLogic { get; }
-		
-		/// <inheritdoc cref="IEntityLogic"/>
-		IEntityLogic EntityLogic { get; }
-
-		/// <inheritdoc cref="IMessageBrokerService"/>
-		IMessageBrokerService MessageBrokerService { get; }
 	}
 
 	/// <inheritdoc />
@@ -53,9 +58,13 @@ namespace Logic
 
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
+		/// <inheritdoc />
+		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
+		/// <inheritdoc />
+		public IBuildingLogic BuildingLogic { get; }
 
 		/// <inheritdoc />
 		public IMessageBrokerService MessageBrokerService { get; }
@@ -65,8 +74,10 @@ namespace Logic
 			MessageBrokerService = messageBroker;
 			
 			Configs = new Configs();
+			
 			DataProviderLogic = new DataProviderLogic(this);
 			EntityLogic = new EntityLogic(this);
+			BuildingLogic = new BuildingLogic(this);
 		}
 	}
 }

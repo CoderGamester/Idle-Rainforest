@@ -4,18 +4,18 @@ using System.Collections.Generic;
 namespace Ids
 {
 	/// <summary>
-	/// Used to reference any <seealso cref="Unity.Entities.Entity"/> by an Unique Id value
+	/// Used to reference any entity by an unique Id value
 	/// </summary>
 	[Serializable]
-	public struct UniqueId : IEquatable<UniqueId>
+	public struct EntityId : IEquatable<EntityId>
 	{
-		public static readonly UniqueId Invalid = new UniqueId(0);
+		public static readonly EntityId Invalid = new EntityId(0);
 
 		public readonly ulong Id;
 
 		public bool IsValid => this != Invalid;
 
-		public UniqueId(ulong id)
+		public EntityId(ulong id)
 		{
 			Id = id;
 		}
@@ -32,32 +32,32 @@ namespace Ids
 				return false;
 			}
  
-			return obj is UniqueId && Equals((UniqueId)obj);
+			return obj is EntityId && Equals((EntityId)obj);
 		}
  
-		public bool Equals(UniqueId other)
+		public bool Equals(EntityId other)
 		{
 			return Id == other.Id;
 		}
  
-		public static bool operator ==(UniqueId p1, UniqueId p2)
+		public static bool operator ==(EntityId p1, EntityId p2)
 		{
 			return p1.Id == p2.Id;
 		}
  
-		public static bool operator !=(UniqueId p1, UniqueId p2)
+		public static bool operator !=(EntityId p1, EntityId p2)
 		{
 			return p1.Id != p2.Id;
 		}
 		
-		public static implicit operator ulong(UniqueId id)
+		public static implicit operator ulong(EntityId id)
 		{
 			return id.Id;
 		}
 		
-		public static implicit operator UniqueId(ulong id)
+		public static implicit operator EntityId(ulong id)
 		{
-			return new UniqueId(id);
+			return new EntityId(id);
 		}
  
 		public override string ToString()
@@ -69,14 +69,14 @@ namespace Ids
 	/// <summary>
 	/// Avoids boxing for Dictionary
 	/// </summary>
-	public struct UniqueIdKeyComparer : IEqualityComparer<UniqueId>
+	public struct UniqueIdKeyComparer : IEqualityComparer<EntityId>
 	{
-		public bool Equals(UniqueId x, UniqueId y)
+		public bool Equals(EntityId x, EntityId y)
 		{
 			return x.Id == y.Id;
 		}
 
-		public int GetHashCode(UniqueId obj)
+		public int GetHashCode(EntityId obj)
 		{
 			return (int) obj.Id;
 		}

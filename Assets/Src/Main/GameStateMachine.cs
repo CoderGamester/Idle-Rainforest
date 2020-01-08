@@ -1,8 +1,11 @@
+using Commands;
+using GameConfigs;
 using GameLovers.ConfigsContainer;
 using GameLovers.Statechart;
 using GameLovers.UiService;
 using Logic;
 using Services;
+using UnityEngine;
 
 namespace Main
 {
@@ -70,6 +73,16 @@ namespace Main
 
 		private void InitializeGame()
 		{
+			var list = _gameLogic.Configs.GetConfigsList<BuildingConfig>();
+			
+			for (var i = 0; i < list.Count; i++)
+			{
+				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
+				{
+					BuildingId = list[i].Id,
+					Position = i * 10 * Vector3.forward
+				});
+			}
 		}
 	}
 }

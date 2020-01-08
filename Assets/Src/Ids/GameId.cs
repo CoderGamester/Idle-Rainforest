@@ -6,22 +6,18 @@ namespace Ids
 {
 	public enum GameId
 	{
-		WorldCoins,
-		WoodCollector,
-		IronMine,
-		FabricFactory,
-		FoodFarm,
-		Wood,
-		Iron,
-		Fabric,
-		Food
+		Seeds,
+		Fruits,
+		Acorns,
+		BuildingZoo,
+		BuildingPark,
+		BuildingAquarium
 	}
 
 	public enum GameIdGroup
 	{
 		UserResource,
-		Building,
-		Resource
+		Building
 	}
 
 	public static class GameIdLookup
@@ -75,57 +71,39 @@ namespace Ids
 			new Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> (new GameIdComparer())
 			{
 				{
-					GameId.WorldCoins, new List<GameIdGroup>
+					GameId.Seeds, new List<GameIdGroup>
 					{
 						GameIdGroup.UserResource
 					}.AsReadOnly()
 				},
 				{
-					GameId.WoodCollector, new List<GameIdGroup>
+					GameId.Fruits, new List<GameIdGroup>
+					{
+						GameIdGroup.UserResource
+					}.AsReadOnly()
+				},
+				{
+					GameId.Acorns, new List<GameIdGroup>
+					{
+						GameIdGroup.UserResource
+					}.AsReadOnly()
+				},
+				{
+					GameId.BuildingZoo, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
 				{
-					GameId.IronMine, new List<GameIdGroup>
+					GameId.BuildingPark, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
 				{
-					GameId.FabricFactory, new List<GameIdGroup>
+					GameId.BuildingAquarium, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
-					}.AsReadOnly()
-				},
-				{
-					GameId.FoodFarm, new List<GameIdGroup>
-					{
-						GameIdGroup.Building
-					}.AsReadOnly()
-				},
-				{
-					GameId.Wood, new List<GameIdGroup>
-					{
-						GameIdGroup.Resource
-					}.AsReadOnly()
-				},
-				{
-					GameId.Iron, new List<GameIdGroup>
-					{
-						GameIdGroup.Resource
-					}.AsReadOnly()
-				},
-				{
-					GameId.Fabric, new List<GameIdGroup>
-					{
-						GameIdGroup.Resource
-					}.AsReadOnly()
-				},
-				{
-					GameId.Food, new List<GameIdGroup>
-					{
-						GameIdGroup.Resource
 					}.AsReadOnly()
 				},
 			};
@@ -136,25 +114,17 @@ namespace Ids
 				{
 					GameIdGroup.UserResource, new List<GameId>
 					{
-						GameId.WorldCoins
+						GameId.Seeds,
+						GameId.Fruits,
+						GameId.Acorns
 					}.AsReadOnly()
 				},
 				{
 					GameIdGroup.Building, new List<GameId>
 					{
-						GameId.WoodCollector,
-						GameId.IronMine,
-						GameId.FabricFactory,
-						GameId.FoodFarm
-					}.AsReadOnly()
-				},
-				{
-					GameIdGroup.Resource, new List<GameId>
-					{
-						GameId.Wood,
-						GameId.Iron,
-						GameId.Fabric,
-						GameId.Food
+						GameId.BuildingZoo,
+						GameId.BuildingPark,
+						GameId.BuildingAquarium
 					}.AsReadOnly()
 				},
 			};
