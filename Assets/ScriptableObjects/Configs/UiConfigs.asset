@@ -15,28 +15,22 @@ MonoBehaviour:
   _configs:
   - AddressableAddress: Prefabs/Ui/Building Panel.prefab
     Layer: 0
-    UiType: Presenters.BuildingPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    UiType: Presenters.BuildingPanelPresenter, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Hud.prefab
     Layer: 0
     UiType: Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Loading Screen.prefab
     Layer: 0
-    UiType: Presenters.LoadingScreenPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - AddressableAddress: Prefabs/Ui/Orders Panel.prefab
-    Layer: 0
-    UiType: Presenters.OrderPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    UiType: Presenters.LoadingScreenPresenter, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   _sets:
   - SetId: 0
     UiConfigsType:
     - Presenters.BuildingPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     - Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    - Presenters.OrderPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - SetId: 1
     UiConfigsType:

@@ -35,7 +35,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		IReadOnlyDictionary<Type, IDictionary> SessionData { get; }
+		IReadOnlyDictionary<Type, IEntityDictionary> SessionData { get; }
 		
 		/// <summary>
 		/// TODO:
@@ -67,7 +67,7 @@ namespace Logic
 		public EntityId EntityCounter { get; set; }
 
 		/// <inheritdoc />
-		public IReadOnlyDictionary<Type, IDictionary> SessionData { get; private set; }
+		public IReadOnlyDictionary<Type, IEntityDictionary> SessionData { get; private set; }
 		
 		private DataProviderLogic() {}
 
@@ -75,7 +75,7 @@ namespace Logic
 		{
 			LoadData();
 			
-			messageBrokerService.Subscribe<ApplicationPauseEvent>(OnApplicationPauseEvent);
+			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPauseEvent);
 		}
 
 		/// <inheritdoc />
@@ -107,26 +107,25 @@ namespace Logic
 
 		private void SetSessionData()
 		{
-			var sessionData = new Dictionary<Type, IDictionary>();
-			var gameIdDictionary = new Dictionary<EntityId, GameId>();
-			var buildingDictionary = new Dictionary<EntityId, BuildingData>();
+			var sessionData = new Dictionary<Type, IEntityDictionary>();
+			var gameIdDictionary = new EntityDictionary<GameId>();
+			var buildingDictionary = new EntityDictionary<int>();
 
-			foreach (var building in PlayerData.Buildings)
+			for (var i = 0; i < PlayerData.Buildings.Count; i++)
 			{
 				var entity = EntityCounter++;
-				
-				buildingDictionary.Add(entity, building);
-				gameIdDictionary.Add(entity, building.Id);
+
+				buildingDictionary.Add(entity, i);
+				gameIdDictionary.Add(entity, PlayerData.Buildings[i].GameId);
 			}
-			
-			sessionData.Add(typeof(GameObject), new Dictionary<EntityId, GameObject>());
-			sessionData.Add(typeof(BuildingData), buildingDictionary);
+
+			sessionData.Add(typeof(int), buildingDictionary);
 			sessionData.Add(typeof(GameId), gameIdDictionary);
 			
-			SessionData = new ReadOnlyDictionary<Type, IDictionary>(sessionData);
+			SessionData = new ReadOnlyDictionary<Type, IEntityDictionary>(sessionData);
 		}
 
-		private void OnApplicationPauseEvent(ApplicationPauseEvent eventData)
+		private void OnApplicationPauseEvent(ApplicationPausedEvent eventData)
 		{
 			if (eventData.IsPaused)
 			{

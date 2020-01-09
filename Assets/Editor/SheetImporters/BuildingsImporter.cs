@@ -1,4 +1,4 @@
-using GameConfigs;
+using Configs;
 using GameLoversEditor.GoogleSheetImporter;
 
 namespace SheetImporters

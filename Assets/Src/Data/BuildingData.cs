@@ -7,10 +7,11 @@ namespace Data
 	[Serializable]
 	public struct BuildingData : ISerializationCallbackReceiver
 	{
-		[SerializeField]
-		private Vector3Serializable _position;
+		public GameId GameId;
+		public int Level;
+		public DateTime ProductionStartTime;
 		
-		public GameId Id;
+		[SerializeField] private Vector3Serializable _position;
 
 		public Vector3 Position { get; set; }
 		

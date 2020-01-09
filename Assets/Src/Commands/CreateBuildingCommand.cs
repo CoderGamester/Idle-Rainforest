@@ -14,7 +14,7 @@ namespace Commands
 		public void Execute(IGameLogic gameLogic)
 		{
 			var entity = gameLogic.EntityLogic.CreateBuilding(BuildingId, Position);
-			gameLogic.GameObjectLogic.LoadGameObject(entity, BuildingId, Position);
+			gameLogic.GameObjectLogic.LoadGameObject(entity, AddressableId.Prefabs_Building, Position);
 		}
 	}
 }

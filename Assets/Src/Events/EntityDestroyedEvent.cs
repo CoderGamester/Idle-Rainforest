@@ -3,7 +3,7 @@ using Ids;
 
 namespace Events
 {
-	public struct EntityDestroyEvent : IMessage
+	public struct EntityDestroyedEvent : IMessage
 	{
 		public EntityId Entity;
 	}

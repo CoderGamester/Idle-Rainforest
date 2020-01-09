@@ -2,7 +2,7 @@ using GameLovers.Services;
 
 namespace Events
 {
-	public struct ApplicationPauseEvent : IMessage
+	public struct ApplicationPausedEvent : IMessage
 	{
 		public bool IsPaused;
 	}

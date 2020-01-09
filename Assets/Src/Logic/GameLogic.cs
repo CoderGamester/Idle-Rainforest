@@ -12,8 +12,8 @@ namespace Logic
 	/// </summary>
 	public interface IGameDataProvider
 	{
-		/// <inheritdoc cref="IConfigs"/>
-		IConfigs Configs { get; }
+		/// <inheritdoc cref="IConfigsProvider"/>
+		IConfigsProvider ConfigsProvider { get; }
 		
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
@@ -21,6 +21,10 @@ namespace Logic
 		IGameObjectDataProvider GameObjectDataProvider { get; }
 		/// <inheritdoc cref="IGameIdDataProvider"/>
 		IGameIdDataProvider GameIdDataProvider { get; }
+		/// <inheritdoc cref="ICurrencyDataProvider"/>
+		ICurrencyDataProvider CurrencyDataProvider { get; }
+		/// <inheritdoc cref="IResourceDataProvider"/>
+		IResourceDataProvider ResourceDataProvider { get; }
 		/// <inheritdoc cref="IBuildingDataProvider"/>
 		IBuildingDataProvider BuildingDataProvider { get; }
 	}
@@ -34,6 +38,8 @@ namespace Logic
 	{
 		/// <inheritdoc cref="IMessageBrokerService"/>
 		IMessageBrokerService MessageBrokerService { get; }
+		/// <inheritdoc cref="ITimeService"/>
+		ITimeService TimeService { get; }
 		
 		/// <inheritdoc cref="IEntityLogic"/>
 		IEntityLogic EntityLogic { get; }
@@ -41,6 +47,10 @@ namespace Logic
 		IGameObjectLogic GameObjectLogic { get; }
 		/// <inheritdoc cref="IGameIdLogic"/>
 		IGameIdLogic GameIdLogic { get; }
+		/// <inheritdoc cref="ICurrencyLogic"/>
+		ICurrencyLogic CurrencyLogic { get; }
+		/// <inheritdoc cref="IResourceLogic"/>
+		IResourceLogic ResourceLogic { get; }
 		/// <inheritdoc cref="IBuildingLogic"/>
 		IBuildingLogic BuildingLogic { get; }
 	}
@@ -59,10 +69,12 @@ namespace Logic
 	public class GameLogic : IGameInternalLogic
 	{
 		/// <inheritdoc />
-		public IConfigs Configs { get; }
+		public IConfigsProvider ConfigsProvider { get; }
 		
 		/// <inheritdoc />
 		public IMessageBrokerService MessageBrokerService { get; }
+		/// <inheritdoc />
+		public ITimeService TimeService { get; }
 
 		/// <inheritdoc />
 		public IDataProviderLogic DataProviderLogic { get; }
@@ -74,6 +86,10 @@ namespace Logic
 		/// <inheritdoc />
 		public IGameIdDataProvider GameIdDataProvider => GameIdLogic;
 		/// <inheritdoc />
+		public ICurrencyDataProvider CurrencyDataProvider => CurrencyLogic;
+		/// <inheritdoc />
+		public IResourceDataProvider ResourceDataProvider => ResourceLogic;
+		/// <inheritdoc />
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 
 		/// <inheritdoc />
@@ -83,20 +99,27 @@ namespace Logic
 		/// <inheritdoc />
 		public IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc />
+		public ICurrencyLogic CurrencyLogic { get; }
+		/// <inheritdoc />
+		public IResourceLogic ResourceLogic { get; }
+		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
 
-		public GameLogic(IMessageBrokerService messageBroker)
+		public GameLogic(IMessageBrokerService messageBroker, ITimeService timeService)
 		{
 			var dataProviderLogic = new DataProviderLogic(messageBroker);
 			
-			Configs = new Configs();
+			ConfigsProvider = new ConfigsProvider();
 			MessageBrokerService = messageBroker;
+			TimeService = timeService;
 
 			DataProviderLogic = dataProviderLogic;
 			EntityLogic = new EntityLogic(this, dataProviderLogic);
 			GameObjectLogic = new GameObjectLogic(this);
 			GameIdLogic = new GameIdLogic(this, dataProviderLogic.GetSessionData<GameId>());
-			BuildingLogic = new BuildingLogic(this, dataProviderLogic.GetSessionData<BuildingData>());
+			CurrencyLogic = new CurrencyLogic(this);
+			ResourceLogic = new ResourceLogic(this);
+			BuildingLogic = new BuildingLogic(this, dataProviderLogic.GetSessionData<int>());
 		}
 	}
 }

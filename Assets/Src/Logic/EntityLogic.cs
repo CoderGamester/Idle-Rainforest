@@ -49,13 +49,17 @@ namespace Logic
 		/// <inheritdoc />
 		public void DestroyEntity(EntityId entity)
 		{ 
-			// This boxing simplifies the scalability of the code. Refactor (ex: GameObjectLogic) if there is too many entity destruction
 			foreach (var data in _sessionDataProvider.SessionData)
 			{
-				data.Value.Remove(entity);
+				data.Value.RemoveEntity(entity);
+			}
+
+			if (_gameLogic.GameObjectLogic.HasGameObject(entity))
+			{
+				_gameLogic.GameObjectLogic.UnloadGameObject(entity);
 			}
 			
-			_gameLogic.MessageBrokerService.Publish(new EntityDestroyEvent { Entity = entity });
+			_gameLogic.MessageBrokerService.Publish(new EntityDestroyedEvent { Entity = entity });
 		}
 
 		/// <inheritdoc />
@@ -81,10 +85,14 @@ namespace Logic
 
 		private void CreateBuildingData(EntityId entity, GameId gameId, Vector3 position)
 		{
-			_sessionDataProvider.GetSessionData<BuildingData>().Add(entity, new BuildingData
+			_sessionDataProvider.GetSessionData<int>().Add(entity, _gameLogic.DataProviderLogic.PlayerData.Buildings.Count);
+			
+			_gameLogic.DataProviderLogic.PlayerData.Buildings.Add(new BuildingData
 			{
-				Id = gameId,
-				Position = position
+				GameId = gameId,
+				Position = position,
+				Level = 0,
+				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow
 			});
 		}
 	}

@@ -63,7 +63,7 @@
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
-      "hash": "5f9551b46ca4cb9e9eace46ddc6510df0e80d97f"
+      "hash": "68443c6feacb296aa4508712bd092b4dca8d127c"
     },
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
@@ -95,7 +95,7 @@
     },
     "com.gamelovers.uiservice": {
       "revision": "HEAD",
-      "hash": "24efd6addb794c22e930d4b3bc74d7e425c56984"
+      "hash": "753c9627effd999cb33bae375533a4b7c3beafca"
     }
   }
 }

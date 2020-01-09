@@ -4,14 +4,14 @@ using GameLovers.ConfigsContainer;
 using Ids;
 using UnityEngine;
 
-namespace GameConfigs
+namespace Configs
 {
 	[Serializable]
 	public struct BuildingConfig : IConfig
 	{
 		public GameId Id;
-		public int ProductionAmountBase;
-		public int ProductionAmountLevelIncrease;
+		public float ProductionAmountBase;
+		public float ProductionAmountLevelIncrease;
 		public float ProductionTimeBase;
 		
 		public int ConfigId => (int) Id;

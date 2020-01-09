@@ -19,6 +19,11 @@ namespace Logic
 		/// Requests the <see cref="GameObject"/> of the given <paramref name="entity"/>
 		/// </summary>
 		GameObject GetGameObject(EntityId entity);
+
+		/// <summary>
+		/// Requests if the given <paramref name="entity"/> has a <see cref="GameObject"/> component in ti
+		/// </summary>
+		bool HasGameObject(EntityId entity);
 	}
 
 	/// <inheritdoc />
@@ -27,7 +32,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		Task<GameObject> LoadGameObject(EntityId entity, GameId gameObject, Vector3 position);
+		Task<GameObject> LoadGameObject(EntityId entity, AddressableId addressable, Vector3 position);
 
 		/// <summary>
 		/// TODO:
@@ -48,7 +53,7 @@ namespace Logic
 			_gameLogic = gameLogic;
 			_data = new Dictionary<EntityId, GameObjectData>();
 			
-			_gameLogic.MessageBrokerService.Subscribe<EntityDestroyEvent>(eventData => UnloadGameObject(eventData.Entity));
+			_gameLogic.MessageBrokerService.Subscribe<EntityDestroyedEvent>(eventData => UnloadGameObject(eventData.Entity));
 		}
 
 		/// <inheritdoc />
@@ -58,24 +63,31 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public async Task<GameObject> LoadGameObject(EntityId entity, GameId gameId, Vector3 position)
+		public bool HasGameObject(EntityId entity)
 		{
-			var address = _gameLogic.Configs.GetConfig<AddressableConfig>((int) gameId).Address;
+			return _data.ContainsKey(entity);
+		}
+
+		/// <inheritdoc />
+		public async Task<GameObject> LoadGameObject(EntityId entity, AddressableId addressable, Vector3 position)
+		{
+			var address = _gameLogic.ConfigsProvider.GetConfig<AddressableConfig>((int) addressable).Address;
 			var task = LoaderUtil.LoadAssetAsync<GameObject>(address, false);
 
 			await task;
 
-			var instance = Object.Instantiate(task.Result, position, Quaternion.identity);
+			// ReSharper disable once AccessToStaticMemberViaDerivedType
+			var gameObject = GameObject.Instantiate(task.Result, position, Quaternion.identity);
 			
-			instance.GetComponent<EntityMonoComponent>().Entity = entity;
+			gameObject.GetComponent<EntityMonoComponent>().Entity = entity;
 			
 			_data.Add(entity, new GameObjectData
 			{
-				Instance = instance,
+				Instance = gameObject,
 				LoadReference = task.Result
 			});
 
-			return instance;
+			return gameObject;
 		}
 
 		/// <inheritdoc />

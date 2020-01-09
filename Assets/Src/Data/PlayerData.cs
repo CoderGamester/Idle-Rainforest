@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Ids;
+using UnityEngine;
 
 namespace Data
 {
@@ -9,6 +11,11 @@ namespace Data
 	[Serializable]
 	public class PlayerData
 	{
+		public int MainCurrency;
+		public int SoftCurrency;
+		public int HardCurrency;
+		
+		public List<ResourceData> Resources = new List<ResourceData>();
 		public List<BuildingData> Buildings = new List<BuildingData>();
 	}
 }

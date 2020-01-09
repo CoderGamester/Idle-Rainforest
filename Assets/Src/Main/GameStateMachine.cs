@@ -1,5 +1,5 @@
 using Commands;
-using GameConfigs;
+using Configs;
 using GameLovers.ConfigsContainer;
 using GameLovers.Statechart;
 using GameLovers.UiService;
@@ -30,7 +30,7 @@ namespace Main
 		{
 			_gameLogic = gameLogic;
 			_services = services;
-			_loadingState = new LoadingState((Configs) gameLogic.Configs, (UiService) services.UiService);
+			_loadingState = new LoadingState((ConfigsProvider) gameLogic.ConfigsProvider, (UiService) services.UiService);
 			_stateMachine = new Statechart(Setup);
 		}
 
@@ -73,14 +73,14 @@ namespace Main
 
 		private void InitializeGame()
 		{
-			var list = _gameLogic.Configs.GetConfigsList<BuildingConfig>();
+			var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
 			
 			for (var i = 0; i < list.Count; i++)
 			{
 				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
 					BuildingId = list[i].Id,
-					Position = i * 10 * Vector3.forward
+					Position = i * 5 * Vector3.forward
 				});
 			}
 		}

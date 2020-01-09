@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using GameConfigs;
+using Configs;
 using GameLovers.AddressableIdsScriptGenerator;
 using GameLovers.ConfigsContainer;
 using GameLovers.LoaderExtension;
@@ -16,10 +16,10 @@ namespace Main
 	/// </summary>
 	internal class LoadingState
 	{
-		private readonly Configs _gameConfigs;
+		private readonly ConfigsProvider _gameConfigs;
 		private readonly UiService _uiService;
 		
-		public LoadingState(Configs gameConfigs, UiService uiService)
+		public LoadingState(ConfigsProvider gameConfigs, UiService uiService)
 		{
 			_gameConfigs = gameConfigs;
 			_uiService = uiService;

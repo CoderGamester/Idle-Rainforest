@@ -13,19 +13,15 @@ MonoBehaviour:
   m_Name: BuildingConfigs
   m_EditorClassIdentifier: 
   _configs:
-  - Id: 1
-    ProductionType: 5
-    ProductionAmountBase: 1
-    ProductionTimeBase: 1
-  - Id: 2
-    ProductionType: 6
-    ProductionAmountBase: 1
-    ProductionTimeBase: 1
   - Id: 3
-    ProductionType: 7
     ProductionAmountBase: 1
+    ProductionAmountLevelIncrease: 1
     ProductionTimeBase: 1
   - Id: 4
-    ProductionType: 8
-    ProductionAmountBase: 1
-    ProductionTimeBase: 1
+    ProductionAmountBase: 2
+    ProductionAmountLevelIncrease: 2
+    ProductionTimeBase: 1.5
+  - Id: 5
+    ProductionAmountBase: 3
+    ProductionAmountLevelIncrease: 3
+    ProductionTimeBase: 2

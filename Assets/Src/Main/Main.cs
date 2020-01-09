@@ -18,9 +18,10 @@ namespace Main
 		private void Awake()
 		{
 			var messageBroker = new MessageBrokerService();
+			var timeService = new TimeService();
 			
-			_gameLogic = new GameLogic(messageBroker);
-			_gameServices = new GameServices(messageBroker, _gameLogic);
+			_gameLogic = new GameLogic(messageBroker, timeService);
+			_gameServices = new GameServices(messageBroker, timeService, _gameLogic);
 			
 			MainInstaller.Bind<IGameDataProvider>(_gameLogic);
 			MainInstaller.Bind<IGameServices>(_gameServices);
@@ -35,9 +36,10 @@ namespace Main
 
 		private void OnApplicationPause(bool pauseStatus)
 		{
-			_gameServices.MessageBrokerService.Publish(new ApplicationPauseEvent { IsPaused = pauseStatus });
+			_gameServices.MessageBrokerService.Publish(new ApplicationPausedEvent { IsPaused = pauseStatus });
 		}
 		
+		// TODO: ZoneListResolver
 		// TODO: Enum serialize as string
 	}
 }
