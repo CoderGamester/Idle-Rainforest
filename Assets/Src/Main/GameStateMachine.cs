@@ -3,6 +3,7 @@ using Configs;
 using GameLovers.ConfigsContainer;
 using GameLovers.Statechart;
 using GameLovers.UiService;
+using Ids;
 using Logic;
 using Services;
 using UnityEngine;
@@ -83,6 +84,8 @@ namespace Main
 					Position = i * 5 * Vector3.forward
 				});
 			}
+			
+			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
 		}
 	}
 }

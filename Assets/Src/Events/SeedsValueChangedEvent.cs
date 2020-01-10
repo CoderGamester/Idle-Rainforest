@@ -2,7 +2,7 @@ using GameLovers.Services;
 
 namespace Events
 {
-	public struct SeedsCollectedEvent : IMessage
+	public struct SeedsValueChangedEvent : IMessage
 	{
 		public int OldValue;
 		public int NewValue;

@@ -16,7 +16,8 @@ namespace MonoComponent
 	public class BuildingMonoComponent : MonoBehaviour, IPointerClickHandler
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
-		[SerializeField] private TextMeshPro _buildingName;
+		[SerializeField] private TextMeshPro _buildingNameText;
+		[SerializeField] private TextMeshPro _productionAmountText;
 		[SerializeField] private GameObject _readyState;
 
 		private IGameDataProvider _dataProvider;
@@ -35,7 +36,8 @@ namespace MonoComponent
 			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity);
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingName.text = $"{info.GameId}\n{seedsSec.ToString("F")}/s";
+			_buildingNameText.text = $"{info.GameId}\n{seedsSec.ToString("F")}/s";
+			_productionAmountText.text = info.ProductionAmount.ToString();
 			
 			OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).ProductionTime);
 		}

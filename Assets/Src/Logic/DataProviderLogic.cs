@@ -75,7 +75,7 @@ namespace Logic
 		{
 			LoadData();
 			
-			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPauseEvent);
+			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPaused);
 		}
 
 		/// <inheritdoc />
@@ -125,7 +125,7 @@ namespace Logic
 			SessionData = new ReadOnlyDictionary<Type, IEntityDictionary>(sessionData);
 		}
 
-		private void OnApplicationPauseEvent(ApplicationPausedEvent eventData)
+		private void OnApplicationPaused(ApplicationPausedEvent eventData)
 		{
 			if (eventData.IsPaused)
 			{

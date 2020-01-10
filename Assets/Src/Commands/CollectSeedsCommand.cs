@@ -15,7 +15,7 @@ namespace Commands
 			var seeds = gameLogic.CurrencyLogic.MainCurrencyAmount;
 			
 			gameLogic.BuildingLogic.Collect(Entity);
-			gameLogic.MessageBrokerService.Publish(new SeedsCollectedEvent
+			gameLogic.MessageBrokerService.Publish(new SeedsValueChangedEvent
 			{
 				NewValue = gameLogic.CurrencyLogic.MainCurrencyAmount,
 				OldValue = seeds
