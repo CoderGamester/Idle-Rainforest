@@ -18,6 +18,7 @@ namespace MonoComponent
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private TextMeshPro _buildingNameText;
 		[SerializeField] private TextMeshPro _productionAmountText;
+		[SerializeField] private TextMeshPro _upgradeCostText;
 		[SerializeField] private GameObject _readyState;
 
 		private IGameDataProvider _dataProvider;
@@ -36,12 +37,15 @@ namespace MonoComponent
 			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity);
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingNameText.text = $"{info.GameId}\n{seedsSec.ToString("F")}/s";
+			_buildingNameText.text = $"{info.GameId} {info.Level.ToString()}\n{seedsSec.ToString("F")}/s";
 			_productionAmountText.text = info.ProductionAmount.ToString();
 			
 			OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).ProductionTime);
 		}
 
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		public void OnPointerClick(PointerEventData eventData)
 		{
 			if (_readyState.activeSelf)
@@ -51,6 +55,11 @@ namespace MonoComponent
 				_readyState.SetActive(false);
 				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).ProductionTime);
 			}
+		}
+
+		public void UpgradeClicked()
+		{
+			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { Entity = _entityMonoComponent.Entity });
 		}
 
 		private async void OnReadyToCollect(float time)

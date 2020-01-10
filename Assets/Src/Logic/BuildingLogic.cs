@@ -25,6 +25,11 @@ namespace Logic
 		/// TODO:
 		/// </summary>
 		void Collect(EntityId entity);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void Upgrade(EntityId entity);
 	}
 	
 	/// <inheritdoc />
@@ -74,6 +79,19 @@ namespace Logic
 			data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
 
 			_gameLogic.CurrencyLogic.AddMainCurrency(Mathf.RoundToInt(info.ProductionAmount));
+			_gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]] = data;
+		}
+
+		/// <inheritdoc />
+		public void Upgrade(EntityId entity)
+		{
+			// TODO: Check if enough resources to upgrade
+			// TODO: Consume resources
+			
+			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]];
+
+			data.Level++;
+
 			_gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]] = data;
 		}
 	}
