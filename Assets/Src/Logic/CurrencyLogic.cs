@@ -1,4 +1,5 @@
 using System;
+using Events;
 
 namespace Logic
 {
@@ -10,7 +11,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		int MainCurrencyAmount { get; }
+		float MainCurrencyAmount { get; }
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -27,11 +28,11 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void AddMainCurrency(int amount);
+		void AddMainCurrency(float amount);
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void DeductMainCurrency(int amount);
+		void DeductMainCurrency(float amount);
 		
 		/// <summary>
 		/// TODO:
@@ -57,7 +58,7 @@ namespace Logic
 		private readonly IGameInternalLogic _gameLogic;
 
 		/// <inheritdoc />
-		public int MainCurrencyAmount => _gameLogic.DataProviderLogic.PlayerData.MainCurrency;
+		public float MainCurrencyAmount => _gameLogic.DataProviderLogic.PlayerData.MainCurrency;
 		/// <inheritdoc />
 		public int SoftCurrencyAmount => _gameLogic.DataProviderLogic.PlayerData.SoftCurrency;
 		/// <inheritdoc />
@@ -71,22 +72,37 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void AddMainCurrency(int amount)
+		public void AddMainCurrency(float amount)
 		{
+			var seeds = _gameLogic.DataProviderLogic.PlayerData.MainCurrency;
+			
 			_gameLogic.DataProviderLogic.PlayerData.MainCurrency += amount;
+			
+			_gameLogic.MessageBrokerService.Publish(new MainCurrencyValueChangedEvent
+			{
+				NewValue = _gameLogic.DataProviderLogic.PlayerData.MainCurrency,
+				OldValue = seeds
+			});
 		}
 
 		/// <inheritdoc />
-		public void DeductMainCurrency(int amount)
+		public void DeductMainCurrency(float amount)
 		{
 			if (_gameLogic.DataProviderLogic.PlayerData.MainCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player doesn't have enough main currency to deduct. " +
-				                                    $"It needs {amount.ToString()} and only has " +
+				throw new InvalidOperationException($"The player needs {amount.ToString()} main currency and only has " +
 				                                    $"{_gameLogic.DataProviderLogic.PlayerData.MainCurrency.ToString()}");
 			}
 
+			var seeds = _gameLogic.DataProviderLogic.PlayerData.MainCurrency;
+
 			_gameLogic.DataProviderLogic.PlayerData.MainCurrency -= amount;
+			
+			_gameLogic.MessageBrokerService.Publish(new MainCurrencyValueChangedEvent
+			{
+				NewValue = _gameLogic.DataProviderLogic.PlayerData.MainCurrency,
+				OldValue = seeds
+			});
 		}
 
 		/// <inheritdoc />
@@ -100,8 +116,7 @@ namespace Logic
 		{
 			if (_gameLogic.DataProviderLogic.PlayerData.SoftCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player doesn't have enough soft currency to deduct. " +
-				                                    $"It needs {amount.ToString()} and only has " +
+				throw new InvalidOperationException($"The player needs {amount.ToString()} soft currency and only has " +
 				                                    $"{_gameLogic.DataProviderLogic.PlayerData.SoftCurrency.ToString()}");
 			}
 
@@ -119,8 +134,7 @@ namespace Logic
 		{
 			if (_gameLogic.DataProviderLogic.PlayerData.HardCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player doesn't have enough hard currency to deduct. " +
-				                                    $"It needs {amount.ToString()} and only has " +
+				throw new InvalidOperationException($"The player needs {amount.ToString()} hard currency and only has " +
 				                                    $"{_gameLogic.DataProviderLogic.PlayerData.HardCurrency.ToString()}");
 			}
 

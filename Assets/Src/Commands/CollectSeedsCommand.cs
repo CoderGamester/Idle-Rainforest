@@ -12,14 +12,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			var seeds = gameLogic.CurrencyLogic.MainCurrencyAmount;
-			
 			gameLogic.BuildingLogic.Collect(Entity);
-			gameLogic.MessageBrokerService.Publish(new SeedsValueChangedEvent
-			{
-				NewValue = gameLogic.CurrencyLogic.MainCurrencyAmount,
-				OldValue = seeds
-			});
 		}
 	}
 }

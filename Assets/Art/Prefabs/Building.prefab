@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8154936903660646483}
   - component: {fileID: 5268835886965129125}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Upgradable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -659,6 +659,7 @@ MonoBehaviour:
   _productionAmountText: {fileID: 2989585227797960090}
   _upgradeCostText: {fileID: 8622965785274762801}
   _readyState: {fileID: 7833688358697310166}
+  _upgradableState: {fileID: 134618561456171158}
 --- !u!1 &6782851836321262628
 GameObject:
   m_ObjectHideFlags: 0

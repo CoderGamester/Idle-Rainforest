@@ -39,7 +39,8 @@ namespace Main
 			_gameServices.MessageBrokerService.Publish(new ApplicationPausedEvent { IsPaused = pauseStatus });
 		}
 		
-		// TODO: ZoneListResolver
+		// TODO: ZoneListResolver & replace events with update observers in the view
+		// TODO: Currency observer
 		// TODO: Enum serialize as string
 	}
 }

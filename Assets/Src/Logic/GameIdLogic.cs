@@ -12,6 +12,11 @@ namespace Logic
 		/// Requests the <see cref="GameId"/> of the given <paramref name="entity"/>
 		/// </summary>
 		GameId GetGameId(EntityId entity);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		bool IsInGroup(EntityId entity, GameIdGroup group);
 	}
 
 	/// <inheritdoc />
@@ -37,6 +42,12 @@ namespace Logic
 		public GameId GetGameId(EntityId entity)
 		{
 			return _data[entity];
+		}
+
+		/// <inheritdoc />
+		public bool IsInGroup(EntityId entity, GameIdGroup group)
+		{
+			return GetGameId(entity).IsInGroup(group);
 		}
 	}
 }

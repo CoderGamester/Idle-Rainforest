@@ -11,8 +11,10 @@ namespace Configs
 	{
 		public GameId Id;
 		public float ProductionAmountBase;
-		public float ProductionAmountLevelIncrease;
+		public float ProductionAmountIncrease;
 		public float ProductionTimeBase;
+		public float UpgradeCostBase;
+		public float UpgradeCostIncrease;
 		
 		public int ConfigId => (int) Id;
 	}

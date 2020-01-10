@@ -15,13 +15,19 @@ MonoBehaviour:
   _configs:
   - Id: 3
     ProductionAmountBase: 1
-    ProductionAmountLevelIncrease: 1
+    ProductionAmountIncrease: 1
     ProductionTimeBase: 1
+    UpgradeCostBase: 1
+    UpgradeCostIncrease: 1
   - Id: 4
     ProductionAmountBase: 2
-    ProductionAmountLevelIncrease: 2
+    ProductionAmountIncrease: 2
     ProductionTimeBase: 1.5
+    UpgradeCostBase: 2
+    UpgradeCostIncrease: 2
   - Id: 5
     ProductionAmountBase: 3
-    ProductionAmountLevelIncrease: 3
+    ProductionAmountIncrease: 3
     ProductionTimeBase: 2
+    UpgradeCostBase: 3
+    UpgradeCostIncrease: 3

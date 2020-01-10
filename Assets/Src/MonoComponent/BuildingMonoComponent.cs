@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Commands;
+using Events;
 using GameLovers.Services;
+using Infos;
 using Logic;
 using Services;
 using TMPro;
@@ -20,6 +22,7 @@ namespace MonoComponent
 		[SerializeField] private TextMeshPro _productionAmountText;
 		[SerializeField] private TextMeshPro _upgradeCostText;
 		[SerializeField] private GameObject _readyState;
+		[SerializeField] private GameObject _upgradableState;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -30,17 +33,17 @@ namespace MonoComponent
 			_services = MainInstaller.Resolve<IGameServices>();
 			
 			_readyState.SetActive(false);
+			_upgradableState.SetActive(false);
+			
+			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 		}
 
 		private void Start()
 		{
 			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity);
-			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingNameText.text = $"{info.GameId} {info.Level.ToString()}\n{seedsSec.ToString("F")}/s";
-			_productionAmountText.text = info.ProductionAmount.ToString();
-			
-			OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).ProductionTime);
+			UpdateView(info);
+			OnReadyToCollect(info.ProductionTime);
 		}
 
 		/// <summary>
@@ -60,6 +63,29 @@ namespace MonoComponent
 		public void UpgradeClicked()
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { Entity = _entityMonoComponent.Entity });
+			
+			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity));
+		}
+
+		private void UpdateView(BuildingInfo info)
+		{
+			var seedsSec = info.ProductionAmount / info.ProductionTime;
+
+			_buildingNameText.text = $"{info.GameId} {info.Level.ToString()}\n{seedsSec.ToString("0.##")}/s";
+			_productionAmountText.text = info.ProductionAmount.ToString();
+			_upgradeCostText.text = info.UpgradeCost.ToString();
+
+			UpdateUpgradeState(info.UpgradeCost);
+		}
+
+		private void UpdateUpgradeState(float upgradeCost)
+		{
+			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeCost);
+		}
+
+		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
+		{
+			UpdateUpgradeState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).UpgradeCost);
 		}
 
 		private async void OnReadyToCollect(float time)

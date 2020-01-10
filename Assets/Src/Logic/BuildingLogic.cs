@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Configs;
+using Events;
 using Ids;
 using Infos;
 using UnityEngine;
@@ -58,22 +59,27 @@ namespace Logic
 				GameId = data.GameId,
 				Level = data.Level,
 				Position = data.Position,
-				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountLevelIncrease * data.Level,
+				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level,
 				ProductionTime = config.ProductionTimeBase,
-				ProductionStartTime = data.ProductionStartTime
+				ProductionStartTime = data.ProductionStartTime,
+				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
 			};
 		}
 
 		/// <inheritdoc />
 		public void Collect(EntityId entity)
 		{
-			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]];
+			if (!_data.TryGetValue(entity, out int index))
+			{
+				throw new ArgumentException($"There is no building with the entity {entity.ToString()}");
+			}
+			
+			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[index];
 			var info = GetInfo(entity);
 
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
 			{
-				throw new InvalidOperationException($"The building {data.GameId} is still not ready to collect. " +
-				                                    $"Only after {info.ProductionEndTime.ToString()} can be collected");
+				throw new InvalidOperationException($"The building {data.GameId} is still not ready to collect");
 			}
 			
 			data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
@@ -85,14 +91,21 @@ namespace Logic
 		/// <inheritdoc />
 		public void Upgrade(EntityId entity)
 		{
-			// TODO: Check if enough resources to upgrade
-			// TODO: Consume resources
+			if (!_data.TryGetValue(entity, out int index))
+			{
+				throw new ArgumentException($"There is no building with the entity {entity.ToString()}");
+			}
 			
-			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]];
+			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[index];
+			var info = GetInfo(entity);
+
+			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
 
 			data.Level++;
 
-			_gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]] = data;
+			_gameLogic.DataProviderLogic.PlayerData.Buildings[index] = data;
+			
+			_gameLogic.MessageBrokerService.Publish(new BuildingUpgradedEvent { Entity = entity });
 		}
 	}
 }

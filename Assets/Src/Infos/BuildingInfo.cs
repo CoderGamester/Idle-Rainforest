@@ -13,6 +13,7 @@ namespace Infos
 		public float ProductionAmount;
 		public float ProductionTime;
 		public DateTime ProductionStartTime;
+		public float UpgradeCost;
 
 		public DateTime ProductionEndTime => ProductionStartTime.AddSeconds(ProductionTime);
 	}

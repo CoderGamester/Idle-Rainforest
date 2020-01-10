@@ -11,7 +11,7 @@ namespace Data
 	[Serializable]
 	public class PlayerData
 	{
-		public int MainCurrency;
+		public float MainCurrency;
 		public int SoftCurrency;
 		public int HardCurrency;
 		
