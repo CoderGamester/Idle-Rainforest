@@ -1,9 +1,18 @@
 {
   "dependencies": {
-    "com.gamelovers.frameworks": "file:/Users/mtomas/Desktop/Frameworks/Assets",
+    "com.gamelovers.addressableidsscriptgenerator": "https://github.com/CoderGamester/com.gamelovers.addressableidsscriptgenerator.git",
+    "com.gamelovers.configscontainer": "https://github.com/CoderGamester/com.gamelovers.configscontainer.git",
+    "com.gamelovers.googlesheetimporter": "https://github.com/CoderGamester/com.gamelovers.googlesheetimporter.git",
+    "com.gamelovers.loadextension": "https://github.com/CoderGamester/com.gamelovers.loadextension.git",
+    "com.gamelovers.newtonsoftjson": "https://github.com/CoderGamester/com.gamelovers.newtonsoftjson.git",
+    "com.gamelovers.nsubstitute": "https://github.com/CoderGamester/com.gamelovers.nsubstitute.git",
+    "com.gamelovers.removeemptyfolders": "https://github.com/CoderGamester/com.gamelovers.removeemptyfolders.git",
+    "com.gamelovers.services": "https://github.com/CoderGamester/com.gamelovers.services.git",
+    "com.gamelovers.statechart": "https://github.com/CoderGamester/com.gamelovers.statechart.git",
+    "com.gamelovers.uiservice": "https://github.com/CoderGamester/com.gamelovers.uiservice.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.addressables": "1.1.10",
+    "com.unity.addressables": "1.5.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.device-simulator": "2.0.0-preview",
     "com.unity.ext.nunit": "1.0.0",
@@ -46,5 +55,47 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.gamelovers.addressableidsscriptgenerator": {
+      "revision": "HEAD",
+      "hash": "f95207542f58aed26a587f21d04cab3281fff03f"
+    },
+    "com.gamelovers.configscontainer": {
+      "revision": "HEAD",
+      "hash": "68443c6feacb296aa4508712bd092b4dca8d127c"
+    },
+    "com.gamelovers.googlesheetimporter": {
+      "revision": "HEAD",
+      "hash": "737e1b29f7d27d1d4df32fb77808aacb5a35fe43"
+    },
+    "com.gamelovers.loadextension": {
+      "revision": "HEAD",
+      "hash": "84d25c8e23af49a93195c2ef05729f94f8f3fb0b"
+    },
+    "com.gamelovers.newtonsoftjson": {
+      "revision": "HEAD",
+      "hash": "ec12232149a2b1d7b1f6ab0d4d6508495c1f533f"
+    },
+    "com.gamelovers.nsubstitute": {
+      "revision": "HEAD",
+      "hash": "929d7e430b831ff9037274a4b4119782517aac69"
+    },
+    "com.gamelovers.removeemptyfolders": {
+      "revision": "HEAD",
+      "hash": "a160e357dbdfb18b58680e47360957cefd3c3958"
+    },
+    "com.gamelovers.services": {
+      "revision": "HEAD",
+      "hash": "cf9f4d6d8f1690c080bc0738cdc4f6fa6c167af0"
+    },
+    "com.gamelovers.statechart": {
+      "revision": "HEAD",
+      "hash": "1eaa88ddddbbddc731b5a08eceeb6447aab7ba12"
+    },
+    "com.gamelovers.uiservice": {
+      "revision": "HEAD",
+      "hash": "753c9627effd999cb33bae375533a4b7c3beafca"
+    }
   }
 }
