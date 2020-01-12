@@ -80,7 +80,7 @@ namespace Main
 			{
 				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
-					BuildingId = list[i].Id,
+					BuildingType = list[i].Id,
 					Position = i * 5 * Vector3.forward
 				});
 			}

@@ -7,7 +7,7 @@ namespace Data
 	[Serializable]
 	public struct BuildingData : ISerializationCallbackReceiver
 	{
-		public GameId GameId;
+		public UniqueId Id;
 		public int Level;
 		public DateTime ProductionStartTime;
 		

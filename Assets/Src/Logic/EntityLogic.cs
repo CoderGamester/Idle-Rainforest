@@ -21,75 +21,55 @@ namespace Logic
 	public interface IEntityLogic : IEntityDataProvider
 	{
 		/// <summary>
-		/// Destroys and unloads the given <paramref name="entity"/>
-		/// </summary>
-		void DestroyEntity(EntityId entity);
-		
-		/// <summary>
 		/// Creates a new Building of the given <paramref name="gameId"/> type on the  given <paramref name="position"/>
 		/// Returns the Entity representing the new building
 		/// </summary>
-		EntityId CreateBuilding(GameId gameId, Vector3 position);
+		UniqueId CreateBuilding(GameId gameId, Vector3 position);
 	}
 	
 	/// <inheritdoc />
 	public class EntityLogic : IEntityLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly ISessionDataProvider _sessionDataProvider;
+		private readonly IDataProvider _dataProvider;
 		
 		private EntityLogic() {}
 
-		public EntityLogic(IGameInternalLogic gameLogic, ISessionDataProvider sessionDataProvider)
+		public EntityLogic(IGameInternalLogic gameLogic, IDataProvider dataProvider)
 		{
 			_gameLogic = gameLogic;
-			_sessionDataProvider = sessionDataProvider;
+			_dataProvider = dataProvider;
 		}
 
 		/// <inheritdoc />
-		public void DestroyEntity(EntityId entity)
-		{ 
-			foreach (var data in _sessionDataProvider.SessionData)
-			{
-				data.Value.RemoveEntity(entity);
-			}
-
-			if (_gameLogic.GameObjectLogic.HasGameObject(entity))
-			{
-				_gameLogic.GameObjectLogic.UnloadGameObject(entity);
-			}
-			
-			_gameLogic.MessageBrokerService.Publish(new EntityDestroyedEvent { Entity = entity });
-		}
-
-		/// <inheritdoc />
-		public EntityId CreateBuilding(GameId gameId, Vector3 position)
+		public UniqueId CreateBuilding(GameId gameId, Vector3 position)
 		{
 			if (!gameId.IsInGroup(GameIdGroup.Building))
 			{
 				throw new ArgumentException($"The game id {gameId} is not a building type game id");
 			}
 			
-			var entity = _sessionDataProvider.EntityCounter++;
+			var uniqueId = _dataProvider.GetData<AppData>().UniqueIdCounter++;
 			
-			CreateGameIdData(entity, gameId);
-			CreateBuildingData(entity, gameId, position);
+			CreateGameIdData(uniqueId, gameId);
+			CreateBuildingData(position);
 
-			return entity;
+			return uniqueId;
 		}
 
-		private void CreateGameIdData(EntityId entity, GameId gameId)
+		private void CreateGameIdData(UniqueId uniqueId, GameId gameId)
 		{
-			_sessionDataProvider.GetSessionData<GameId>().Add(entity, gameId);
-		}
-
-		private void CreateBuildingData(EntityId entity, GameId gameId, Vector3 position)
-		{
-			_sessionDataProvider.GetSessionData<int>().Add(entity, _gameLogic.DataProviderLogic.PlayerData.Buildings.Count);
-			
-			_gameLogic.DataProviderLogic.PlayerData.Buildings.Add(new BuildingData
+			_dataProvider.GetData<PlayerData>().GameIds.Add(new GameIdData
 			{
-				GameId = gameId,
+				Id = uniqueId,
+				GameId = gameId
+			});
+		}
+
+		private void CreateBuildingData(Vector3 position)
+		{
+			_dataProvider.GetData<PlayerData>().Buildings.Add(new BuildingData
+			{
 				Position = position,
 				Level = 0,
 				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow

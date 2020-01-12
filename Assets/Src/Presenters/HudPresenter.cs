@@ -25,7 +25,7 @@ namespace Presenters
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
-			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnSeedsValueChanged);
+			_services.MessageBrokerService.Subscribe<CurrencyValueChangedEvent>(OnSeedsValueChanged);
 		}
 
 		private void Start()
@@ -35,7 +35,7 @@ namespace Presenters
 			_hardCurrencyText.text = $"HC: {_dataProvider.CurrencyDataProvider.HardCurrencyAmount.ToString()}";
 		}
 
-		private void OnSeedsValueChanged(MainCurrencyValueChangedEvent eventData)
+		private void OnSeedsValueChanged(CurrencyValueChangedEvent eventData)
 		{
 			_mainCurrencyText.text =$"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
 		}

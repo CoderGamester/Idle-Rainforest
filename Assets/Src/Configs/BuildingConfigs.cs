@@ -10,11 +10,11 @@ namespace Configs
 	public struct BuildingConfig : IConfig
 	{
 		public GameId Id;
-		public float ProductionAmountBase;
-		public float ProductionAmountIncrease;
+		public int ProductionAmountBase;
+		public int ProductionAmountIncrease;
 		public float ProductionTimeBase;
-		public float UpgradeCostBase;
-		public float UpgradeCostIncrease;
+		public int UpgradeCostBase;
+		public int UpgradeCostIncrease;
 		
 		public int ConfigId => (int) Id;
 	}

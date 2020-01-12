@@ -1,20 +1,19 @@
 using System;
+using Data;
 using Ids;
-using UnityEngine;
 
 namespace Infos
 {
 	public struct BuildingInfo
 	{
-		public EntityId Entity;
+		public UniqueId Unique;
 		public GameId GameId;
-		public int Level;
-		public Vector3 Position;
+		public BuildingData Data;
 		public float ProductionAmount;
 		public float ProductionTime;
-		public DateTime ProductionStartTime;
-		public float UpgradeCost;
+		public int UpgradeCost;
 
+		public DateTime ProductionStartTime => Data.ProductionStartTime;
 		public DateTime ProductionEndTime => ProductionStartTime.AddSeconds(ProductionTime);
 	}
 }

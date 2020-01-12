@@ -10,6 +10,6 @@ namespace MonoComponent
 
 		private IGameServices _gameServices;
 		
-		public EntityId Entity { get; set; }
+		public UniqueId UniqueId { get; set; }
 	}
 }

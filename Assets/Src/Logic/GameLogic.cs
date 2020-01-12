@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
 using Ids;
+using Newtonsoft.Json;
 using Services;
+using UnityEngine;
 
 namespace Logic
 {
@@ -23,8 +28,6 @@ namespace Logic
 		IGameIdDataProvider GameIdDataProvider { get; }
 		/// <inheritdoc cref="ICurrencyDataProvider"/>
 		ICurrencyDataProvider CurrencyDataProvider { get; }
-		/// <inheritdoc cref="IResourceDataProvider"/>
-		IResourceDataProvider ResourceDataProvider { get; }
 		/// <inheritdoc cref="IBuildingDataProvider"/>
 		IBuildingDataProvider BuildingDataProvider { get; }
 	}
@@ -49,8 +52,6 @@ namespace Logic
 		IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc cref="ICurrencyLogic"/>
 		ICurrencyLogic CurrencyLogic { get; }
-		/// <inheritdoc cref="IResourceLogic"/>
-		IResourceLogic ResourceLogic { get; }
 		/// <inheritdoc cref="IBuildingLogic"/>
 		IBuildingLogic BuildingLogic { get; }
 	}
@@ -88,8 +89,6 @@ namespace Logic
 		/// <inheritdoc />
 		public ICurrencyDataProvider CurrencyDataProvider => CurrencyLogic;
 		/// <inheritdoc />
-		public IResourceDataProvider ResourceDataProvider => ResourceLogic;
-		/// <inheritdoc />
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 
 		/// <inheritdoc />
@@ -101,25 +100,41 @@ namespace Logic
 		/// <inheritdoc />
 		public ICurrencyLogic CurrencyLogic { get; }
 		/// <inheritdoc />
-		public IResourceLogic ResourceLogic { get; }
-		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
 
 		public GameLogic(IMessageBrokerService messageBroker, ITimeService timeService)
 		{
 			var dataProviderLogic = new DataProviderLogic(messageBroker);
 			
+			LoadData(dataProviderLogic);
+			
 			ConfigsProvider = new ConfigsProvider();
 			MessageBrokerService = messageBroker;
 			TimeService = timeService;
-
+			
 			DataProviderLogic = dataProviderLogic;
 			EntityLogic = new EntityLogic(this, dataProviderLogic);
 			GameObjectLogic = new GameObjectLogic(this);
-			GameIdLogic = new GameIdLogic(this, dataProviderLogic.GetSessionData<GameId>());
-			CurrencyLogic = new CurrencyLogic(this);
-			ResourceLogic = new ResourceLogic(this);
-			BuildingLogic = new BuildingLogic(this, dataProviderLogic.GetSessionData<int>());
+			CurrencyLogic = new CurrencyLogic(this, dataProviderLogic.GetData<CurrencyData>());
+			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(
+				data => data.Id, 
+				() => dataProviderLogic.GetData<PlayerData>().GameIds));
+			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
+				data => data.Id, 
+				() => dataProviderLogic.GetData<PlayerData>().Buildings));
+		}
+
+		private void LoadData(DataProviderLogic dataProviderLogic)
+		{
+			var appDataJson = PlayerPrefs.GetString(nameof(AppData), "");
+			var playerDataJson = PlayerPrefs.GetString(nameof(PlayerData), "");
+			var currencyDataJson = PlayerPrefs.GetString(nameof(CurrencyData), "");
+			
+			dataProviderLogic.AddData(string.IsNullOrEmpty(appDataJson) ? new AppData() : JsonConvert.DeserializeObject<AppData>(appDataJson));
+			dataProviderLogic.AddData(string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson));
+			dataProviderLogic.AddData(string.IsNullOrEmpty(currencyDataJson) ? new CurrencyData() : JsonConvert.DeserializeObject<CurrencyData>(currencyDataJson));
+
+			dataProviderLogic.GetData<AppData>().LastLoginTime = DateTime.Now;
 		}
 	}
 }

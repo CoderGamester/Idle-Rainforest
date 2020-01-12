@@ -6,12 +6,12 @@ namespace Commands
 	/// <inheritdoc cref="IGameCommand" />
 	public struct UpgradeBuildingCommand : IGameCommand
 	{
-		public EntityId Entity;
+		public UniqueId UniqueId;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Upgrade(Entity);
+			gameLogic.BuildingLogic.Upgrade(UniqueId);
 		}
 	}
 }

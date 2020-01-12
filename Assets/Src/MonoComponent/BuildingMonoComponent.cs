@@ -35,12 +35,12 @@ namespace MonoComponent
 			_readyState.SetActive(false);
 			_upgradableState.SetActive(false);
 			
-			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<CurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 		}
 
 		private void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity);
+			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId);
 
 			UpdateView(info);
 			OnReadyToCollect(info.ProductionTime);
@@ -53,25 +53,25 @@ namespace MonoComponent
 		{
 			if (_readyState.activeSelf)
 			{
-				_services.CommandService.ExecuteCommand(new CollectSeedsCommand { Entity = _entityMonoComponent.Entity });
+				_services.CommandService.ExecuteCommand(new CollectSeedsCommand { Unique = _entityMonoComponent.UniqueId });
 				
 				_readyState.SetActive(false);
-				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).ProductionTime);
+				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).ProductionTime);
 			}
 		}
 
 		public void UpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { Entity = _entityMonoComponent.Entity });
+			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { UniqueId = _entityMonoComponent.UniqueId });
 			
-			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity));
+			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView(BuildingInfo info)
 		{
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingNameText.text = $"{info.GameId} {info.Level.ToString()}\n{seedsSec.ToString("0.##")}/s";
+			_buildingNameText.text = $"{info.GameId} {info.Data.Level.ToString()}\n{seedsSec.ToString("0.##")}/s";
 			_productionAmountText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost.ToString();
 
@@ -83,9 +83,9 @@ namespace MonoComponent
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeCost);
 		}
 
-		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
+		private void OnMainCurrencyValueChanged(CurrencyValueChangedEvent eventData)
 		{
-			UpdateUpgradeState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.Entity).UpgradeCost);
+			UpdateUpgradeState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).UpgradeCost);
 		}
 
 		private async void OnReadyToCollect(float time)

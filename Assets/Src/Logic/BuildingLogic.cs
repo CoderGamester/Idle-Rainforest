@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Configs;
+using Data;
 using Events;
 using Ids;
 using Infos;
@@ -16,7 +16,12 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		BuildingInfo GetInfo(EntityId entity);
+		IUniqueIdListReader<BuildingData> Data { get; }
+		
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		BuildingInfo GetInfo(UniqueId id);
 	}
 
 	/// <inheritdoc />
@@ -25,87 +30,75 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void Collect(EntityId entity);
+		void Collect(UniqueId id);
 
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void Upgrade(EntityId entity);
+		void Upgrade(UniqueId id);
 	}
 	
 	/// <inheritdoc />
 	public class BuildingLogic : IBuildingLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IDictionary<EntityId, int> _data;
+		private readonly IUniqueIdList<BuildingData> _data;
 		
 		private BuildingLogic() {}
 
-		public BuildingLogic(IGameInternalLogic gameLogic, IDictionary<EntityId, int> data)
+		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<BuildingData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
 		}
 
 		/// <inheritdoc />
-		public BuildingInfo GetInfo(EntityId entity)
+		public IUniqueIdListReader<BuildingData> Data => _data;
+
+		/// <inheritdoc />
+		public BuildingInfo GetInfo(UniqueId id)
 		{
-			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]];
-			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) data.GameId);
+			var data = _data.Get(id);
+			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
+			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) gameId);
 			
 			return new BuildingInfo
 			{
-				Entity = entity,
-				GameId = data.GameId,
-				Level = data.Level,
-				Position = data.Position,
+				Unique = id,
+				GameId = gameId,
+				Data = data,
 				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level,
 				ProductionTime = config.ProductionTimeBase,
-				ProductionStartTime = data.ProductionStartTime,
-				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
+				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level
 			};
 		}
 
 		/// <inheritdoc />
-		public void Collect(EntityId entity)
+		public void Collect(UniqueId id)
 		{
-			if (!_data.TryGetValue(entity, out int index))
-			{
-				throw new ArgumentException($"There is no building with the entity {entity.ToString()}");
-			}
-			
-			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[index];
-			var info = GetInfo(entity);
+			var info = GetInfo(id);
 
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
 			{
-				throw new InvalidOperationException($"The building {data.GameId} is still not ready to collect");
+				throw new InvalidOperationException($"The building {info.GameId} is still not ready to collect");
 			}
 			
-			data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
-
+			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
+			
 			_gameLogic.CurrencyLogic.AddMainCurrency(Mathf.RoundToInt(info.ProductionAmount));
-			_gameLogic.DataProviderLogic.PlayerData.Buildings[_data[entity]] = data;
+			_data.Set(info.Data);
 		}
 
 		/// <inheritdoc />
-		public void Upgrade(EntityId entity)
+		public void Upgrade(UniqueId id)
 		{
-			if (!_data.TryGetValue(entity, out int index))
-			{
-				throw new ArgumentException($"There is no building with the entity {entity.ToString()}");
-			}
-			
-			var data = _gameLogic.DataProviderLogic.PlayerData.Buildings[index];
-			var info = GetInfo(entity);
+			var info = GetInfo(id);
 
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
 
-			data.Level++;
-
-			_gameLogic.DataProviderLogic.PlayerData.Buildings[index] = data;
+			info.Data.Level++;
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingUpgradedEvent { Entity = entity });
+			_data.Set(info.Data);
 		}
 	}
 }

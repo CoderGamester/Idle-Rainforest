@@ -6,9 +6,9 @@ namespace Ids
 {
 	public enum GameId
 	{
-		Seeds,
-		Fruits,
-		Acorns,
+		MainCurrency,
+		SoftCurrency,
+		HardCurrency,
 		BuildingZoo,
 		BuildingPark,
 		BuildingAquarium
@@ -71,19 +71,19 @@ namespace Ids
 			new Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> (new GameIdComparer())
 			{
 				{
-					GameId.Seeds, new List<GameIdGroup>
+					GameId.MainCurrency, new List<GameIdGroup>
 					{
 						GameIdGroup.UserResource
 					}.AsReadOnly()
 				},
 				{
-					GameId.Fruits, new List<GameIdGroup>
+					GameId.SoftCurrency, new List<GameIdGroup>
 					{
 						GameIdGroup.UserResource
 					}.AsReadOnly()
 				},
 				{
-					GameId.Acorns, new List<GameIdGroup>
+					GameId.HardCurrency, new List<GameIdGroup>
 					{
 						GameIdGroup.UserResource
 					}.AsReadOnly()
@@ -114,9 +114,9 @@ namespace Ids
 				{
 					GameIdGroup.UserResource, new List<GameId>
 					{
-						GameId.Seeds,
-						GameId.Fruits,
-						GameId.Acorns
+						GameId.MainCurrency,
+						GameId.SoftCurrency,
+						GameId.HardCurrency
 					}.AsReadOnly()
 				},
 				{
