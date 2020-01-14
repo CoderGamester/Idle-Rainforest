@@ -26,9 +26,14 @@ namespace Logic
 	public interface IDataProviderLogic
 	{
 		/// <summary>
-		/// When this method is invoked, all the data is locally saved
+		/// Saves all game's data locally
 		/// </summary>
 		void FlushData();
+		
+		/// <summary>
+		/// Saves the game's given <typeparamref name="T"/> data locally
+		/// </summary>
+		void FlushData<T>() where T : class;
 	}
 
 	/// <inheritdoc cref="IDataProviderLogic" />
@@ -62,6 +67,15 @@ namespace Logic
 				PlayerPrefs.SetString(data.Key.Name, JsonConvert.SerializeObject(data.Value));
 			}
 			
+			PlayerPrefs.Save();
+		}
+
+		/// <inheritdoc />
+		public void FlushData<T>() where T : class
+		{
+			var type = typeof(T);
+			
+			PlayerPrefs.SetString(type.Name, JsonConvert.SerializeObject(_data[type]));
 			PlayerPrefs.Save();
 		}
 

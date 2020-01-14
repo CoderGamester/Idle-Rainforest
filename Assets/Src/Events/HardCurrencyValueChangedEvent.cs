@@ -1,11 +1,9 @@
 using GameLovers.Services;
-using Ids;
 
 namespace Events
 {
-	public struct CurrencyValueChangedEvent : IMessage
+	public struct HardCurrencyValueChangedEvent : IMessage
 	{
-		public GameId CurrencyType;
 		public int OldValue;
 		public int NewValue;
 

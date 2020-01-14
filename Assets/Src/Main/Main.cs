@@ -39,8 +39,12 @@ namespace Main
 			_gameServices.MessageBrokerService.Publish(new ApplicationPausedEvent { IsPaused = pauseStatus });
 		}
 		
+		// TODO: Character cards and soft currency bonus at main intervals, 10, 10, 10, then 50 ongoing
+		// TODO: Automation system
+		// TODO; Three animal characters (Cards) - one for each area
+		// TODO: Character upgrades - upgrades increase production rate by: 1st upgrade = 2x, 2nd ugrade = 5x, 3rd upgrde = 10x 
+		
 		// TODO: IdResolver in IConfig
-		// TODO: Create a List Resolver that UniqueIdList extends
 		// TODO: Enum serialize as string
 	}
 }

@@ -35,7 +35,7 @@ namespace MonoComponent
 			_readyState.SetActive(false);
 			_upgradableState.SetActive(false);
 			
-			_services.MessageBrokerService.Subscribe<CurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 		}
 
 		private void Start()
@@ -83,7 +83,7 @@ namespace MonoComponent
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeCost);
 		}
 
-		private void OnMainCurrencyValueChanged(CurrencyValueChangedEvent eventData)
+		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
 			UpdateUpgradeState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).UpgradeCost);
 		}

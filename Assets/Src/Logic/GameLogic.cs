@@ -8,6 +8,7 @@ using Ids;
 using Newtonsoft.Json;
 using Services;
 using UnityEngine;
+using Utils;
 
 namespace Logic
 {
@@ -30,6 +31,8 @@ namespace Logic
 		ICurrencyDataProvider CurrencyDataProvider { get; }
 		/// <inheritdoc cref="IBuildingDataProvider"/>
 		IBuildingDataProvider BuildingDataProvider { get; }
+		/// <inheritdoc cref="ICardDataProvider"/>
+		ICardDataProvider CardDataProvider { get; }
 	}
 
 	/// <summary>
@@ -54,6 +57,8 @@ namespace Logic
 		ICurrencyLogic CurrencyLogic { get; }
 		/// <inheritdoc cref="IBuildingLogic"/>
 		IBuildingLogic BuildingLogic { get; }
+		/// <inheritdoc cref="ICardLogic"/>
+		ICardLogic CardLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -90,6 +95,8 @@ namespace Logic
 		public ICurrencyDataProvider CurrencyDataProvider => CurrencyLogic;
 		/// <inheritdoc />
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
+		/// <inheritdoc />
+		public ICardDataProvider CardDataProvider => CardLogic;
 
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
@@ -101,6 +108,8 @@ namespace Logic
 		public ICurrencyLogic CurrencyLogic { get; }
 		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
+		/// <inheritdoc />
+		public ICardLogic CardLogic { get; }
 
 		public GameLogic(IMessageBrokerService messageBroker, ITimeService timeService)
 		{
@@ -122,6 +131,12 @@ namespace Logic
 			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
 				data => data.Id, 
 				() => dataProviderLogic.GetData<PlayerData>().Buildings));
+			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
+				data => data.Id, 
+				() => dataProviderLogic.GetData<PlayerData>().Buildings));
+			CardLogic = new CardLogic(this, new IdList<GameId, CardData>(
+				data => data.Id, 
+				() => dataProviderLogic.GetData<PlayerData>().Cards));
 		}
 
 		private void LoadData(DataProviderLogic dataProviderLogic)

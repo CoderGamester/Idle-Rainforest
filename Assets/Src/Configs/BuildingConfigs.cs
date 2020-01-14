@@ -15,6 +15,8 @@ namespace Configs
 		public float ProductionTimeBase;
 		public int UpgradeCostBase;
 		public int UpgradeCostIncrease;
+		public KeyValuePair<GameId, int> AutomationCardLevelRequired;
+		public int AutomationCurrencyRequired;
 		
 		public int ConfigId => (int) Id;
 	}

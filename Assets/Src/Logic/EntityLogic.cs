@@ -52,7 +52,7 @@ namespace Logic
 			var uniqueId = _dataProvider.GetData<AppData>().UniqueIdCounter++;
 			
 			CreateGameIdData(uniqueId, gameId);
-			CreateBuildingData(position);
+			CreateBuildingData(uniqueId, position);
 
 			return uniqueId;
 		}
@@ -66,10 +66,11 @@ namespace Logic
 			});
 		}
 
-		private void CreateBuildingData(Vector3 position)
+		private void CreateBuildingData(UniqueId uniqueId, Vector3 position)
 		{
 			_dataProvider.GetData<PlayerData>().Buildings.Add(new BuildingData
 			{
+				Id = uniqueId,
 				Position = position,
 				Level = 0,
 				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Main;
+using Utils;
 
 namespace Ids
 {
@@ -65,7 +67,7 @@ namespace Ids
 		/// <inheritdoc />
 		public override string ToString()
 		{
-			return $"ProcessId: {Id.ToString()}";
+			return $"UniqueId: {Id.ToString()}";
 		}
 	}
 
@@ -87,301 +89,33 @@ namespace Ids
 		}
 	}
 
-	/// <inheritdoc cref="IUniqueIdList" />
+	/// <inheritdoc />
 	/// <remarks>
-	/// Read only uniqueId list interface
+	/// Enhances the <see cref="IIdList"/> with a defined <see cref="UniqueId"/> key type
 	/// </remarks>
-	public interface IUniqueIdListReader
+	public interface IUniqueIdList : IIdList
 	{
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		bool Contains(UniqueId id);
-	}
-
-	/// <summary>
-	/// TODO:
-	/// </summary>
-	public interface IUniqueIdList : IUniqueIdListReader
-	{
-		/// <summary>
-		/// Removes the data associated with the given <paramref name="id"/>
-		/// </summary>
-		/// <exception cref="ArgumentException">
-		/// Thrown if there is no data associated with the given <paramref name="id"/>
-		/// </exception>
-		void Remove(UniqueId id);
- 
-		/// <summary>
-		/// Removes the data associated with the given <paramref name="id"/> if present in the list
-		/// </summary>
-		void TryRemove(UniqueId id);
 	}
 	
-	/// <inheritdoc />
-	public interface IUniqueIdListReader<T> : IUniqueIdListReader
+	/// <inheritdoc cref="IUniqueIdList" />
+	public interface IUniqueIdListReader<T> : IIdListReader<UniqueId, T>, IUniqueIdList
 		where T : struct
 	{
-		/// <summary>
-		/// Looks up and return the <typeparamref name="T"/> data that is associated with the given <paramref name="id"/>.
-		/// It return null when no data is associated with the given <paramref name="id"/>
-		/// </summary>
-		T? TryGet(UniqueId id);
- 
-		/// <summary>
-		/// Looks up and return the <typeparamref name="T"/> data that is associated with the given <paramref name="id"/>
-		/// </summary>
-		/// <exception cref="ArgumentException">
-		/// Thrown when there is no data is associated with the given <paramref name="id"/>
-		/// </exception>
-		T Get(UniqueId id);
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		List<T> GetList();
-
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void Observe(UniqueId uniqueId, ListUpdateType updateType, Action<T> onUpdate);
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void StopObserving(UniqueId uniqueId, ListUpdateType updateType, Action<T> onUpdate);
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void StopObserving(UniqueId uniqueId);
 	}
 
 	/// <inheritdoc cref="IUniqueIdList" />
-	public interface IUniqueIdList<T> : IUniqueIdListReader<T>, IUniqueIdList
+	public interface IUniqueIdList<T> : IIdList<UniqueId, T>, IUniqueIdListReader<T>
 		where T : struct
 	{
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void Add(T data);
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void Set(T data);
 	}
 
-	public enum ListUpdateType
+	/// <inheritdoc cref="IUniqueIdList" />
+	public class UniqueIdList<T> : IdList<UniqueId, T>, IUniqueIdList<T> 
+		where T : struct
 	{
-		Added,
-		Updated,
-		Removed
-	}
- 
-	/// <summary>
-	/// TODO:
-	/// </summary>
-	public class UniqueIdList<T> : IUniqueIdList<T> where T : struct
-	{
-		private readonly Func<List<T>> _persistentListResolver;
-		private readonly Func<T, UniqueId> _referenceIdResolver;
-		private readonly IDictionary<UniqueId, IList<Action<T>>> _onAddActions = new Dictionary<UniqueId, IList<Action<T>>>();
-		private readonly IDictionary<UniqueId, IList<Action<T>>> _onUpdateActions = new Dictionary<UniqueId, IList<Action<T>>>();
-		private readonly IDictionary<UniqueId, IList<Action<T>>> _onRemoveActions = new Dictionary<UniqueId, IList<Action<T>>>();
- 
-		public UniqueIdList(Func<T, UniqueId> referenceIdResolver, Func<List<T>> persistentListResolver)
+		public UniqueIdList(Func<T, UniqueId> referenceIdResolver, Func<List<T>> persistentListResolver) : 
+			base(referenceIdResolver, persistentListResolver)
 		{
-			_persistentListResolver = persistentListResolver;
-			_referenceIdResolver = referenceIdResolver;
-		}
- 
-		/// <inheritdoc />
-		public bool Contains(UniqueId id)
-		{
-			return FindIndex(id) >= 0;
-		}
-
-		/// <inheritdoc />
-		public T? TryGet(UniqueId id)
-		{
-			int index = FindIndex(id);
-			if (index < 0)
-			{
-				return null;
-			}
- 
-			return _persistentListResolver()[index];
-		}
- 
-		/// <inheritdoc />
-		public T Get(UniqueId id)
-		{
-			var data = TryGet(id);
-			if (data.HasValue)
-			{
-				return data.Value;
-			}
- 
-			throw new ArgumentException($"Can not find {typeof(T).Name} to id {id.Id.ToString()}");
-		}
- 
-		/// <inheritdoc />
-		public List<T> GetList()
-		{
-			return _persistentListResolver();
-		}
-
-		/// <inheritdoc />
-		public void Observe(UniqueId uniqueId, ListUpdateType updateType, Action<T> onUpdate)
-		{
-			switch (updateType)
-			{
-				case ListUpdateType.Added:
-					if (!_onAddActions.TryGetValue(uniqueId, out var addList))
-					{
-						addList = new List<Action<T>>();
-						
-						_onAddActions.Add(uniqueId, addList);
-					}
-					
-					addList.Add(onUpdate);
-					break;
-				case ListUpdateType.Updated:
-					if (!_onUpdateActions.TryGetValue(uniqueId, out var updateList))
-					{
-						updateList = new List<Action<T>>();
-						
-						_onUpdateActions.Add(uniqueId, updateList);
-					}
-					
-					updateList.Add(onUpdate);
-					break;
-				case ListUpdateType.Removed:
-					if (!_onRemoveActions.TryGetValue(uniqueId, out var removeList))
-					{
-						removeList = new List<Action<T>>();
-						
-						_onRemoveActions.Add(uniqueId, removeList);
-					}
-					
-					removeList.Add(onUpdate);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(updateType), updateType, "Wrong update type");
-			}
-		}
-
-		/// <inheritdoc />
-		public void StopObserving(UniqueId uniqueId, ListUpdateType updateType, Action<T> onUpdate)
-		{
-			switch (updateType)
-			{
-				case ListUpdateType.Added:
-					if (_onAddActions.TryGetValue(uniqueId, out var addList))
-					{
-						addList.Remove(onUpdate);
-					}
-					break;
-				case ListUpdateType.Updated:
-					if (_onUpdateActions.TryGetValue(uniqueId, out var updateList))
-					{
-						updateList.Remove(onUpdate);
-					}
-					break;
-				case ListUpdateType.Removed:
-					if (_onRemoveActions.TryGetValue(uniqueId, out var removeList))
-					{
-						removeList.Remove(onUpdate);
-					}
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(updateType), updateType, "Wrong update type");
-			}
-		}
-
-		public void StopObserving(UniqueId uniqueId)
-		{
-			if (_onAddActions.TryGetValue(uniqueId, out var addList))
-			{
-				addList.Clear();
-
-				_onAddActions.Remove(uniqueId);
-			}
-			if (_onUpdateActions.TryGetValue(uniqueId, out var updateList))
-			{
-				updateList.Clear();
-
-				_onUpdateActions.Remove(uniqueId);
-			}
-			if (_onRemoveActions.TryGetValue(uniqueId, out var removeList))
-			{
-				removeList.Clear();
-
-				_onRemoveActions.Remove(uniqueId);
-			}
-		}
-
-		/// <inheritdoc />
-		public void Add(T data)
-		{
-			var id = _referenceIdResolver(data);
-			if (FindIndex(id) >= 0)
-			{
-				throw new ArgumentException($"Cannot add {nameof(T)} with uniqueId {id.ToString()}, because it already exists");
-			}
- 
-			_persistentListResolver().Add(data);
-		}
- 
-		/// <inheritdoc />
-		public void Remove(UniqueId id)
-		{
-			int index = FindIndex(id);
-			if (index < 0)
-			{
-				throw new ArgumentException($"Cannot remove {nameof(T)} with uniqueId {id.ToString()}, because it does not exists");
-			}
- 
-			_persistentListResolver().RemoveAt(index);
-		}
- 
-		/// <inheritdoc />
-		public void TryRemove(UniqueId id)
-		{
-			var data = TryGet(id);
-			if (data.HasValue)
-			{
-				Remove(id);
-			}
-		}
-
-		/// <inheritdoc />
-		public void Set(T data)
-		{
-			var id = _referenceIdResolver(data);
-			int index = FindIndex(id);
-			if (index < 0)
-			{
-				throw new ArgumentException($"Could not find: {nameof(T)} with uniqueId {id.ToString()}");
-			}
- 
-			_persistentListResolver()[index] = data;
-		}
- 
-		private int FindIndex(UniqueId id)
-		{
-			var list = _persistentListResolver();
-			var comparer = new UniqueIdKeyComparer();
-			for (var i = 0; i < list.Count; i++)
-			{
-				if (comparer.Equals(_referenceIdResolver(list[i]), id))
-				{
-					return i;
-				}
-			}
- 
-			return -1;
 		}
 	}
 }

@@ -11,13 +11,15 @@ namespace Ids
 		HardCurrency,
 		BuildingZoo,
 		BuildingPark,
-		BuildingAquarium
+		BuildingAquarium,
+		Animal
 	}
 
 	public enum GameIdGroup
 	{
 		UserResource,
-		Building
+		Building,
+		Card
 	}
 
 	public static class GameIdLookup
@@ -106,6 +108,12 @@ namespace Ids
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
+				{
+					GameId.Animal, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
 			};
 
 		private static readonly Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> _ids =
@@ -125,6 +133,12 @@ namespace Ids
 						GameId.BuildingZoo,
 						GameId.BuildingPark,
 						GameId.BuildingAquarium
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Card, new List<GameId>
+					{
+						GameId.Animal
 					}.AsReadOnly()
 				},
 			};

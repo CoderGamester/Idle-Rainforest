@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Events;
+using GameLovers.Services;
 using Ids;
 
 namespace Logic
@@ -155,12 +156,32 @@ namespace Logic
 
 		private void PublishCurrencyEvent(GameId currencyType, int oldAmount, int newAmount)
 		{
-			_gameLogic.MessageBrokerService.Publish(new CurrencyValueChangedEvent
+			switch (currencyType)
 			{
-				CurrencyType = currencyType,
-				OldValue = oldAmount,
-				NewValue = newAmount
-			});
+				case GameId.MainCurrency:
+					_gameLogic.MessageBrokerService.Publish(new MainCurrencyValueChangedEvent
+					{
+						OldValue = oldAmount,
+						NewValue = newAmount
+					});
+					break;
+				case GameId.SoftCurrency:
+					_gameLogic.MessageBrokerService.Publish(new SoftCurrencyValueChangedEvent
+					{
+						OldValue = oldAmount,
+						NewValue = newAmount
+					});
+					break;
+				case GameId.HardCurrency:
+					_gameLogic.MessageBrokerService.Publish(new HardCurrencyValueChangedEvent
+					{
+						OldValue = oldAmount,
+						NewValue = newAmount
+					});
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(currencyType), currencyType, "Wrong currency type");
+			}
 		}
 	}
 }
