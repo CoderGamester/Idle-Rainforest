@@ -19,15 +19,18 @@ MonoBehaviour:
     ProductionTimeBase: 1
     UpgradeCostBase: 1
     UpgradeCostIncrease: 1
+    AutomationCurrencyRequired: 5
   - Id: 4
     ProductionAmountBase: 2
     ProductionAmountIncrease: 2
     ProductionTimeBase: 1.5
     UpgradeCostBase: 2
     UpgradeCostIncrease: 2
+    AutomationCurrencyRequired: 10
   - Id: 5
     ProductionAmountBase: 3
     ProductionAmountIncrease: 3
     ProductionTimeBase: 2
     UpgradeCostBase: 3
     UpgradeCostIncrease: 3
+    AutomationCurrencyRequired: 20

@@ -35,6 +35,11 @@ namespace Logic
 		/// TODO:
 		/// </summary>
 		void Upgrade(UniqueId id);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void Automate(UniqueId id);
 	}
 	
 	/// <inheritdoc />
@@ -68,7 +73,8 @@ namespace Logic
 				Data = data,
 				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level,
 				ProductionTime = config.ProductionTimeBase,
-				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level
+				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
+				AutomateCost = config.AutomationCurrencyRequired
 			};
 		}
 
@@ -98,6 +104,12 @@ namespace Logic
 			info.Data.Level++;
 			
 			_data.Set(info.Data);
+		}
+
+		/// <inheritdoc />
+		public void Automate(UniqueId id)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -23,6 +23,7 @@ namespace MonoComponent
 		[SerializeField] private TextMeshPro _upgradeCostText;
 		[SerializeField] private GameObject _readyState;
 		[SerializeField] private GameObject _upgradableState;
+		[SerializeField] private GameObject _automateState;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -53,18 +54,31 @@ namespace MonoComponent
 		{
 			if (_readyState.activeSelf)
 			{
-				_services.CommandService.ExecuteCommand(new CollectSeedsCommand { Unique = _entityMonoComponent.UniqueId });
+				_services.CommandService.ExecuteCommand(new CollectSeedsCommand { BuildingId = _entityMonoComponent.UniqueId });
 				
 				_readyState.SetActive(false);
 				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).ProductionTime);
 			}
 		}
 
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		public void UpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { UniqueId = _entityMonoComponent.UniqueId });
+			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
 			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
+		}
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		public void AutomateClicked()
+		{
+			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+			
+			_automateState.SetActive(false);
 		}
 
 		private void UpdateView(BuildingInfo info)
@@ -75,17 +89,20 @@ namespace MonoComponent
 			_productionAmountText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost.ToString();
 
-			UpdateUpgradeState(info.UpgradeCost);
+			UpdateState(info);
 		}
 
-		private void UpdateUpgradeState(float upgradeCost)
+		private void UpdateState(BuildingInfo info)
 		{
-			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeCost);
+			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
+			_automateState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.AutomateCost);
+			
+			// TODO: Automate card requirement
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			UpdateUpgradeState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).UpgradeCost);
+			UpdateState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private async void OnReadyToCollect(float time)
