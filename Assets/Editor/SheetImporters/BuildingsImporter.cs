@@ -17,20 +17,29 @@ namespace SheetImporters
 		protected override BuildingConfig Deserialize(Dictionary<string, string> data)
 		{
 			var config = CsvParser.DeserializeTo<BuildingConfig>(data);
-			var pair = CsvParser.PairParse<GameId, int>(data[$"{nameof(BuildingConfig.AutomationCardLevelRequired)}"]);
-			var array = CsvParser.ArrayParse<string>(data[$"{nameof(BuildingConfig.UpgradeRewards)}"]);
+			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(BuildingConfig.UpgradeRewards)}"]);
+			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(BuildingConfig.UpgradeBrackets)}"]);
 			var rewards = new List<IntData>();
+			var brackets = new List<IntPairData>();
 			
-			for(var i = 0; i < array.Length; i += 2)
+			for(var i = 0; i < arrayRewards.Length; i += 2)
 			{
-				var gameId = CsvParser.Parse<GameId>(array[i]);
-				var intValue = int.Parse(array[i + 1]);
+				var gameId = CsvParser.Parse<GameId>(arrayRewards[i]);
+				var intValue = int.Parse(arrayRewards[i + 1]);
 					
 				rewards.Add(new IntData(gameId, intValue));
 			}
+			
+			for(var i = 0; i < arrayBrackets.Length; i += 2)
+			{
+				var intKey = int.Parse(arrayBrackets[i]);
+				var intValue = int.Parse(arrayBrackets[i + 1]);
+					
+				brackets.Add(new IntPairData(intKey, intValue));
+			}
 
-			config.AutomationCardLevelRequired = new IntData(pair.Key, pair.Value);
 			config.UpgradeRewards = rewards.AsReadOnly();
+			config.UpgradeBrackets = brackets.AsReadOnly();
 
 			return config;
 		}

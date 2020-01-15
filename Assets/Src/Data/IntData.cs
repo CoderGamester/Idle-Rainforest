@@ -7,17 +7,35 @@ namespace Data
 	public struct IntData
 	{
 		public GameId GameId;
-		public int Int;
+		public int IntValue;
 
 		public IntData(GameId gameId, int intValue)
 		{
 			GameId = gameId;
-			Int = intValue;
+			IntValue = intValue;
 		}
 		
 		public override string ToString()
 		{
-			return $"[{GameId},{Int.ToString()}]";
+			return $"[{GameId},{IntValue.ToString()}]";
+		}
+	}
+	
+	[Serializable]
+	public struct IntPairData
+	{
+		public int IntKey;
+		public int IntValue;
+
+		public IntPairData(int intKey, int intValue)
+		{
+			IntKey = intKey;
+			IntValue = intValue;
+		}
+		
+		public override string ToString()
+		{
+			return $"[{IntKey.ToString()},{IntValue.ToString()}]";
 		}
 	}
 }

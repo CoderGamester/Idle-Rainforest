@@ -5,6 +5,7 @@ using Logic;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Presenters
 {
@@ -16,6 +17,7 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
+		[SerializeField] private Button _cardsButton;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -26,6 +28,7 @@ namespace Presenters
 			_services = MainInstaller.Resolve<IGameServices>();
 			
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnSeedsValueChanged);
+			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
 		private void Start()
@@ -38,6 +41,11 @@ namespace Presenters
 		private void OnSeedsValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
 			_mainCurrencyText.text =$"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
+		}
+
+		private void OnCardsClicked()
+		{
+			_services.UiService.OpenUi<CardsPanelPresenter>();
 		}
 	}
 }

@@ -75,8 +75,11 @@ namespace Main
 		{
 			var buildingsTask = LoaderUtil.LoadAssetAsync<BuildingConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_BuildingConfigs).Address, true);
+			var cardsTask = LoaderUtil.LoadAssetAsync<CardConfigs>(
+				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
 			
 			_gameConfigs.AddConfigs((await buildingsTask).Configs);
+			_gameConfigs.AddConfigs((await cardsTask).Configs);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);
 		}

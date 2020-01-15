@@ -27,10 +27,11 @@ namespace Utils
 		where TValue : struct
 	{
 		/// <summary>
-		/// Looks up and return the data that is associated with the given <paramref name="id"/>.
-		/// It return null when no data is associated with the given <paramref name="id"/>
+		/// Looks up the data that is associated with the given <paramref name="id"/>.
+		/// It return true if is able to delivery out the given <paramref name="value"/>.
+		/// The <paramref name="value"/> will be the default if returns false
 		/// </summary>
-		TValue? TryGet(TKey id);
+		bool TryGet(TKey id, out TValue value);
  
 		/// <summary>
 		/// Looks up and return the ata that is associated with the given <paramref name="id"/>
@@ -43,7 +44,7 @@ namespace Utils
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<TValue> GetList();
+		IReadOnlyList<TValue> GetReadOnlyList();
 
 		/// <summary>
 		/// TODO:
@@ -74,6 +75,11 @@ namespace Utils
 		/// TODO:
 		/// </summary>
 		void Set(TValue data);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		List<TValue> GetList();
 		
 		/// <summary>
 		/// Removes the data associated with the given <paramref name="id"/>
@@ -82,11 +88,24 @@ namespace Utils
 		/// Thrown if there is no data associated with the given <paramref name="id"/>
 		/// </exception>
 		void Remove(TKey id);
+		
+		/// <summary>
+		/// Removes the the given <paramref name="data"/>
+		/// </summary>
+		/// <exception cref="ArgumentException">
+		/// Thrown if there is no <paramref name="data"/> in this list
+		/// </exception>
+		void RemoveData(TValue data);
  
 		/// <summary>
 		/// Removes the data associated with the given <paramref name="id"/> if present in the list
 		/// </summary>
 		void TryRemove(TKey id);
+ 
+		/// <summary>
+		/// Removes the <paramref name="data"/> if present in the list
+		/// </summary>
+		void TryRemoveData(TValue data);
 	}
  
 	/// <summary>
@@ -112,36 +131,36 @@ namespace Utils
 
 
 		/// <inheritdoc />
-		public TValue? TryGet(TKey id)
+		public bool TryGet(TKey id, out TValue value)
 		{
 			int index = FindIndex(id);
 			if (index < 0)
 			{
-				return null;
+				value = default;
+				
+				return false;
 			}
  
-			return _persistentListResolver()[index];
+			value =  _persistentListResolver()[index];
 
+			return true;
 		}
  
 		/// <inheritdoc />
 		public TValue Get(TKey id)
 		{
-			var list = _persistentListResolver();
-			
-			var data = TryGet(id);
-			if (data.HasValue)
+			if (TryGet(id, out TValue data))
 			{
-				return data.Value;
+				return data;
 			}
 
 			throw new ArgumentException($"Can not find {typeof(TValue).Name} to id {id.ToString()}");
 		}
- 
+
 		/// <inheritdoc />
-		public List<TValue> GetList()
+		public IReadOnlyList<TValue> GetReadOnlyList()
 		{
-			return new List<TValue>(_persistentListResolver());
+			return _persistentListResolver().AsReadOnly();
 		}
 
 		/// <inheritdoc />
@@ -253,33 +272,43 @@ namespace Utils
 		}
  
 		/// <inheritdoc />
+		public List<TValue> GetList()
+		{
+			return _persistentListResolver();
+		}
+
+		/// <inheritdoc />
 		public void Remove(TKey id)
-		{			
+		{
 			int index = FindIndex(id);
 			if (index < 0)
 			{
 				throw new ArgumentException($"Cannot remove {nameof(TValue)} with id {id.ToString()}, because it does not exists");
 			}
- 
-			var actions = _onRemoveActions[id];
-			var data = _persistentListResolver()[index];
-			
-			_persistentListResolver().RemoveAt(index);
 
-			for (var i = 0; i < actions.Count; i++)
-			{
-				actions[i](data);
-			}
+			Remove(index, id);
 		}
- 
+
+		/// <inheritdoc />
+		public void RemoveData(TValue data)
+		{
+			Remove(_referenceIdResolver(data));
+		}
+
 		/// <inheritdoc />
 		public void TryRemove(TKey id)
 		{
-			var data = TryGet(id);
-			if (data.HasValue)
+			int index = FindIndex(id);
+			if (index >= 0)
 			{
-				Remove(id);
+				Remove(index, id);
 			}
+		}
+
+		/// <inheritdoc />
+		public void TryRemoveData(TValue data)
+		{
+			TryRemove(_referenceIdResolver(data));
 		}
 
 		/// <inheritdoc />
@@ -313,6 +342,19 @@ namespace Utils
 			}
  
 			return -1;
+		}
+
+		private void Remove(int index, TKey id)
+		{
+			var actions = _onRemoveActions[id];
+			var data = _persistentListResolver()[index];
+			
+			_persistentListResolver().RemoveAt(index);
+
+			for (var i = 0; i < actions.Count; i++)
+			{
+				actions[i](data);
+			}
 		}
 	}
 }

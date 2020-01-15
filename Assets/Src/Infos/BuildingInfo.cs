@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Data;
 using Ids;
 
@@ -13,16 +14,17 @@ namespace Infos
 	
 	public struct BuildingInfo
 	{
-		public UniqueId Unique;
 		public GameId GameId;
 		public BuildingData Data;
-		public float ProductionAmount;
+		public int NextBracketLevel;
+		public int MaxLevel;
+		public int ProductionAmount;
 		public float ProductionTime;
 		public int UpgradeCost;
-		public float AutomateCost;
-		public bool AutomationState;
+		public int AutomateCost;
+		public AutomationState AutomationState;
+		public List<GameId> CardList;
 
-		public DateTime ProductionStartTime => Data.ProductionStartTime;
-		public DateTime ProductionEndTime => ProductionStartTime.AddSeconds(ProductionTime);
+		public DateTime ProductionEndTime => Data.ProductionStartTime.AddSeconds(ProductionTime);
 	}
 }

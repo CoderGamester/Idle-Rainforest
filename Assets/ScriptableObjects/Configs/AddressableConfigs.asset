@@ -23,7 +23,7 @@ MonoBehaviour:
   - Id: 1
     Address: Configs/BuildingConfigs.asset
     Path: Assets/ScriptableObjects/Configs/BuildingConfigs.asset
-    AssetType: GameConfigs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    AssetType: Configs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
@@ -42,14 +42,14 @@ MonoBehaviour:
     AssetGroup:
     - Prefabs
   - Id: 4
-    Address: Prefabs/Ui/Building Panel.prefab
-    Path: Assets/Art/Prefabs/Ui/Building Panel.prefab
+    Address: Prefabs/Ui/Cards Panel.prefab
+    Path: Assets/Art/Prefabs/Ui/Cards Panel.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Prefabs
     - Ui
-    - Building
+    - Cards
   - Id: 5
     Address: Prefabs/Ui/Hud.prefab
     Path: Assets/Art/Prefabs/Ui/Hud.prefab

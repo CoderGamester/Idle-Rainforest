@@ -12,7 +12,9 @@ namespace Ids
 		BuildingZoo,
 		BuildingPark,
 		BuildingAquarium,
-		Animal
+		Animal1,
+		Animal2,
+		Animal3
 	}
 
 	public enum GameIdGroup
@@ -109,7 +111,19 @@ namespace Ids
 					}.AsReadOnly()
 				},
 				{
-					GameId.Animal, new List<GameIdGroup>
+					GameId.Animal1, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
+				{
+					GameId.Animal2, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
+				{
+					GameId.Animal3, new List<GameIdGroup>
 					{
 						GameIdGroup.Card
 					}.AsReadOnly()
@@ -138,7 +152,9 @@ namespace Ids
 				{
 					GameIdGroup.Card, new List<GameId>
 					{
-						GameId.Animal
+						GameId.Animal1,
+						GameId.Animal2,
+						GameId.Animal3
 					}.AsReadOnly()
 				},
 			};

@@ -54,7 +54,7 @@ namespace MonoComponent
 		{
 			if (_readyState.activeSelf)
 			{
-				_services.CommandService.ExecuteCommand(new CollectSeedsCommand { BuildingId = _entityMonoComponent.UniqueId });
+				_services.CommandService.ExecuteCommand(new CollectCommand { BuildingId = _entityMonoComponent.UniqueId });
 				
 				_readyState.SetActive(false);
 				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).ProductionTime);
@@ -66,7 +66,7 @@ namespace MonoComponent
 		/// </summary>
 		public void UpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
 			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
 		}
@@ -107,6 +107,8 @@ namespace MonoComponent
 
 		private async void OnReadyToCollect(float time)
 		{
+			// TODO: stop when automated
+			
 			await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)));
 			
 			_readyState.SetActive(true);

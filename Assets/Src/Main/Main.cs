@@ -1,4 +1,5 @@
-﻿using Events;
+﻿using System;
+using Events;
 using GameLovers.Services;
 using Logic;
 using Services;
@@ -38,12 +39,24 @@ namespace Main
 		{
 			_gameServices.MessageBrokerService.Publish(new ApplicationPausedEvent { IsPaused = pauseStatus });
 		}
+
+		private void OnApplicationQuit()
+		{
+			_gameLogic.DataProviderLogic.FlushData();
+		}
+
+		// TODO: BuildingMonoComponent todos
+		// TODO: UI
+		// TODO: AutoCollectSystem optimize
 		
-		// TODO: Character cards and soft currency bonus at main intervals, 10, 10, 10, then 50 ongoing
-		// TODO: Automation system
-		// TODO; Three animal characters (Cards) - one for each area
-		// TODO: Character upgrades - upgrades increase production rate by: 1st upgrade = 2x, 2nd ugrade = 5x, 3rd upgrde = 10x 
-		
+		// TODO: Try IdListResolver without Func<List> and use List reference directly
+		// TODO: Rename Buildings to Level and make it mapped by GameId and not UniqueId
+		// TODO: Expose Persistent data types in the DataProviderLogic/GameLogic and check IGamerInternalLogic need
+		// TODO: GameLogic custom exception
+		// TODO: Select Google Sheet asset
+		// TODO: UiService Close(this);
+		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat
+		// TODO: KeyValuePair Serialization on CsvParser
 		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
 	}

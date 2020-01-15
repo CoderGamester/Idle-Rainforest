@@ -5,24 +5,19 @@ using UnityEngine;
 namespace Data
 {
 	[Serializable]
-	public struct BuildingData : ISerializationCallbackReceiver
+	public struct BuildingData
 	{
 		public UniqueId Id;
 		public int Level;
 		public DateTime ProductionStartTime;
+		public bool IsAutomated;
 		
 		[SerializeField] private Vector3Serializable _position;
 
-		public Vector3 Position { get; set; }
-		
-		public void OnBeforeSerialize()
+		public Vector3 Position
 		{
-			Position = _position;
-		}
-
-		public void OnAfterDeserialize()
-		{
-			_position = Position;
+			get => _position;
+			set => _position = value;
 		}
 	}
 }
