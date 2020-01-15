@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using Data;
 using GameLovers.ConfigsContainer;
+using GameLovers.GoogleSheetImporter;
 using Ids;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Configs
@@ -15,10 +20,18 @@ namespace Configs
 		public float ProductionTimeBase;
 		public int UpgradeCostBase;
 		public int UpgradeCostIncrease;
-		public KeyValuePair<GameId, int> AutomationCardLevelRequired;
 		public int AutomationCurrencyRequired;
+		[ParseIgnore] public IntData AutomationCardLevelRequired;
+
+		[SerializeField] private List<IntData> _upgradeRewards;
 		
 		public int ConfigId => (int) Id;
+
+		public ReadOnlyCollection<IntData> UpgradeRewards
+		{
+			get => _upgradeRewards.AsReadOnly();
+			set => _upgradeRewards = new List<IntData>(value);
+		}
 	}
 	
 	/// <summary>
