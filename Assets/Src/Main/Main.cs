@@ -58,5 +58,6 @@ namespace Main
 		// TODO: KeyValuePair Serialization on CsvParser
 		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
+		// TODO: Clear PlayerPrefs to RemoveEmptyFolders
 	}
 }

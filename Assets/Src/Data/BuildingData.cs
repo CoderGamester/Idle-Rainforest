@@ -1,6 +1,5 @@
 using System;
 using Ids;
-using UnityEngine;
 
 namespace Data
 {
@@ -11,13 +10,6 @@ namespace Data
 		public int Level;
 		public DateTime ProductionStartTime;
 		public bool IsAutomated;
-		
-		[SerializeField] private Vector3Serializable _position;
-
-		public Vector3 Position
-		{
-			get => _position;
-			set => _position = value;
-		}
+		public Vector3Serializable Position;
 	}
 }

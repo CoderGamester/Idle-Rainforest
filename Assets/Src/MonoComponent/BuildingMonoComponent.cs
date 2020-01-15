@@ -42,6 +42,11 @@ namespace MonoComponent
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 		}
 
+		private void OnDestroy()
+		{
+			_cancellationToken?.Cancel();
+		}
+
 		private void Start()
 		{
 			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId);

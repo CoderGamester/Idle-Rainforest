@@ -129,7 +129,6 @@ namespace Utils
 			_referenceIdResolver = referenceIdResolver;
 		}
 
-
 		/// <inheritdoc />
 		public bool TryGet(TKey id, out TValue value)
 		{
@@ -263,11 +262,13 @@ namespace Utils
 			}
  
 			_persistentListResolver().Add(data);
-
-			var actions = _onAddActions[id];
-			for (var i = 0; i < actions.Count; i++)
+			
+			if (_onAddActions.TryGetValue(id, out var actions))
 			{
-				actions[i](data);
+				for (var i = 0; i < actions.Count; i++)
+				{
+					actions[i](data);
+				}
 			}
 		}
  
@@ -322,11 +323,13 @@ namespace Utils
 			}
  
 			_persistentListResolver()[index] = data;
-
-			var actions = _onUpdateActions[id];
-			for (var i = 0; i < actions.Count; i++)
+			
+			if (_onUpdateActions.TryGetValue(id, out var actions))
 			{
-				actions[i](data);
+				for (var i = 0; i < actions.Count; i++)
+				{
+					actions[i](data);
+				}
 			}
 		}
 		
@@ -346,15 +349,17 @@ namespace Utils
 
 		private void Remove(int index, TKey id)
 		{
-			var actions = _onRemoveActions[id];
-			var data = _persistentListResolver()[index];
+			if (_onRemoveActions.TryGetValue(id, out var actions))
+			{
+				var data = _persistentListResolver()[index];
+				
+				for (var i = 0; i < actions.Count; i++)
+				{
+					actions[i](data);
+				}
+			}
 			
 			_persistentListResolver().RemoveAt(index);
-
-			for (var i = 0; i < actions.Count; i++)
-			{
-				actions[i](data);
-			}
 		}
 	}
 }
