@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Threading;
 using System.Threading.Tasks;
 using Commands;
 using Events;
@@ -27,6 +29,7 @@ namespace MonoComponent
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
+		private CancellationTokenSource _cancellationToken;
 
 		private void Awake()
 		{
@@ -44,7 +47,11 @@ namespace MonoComponent
 			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId);
 
 			UpdateView(info);
-			OnReadyToCollect(info.ProductionTime);
+
+			if (info.AutomationState != AutomationState.Automated)
+			{
+				OnReadyToCollect(info.ProductionTime);
+			}
 		}
 
 		/// <summary>
@@ -55,8 +62,8 @@ namespace MonoComponent
 			if (_readyState.activeSelf)
 			{
 				_services.CommandService.ExecuteCommand(new CollectCommand { BuildingId = _entityMonoComponent.UniqueId });
-				
 				_readyState.SetActive(false);
+				
 				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).ProductionTime);
 			}
 		}
@@ -95,9 +102,7 @@ namespace MonoComponent
 		private void UpdateState(BuildingInfo info)
 		{
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
-			_automateState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.AutomateCost);
-			
-			// TODO: Automate card requirement
+			_automateState.SetActive(info.AutomationState == AutomationState.Ready);
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
@@ -107,11 +112,19 @@ namespace MonoComponent
 
 		private async void OnReadyToCollect(float time)
 		{
-			// TODO: stop when automated
-			
-			await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)));
-			
+			_cancellationToken = new CancellationTokenSource();
+
+			try
+			{
+				await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)), _cancellationToken.Token);
+			}
+			catch (Exception)
+			{
+				// ignored
+			}
+
 			_readyState.SetActive(true);
+			_cancellationToken.Dispose();
 		}
 	}
 }

@@ -67,8 +67,8 @@ namespace Logic
 				GameId = card,
 				Data = data,
 				MaxLevel = config.UpgradeCost.Count + 1,
-				AmountRequired = config.UpgradeCardsRequired[data.Level - 1],
-				UpgradeCost = config.UpgradeCost[data.Level - 1]
+				AmountRequired = data.Level == 0 ? config.UpgradeCardsRequired[0] : config.UpgradeCardsRequired[data.Level - 1],
+				UpgradeCost = data.Level == 0 ? config.UpgradeCost[0] : config.UpgradeCost[data.Level - 1]
 			};
 		}
 

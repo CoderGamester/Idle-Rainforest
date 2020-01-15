@@ -6,6 +6,8 @@ namespace Ids
 {
 	public enum GameId
 	{
+		Random,
+		Time,
 		MainCurrency,
 		SoftCurrency,
 		HardCurrency,
@@ -19,7 +21,8 @@ namespace Ids
 
 	public enum GameIdGroup
 	{
-		UserResource,
+		GameDesign,
+		Currency,
 		Building,
 		Card
 	}
@@ -75,21 +78,33 @@ namespace Ids
 			new Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> (new GameIdComparer())
 			{
 				{
+					GameId.Random, new List<GameIdGroup>
+					{
+						GameIdGroup.GameDesign
+					}.AsReadOnly()
+				},
+				{
+					GameId.Time, new List<GameIdGroup>
+					{
+						GameIdGroup.GameDesign
+					}.AsReadOnly()
+				},
+				{
 					GameId.MainCurrency, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.Currency
 					}.AsReadOnly()
 				},
 				{
 					GameId.SoftCurrency, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.Currency
 					}.AsReadOnly()
 				},
 				{
 					GameId.HardCurrency, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.Currency
 					}.AsReadOnly()
 				},
 				{
@@ -134,7 +149,14 @@ namespace Ids
 			new Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> (new GameIdGroupComparer())
 			{
 				{
-					GameIdGroup.UserResource, new List<GameId>
+					GameIdGroup.GameDesign, new List<GameId>
+					{
+						GameId.Random,
+						GameId.Time
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Currency, new List<GameId>
 					{
 						GameId.MainCurrency,
 						GameId.SoftCurrency,

@@ -45,7 +45,6 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
-		// TODO: BuildingMonoComponent todos
 		// TODO: UI
 		// TODO: AutoCollectSystem optimize
 		

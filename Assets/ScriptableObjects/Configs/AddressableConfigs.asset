@@ -28,20 +28,27 @@ MonoBehaviour:
     AssetGroup:
     - Configs
   - Id: 2
+    Address: Configs/CardConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/CardConfigs.asset
+    AssetType: Configs.CardConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Configs
+  - Id: 3
     Address: Configs/UiConfigs.asset
     Path: Assets/ScriptableObjects/Configs/UiConfigs.asset
     AssetType: GameLovers.UiService.UiConfigs, UiService, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
-  - Id: 3
+  - Id: 4
     Address: Prefabs/Building.prefab
     Path: Assets/Art/Prefabs/Building.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Prefabs
-  - Id: 4
+  - Id: 5
     Address: Prefabs/Ui/Cards Panel.prefab
     Path: Assets/Art/Prefabs/Ui/Cards Panel.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -50,7 +57,7 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Cards
-  - Id: 5
+  - Id: 6
     Address: Prefabs/Ui/Hud.prefab
     Path: Assets/Art/Prefabs/Ui/Hud.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -58,7 +65,7 @@ MonoBehaviour:
     AssetGroup:
     - Prefabs
     - Ui
-  - Id: 6
+  - Id: 7
     Address: Prefabs/Ui/Loading Screen.prefab
     Path: Assets/Art/Prefabs/Ui/Loading Screen.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Data;
 using Ids;
 
@@ -23,7 +22,6 @@ namespace Infos
 		public int UpgradeCost;
 		public int AutomateCost;
 		public AutomationState AutomationState;
-		public List<GameId> CardList;
 
 		public DateTime ProductionEndTime => Data.ProductionStartTime.AddSeconds(ProductionTime);
 	}

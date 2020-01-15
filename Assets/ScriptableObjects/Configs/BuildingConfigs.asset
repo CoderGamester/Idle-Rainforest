@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BuildingConfigs
   m_EditorClassIdentifier: 
   _configs:
-  - Id: 3
+  - Building: 5
     ProductionAmountBase: 1
     ProductionAmountIncrease: 1
     ProductionTimeBase: 1
@@ -22,16 +22,16 @@ MonoBehaviour:
     AutomationCurrencyRequired: 5
     AutomationCardLevelRequired: 1
     _upgradeRewards:
-    - GameId: 2
+    - GameId: 4
       IntValue: 3
-    - GameId: 7
+    - GameId: 9
       IntValue: 2
     _upgradeBrackets:
     - IntKey: 10
       IntValue: 50
     - IntKey: 50
       IntValue: 500
-  - Id: 4
+  - Building: 6
     ProductionAmountBase: 2
     ProductionAmountIncrease: 2
     ProductionTimeBase: 1.5
@@ -40,16 +40,16 @@ MonoBehaviour:
     AutomationCurrencyRequired: 10
     AutomationCardLevelRequired: 2
     _upgradeRewards:
-    - GameId: 2
+    - GameId: 4
       IntValue: 3
-    - GameId: 8
+    - GameId: 10
       IntValue: 2
     _upgradeBrackets:
     - IntKey: 10
       IntValue: 50
     - IntKey: 50
       IntValue: 500
-  - Id: 5
+  - Building: 7
     ProductionAmountBase: 3
     ProductionAmountIncrease: 3
     ProductionTimeBase: 2
@@ -58,9 +58,9 @@ MonoBehaviour:
     AutomationCurrencyRequired: 20
     AutomationCardLevelRequired: 3
     _upgradeRewards:
-    - GameId: 2
+    - GameId: 4
       IntValue: 3
-    - GameId: 6
+    - GameId: 8
       IntValue: 2
     _upgradeBrackets:
     - IntKey: 10
