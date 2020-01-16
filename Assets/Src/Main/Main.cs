@@ -45,7 +45,6 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
-		// TODO: UI
 		// TODO: AutoCollectSystem optimize
 		
 		// TODO: Try IdListResolver without Func<List> and use List reference directly
@@ -58,6 +57,8 @@ namespace Main
 		// TODO: KeyValuePair Serialization on CsvParser
 		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
-		// TODO: Clear PlayerPrefs to RemoveEmptyFolders
+		// TODO: Clear PlayerPref to RemoveEmptyFolders
+		// TODO: Have possibility of independent pool outside of the PoolService
+		// TODO: Make the UiPresenter.Refresh() a public virtual method and not executed by the UiService
 	}
 }

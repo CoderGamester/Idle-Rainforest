@@ -11,6 +11,7 @@ using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using ViewPresenters;
 
 namespace MonoComponent
 {
@@ -38,7 +39,6 @@ namespace MonoComponent
 			
 			_readyState.SetActive(false);
 			_upgradableState.SetActive(false);
-			
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 		}
 
@@ -97,7 +97,8 @@ namespace MonoComponent
 		{
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingNameText.text = $"{info.GameId} {info.Data.Level.ToString()}\n{seedsSec.ToString("0.##")}/s";
+			_buildingNameText.text = $"{info.GameId} - lv {info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}\n" +
+			                         $"{seedsSec.ToString("0.##")}/s";
 			_productionAmountText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost.ToString();
 
@@ -117,19 +118,20 @@ namespace MonoComponent
 
 		private async void OnReadyToCollect(float time)
 		{
-			_cancellationToken = new CancellationTokenSource();
-
-			try
+			using (_cancellationToken = new CancellationTokenSource())
 			{
-				await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)), _cancellationToken.Token);
+				try
+				{
+					await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)), _cancellationToken.Token);
+				}
+				catch (Exception)
+				{
+					return;
+				}
 			}
-			catch (Exception)
-			{
-				// ignored
-			}
-
+			
 			_readyState.SetActive(true);
-			_cancellationToken.Dispose();
+			_cancellationToken = null;
 		}
 	}
 }

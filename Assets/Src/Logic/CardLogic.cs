@@ -22,6 +22,11 @@ namespace Logic
 		/// TODO:
 		/// </summary>
 		List<CardInfo> GetBuildingCards(GameId building);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		List<CardInfo> GetAllCards();
 	}
 
 	/// <inheritdoc />
@@ -89,6 +94,20 @@ namespace Logic
 				{
 					list.Add(GetInfo(cardConfigs[i].Id));
 				}
+			}
+
+			return list;
+		}
+
+		/// <inheritdoc />
+		public List<CardInfo> GetAllCards()
+		{
+			var list = new List<CardInfo>();
+			var cardConfigs = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
+
+			for (var i = 0; i < cardConfigs.Count; i++)
+			{
+				list.Add(GetInfo(cardConfigs[i].Id));
 			}
 
 			return list;

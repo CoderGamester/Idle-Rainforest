@@ -27,7 +27,9 @@ namespace Presenters
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
-			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnSeedsValueChanged);
+			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
@@ -38,9 +40,19 @@ namespace Presenters
 			_hardCurrencyText.text = $"HC: {_dataProvider.CurrencyDataProvider.HardCurrencyAmount.ToString()}";
 		}
 
-		private void OnSeedsValueChanged(MainCurrencyValueChangedEvent eventData)
+		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			_mainCurrencyText.text =$"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
+			_mainCurrencyText.text =$"MC: {eventData.NewValue.ToString()}";
+		}
+
+		private void OnHardCurrencyValueChanged(HardCurrencyValueChangedEvent eventData)
+		{
+			_hardCurrencyText.text = $"HC: {eventData.NewValue.ToString()}";
+		}
+
+		private void OnSoftCurrencyValueChanged(SoftCurrencyValueChangedEvent eventData)
+		{
+			_softCurrencyText.text = $"SC: {eventData.NewValue.ToString()}";
 		}
 
 		private void OnCardsClicked()

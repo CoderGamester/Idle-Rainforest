@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Configs;
 using Data;
 using Ids;
@@ -66,51 +65,20 @@ namespace Logic
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) gameId);
-			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(gameId);
 			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].IntValue;
-			var nextBracket = maxLevel;
-			var state = AutomationState.Ready;
+			var nextBracket = GetNextLevelBracket(data, config);
 
-			for (var i = 0; i < config.UpgradeBrackets.Count; i++)
-			{
-				var bracket = config.UpgradeBrackets[i];
-				if (data.Level < bracket.IntValue)
-				{
-					nextBracket = bracket.IntValue - Mathf.FloorToInt(bracket.IntValue - data.Level / (float) bracket.IntKey);
-				}
-			}
-
-			if (data.IsAutomated)
-			{
-				state = AutomationState.Automated;
-			}
-			else if(_gameLogic.CurrencyLogic.MainCurrencyAmount < config.AutomationCurrencyRequired)
-			{
-				state = AutomationState.MissingRequirements;
-			}
-			else
-			{
-				foreach (var card in buildingCards)
-				{
-					if (card.Data.Level < config.AutomationCardLevelRequired)
-					{
-						state = AutomationState.MissingRequirements;
-						break;
-					}
-				}
-			}
-			
 			return new BuildingInfo
 			{
 				GameId = gameId,
 				Data = data,
-				NextBracketLevel = nextBracket,
+				NextBracketLevel = Mathf.Min(nextBracket, maxLevel),
 				MaxLevel = maxLevel,
 				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level,
 				ProductionTime = config.ProductionTimeBase,
 				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
 				AutomateCost = config.AutomationCurrencyRequired,
-				AutomationState = state
+				AutomationState = GetBuildingState(data, config)
 			};
 		}
 
@@ -190,6 +158,52 @@ namespace Logic
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
 			_data.Set(info.Data);
+		}
+
+		private AutomationState GetBuildingState(BuildingData data, BuildingConfig config)
+		{
+			var state = AutomationState.Ready;
+			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
+			
+			if (data.IsAutomated)
+			{
+				state = AutomationState.Automated;
+			}
+			else if(_gameLogic.CurrencyLogic.MainCurrencyAmount < config.AutomationCurrencyRequired)
+			{
+				state = AutomationState.MissingRequirements;
+			}
+			else
+			{
+				foreach (var card in buildingCards)
+				{
+					if (card.Data.Level < config.AutomationCardLevelRequired)
+					{
+						state = AutomationState.MissingRequirements;
+						break;
+					}
+				}
+			}
+
+			return state;
+		}
+
+		private int GetNextLevelBracket(BuildingData data, BuildingConfig config)
+		{
+			var nextBracket = int.MaxValue;
+
+			for (var i = 0; i < config.UpgradeBrackets.Count; i++)
+			{
+				var bracket = config.UpgradeBrackets[i];
+				if (data.Level < bracket.IntKey && nextBracket > bracket.IntKey)
+				{
+					Debug.Log(data.Level + " " + bracket.IntKey + " " + bracket.IntValue);
+					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.IntValue) + 1) * bracket.IntValue;
+					Debug.Log(nextBracket);
+				}
+			}
+
+			return nextBracket;
 		}
 	}
 }

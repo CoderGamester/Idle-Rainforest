@@ -72,8 +72,9 @@ namespace Logic
 			{
 				Id = uniqueId,
 				Position = position,
-				Level = 0,
-				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow
+				Level = 1,
+				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow,
+				IsAutomated = false
 			});
 		}
 	}
