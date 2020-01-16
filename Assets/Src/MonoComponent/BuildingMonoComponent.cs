@@ -49,7 +49,7 @@ namespace MonoComponent
 
 		private void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId);
 
 			UpdateView(info);
 
@@ -69,7 +69,7 @@ namespace MonoComponent
 				_services.CommandService.ExecuteCommand(new CollectCommand { BuildingId = _entityMonoComponent.UniqueId });
 				_readyState.SetActive(false);
 				
-				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId).ProductionTime);
+				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId).ProductionTime);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			UpdateView(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
+			UpdateView(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		/// <summary>
@@ -113,7 +113,7 @@ namespace MonoComponent
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			UpdateState(_dataProvider.BuildingDataProvider.GetInfo(_entityMonoComponent.UniqueId));
+			UpdateState(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private async void OnReadyToCollect(float time)

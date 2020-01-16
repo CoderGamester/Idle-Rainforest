@@ -17,6 +17,10 @@ MonoBehaviour:
     Layer: 0
     UiType: Presenters.CardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  - AddressableAddress: Prefabs/Ui/Event Panel.prefab
+    Layer: 0
+    UiType: Presenters.EventPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Hud.prefab
     Layer: 0
     UiType: Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,

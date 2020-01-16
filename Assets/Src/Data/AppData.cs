@@ -10,7 +10,8 @@ namespace Data
 	public class AppData
 	{
 		public UniqueId UniqueIdCounter = UniqueId.Invalid;
-		public DateTime LastLoginTime = DateTime.Now;
-		public DateTime FirstLoginTime = DateTime.Now;
+		public DateTime FirstLoginTime = DateTime.UtcNow;
+		public DateTime LastLoginTime = DateTime.UtcNow;
+		public DateTime LoginTime = DateTime.UtcNow;
 	}
 }

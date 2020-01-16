@@ -45,19 +45,23 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
+		// TODO: Event Start Screen
+		// TODO: Event countdown timer
+		// TODO: Rename Buildings to LevelBuildings/Level and make it mapped by GameId and not UniqueId
 		// TODO: AutoCollectSystem optimize
+		// TODO: LoadData in GameLogic or LoadingState???
+		// TODO: GameLogic custom exception
 		
 		// TODO: Try IdListResolver without Func<List> and use List reference directly
-		// TODO: Rename Buildings to Level and make it mapped by GameId and not UniqueId
-		// TODO: Expose Persistent data types in the DataProviderLogic/GameLogic and check IGamerInternalLogic need
-		// TODO: GameLogic custom exception
 		// TODO: Select Google Sheet asset
+		// TODO: Select UiConfigs asset
+		// TODO: UiService Unload also removes Ui from visibleUiList. Rename method to "Remove" and add proper Unload
 		// TODO: UiService Close(this);
+		// TODO: UiPresenter protected Close() method
 		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat
 		// TODO: KeyValuePair Serialization on CsvParser
 		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
-		// TODO: Clear PlayerPref to RemoveEmptyFolders
 		// TODO: Have possibility of independent pool outside of the PoolService
 		// TODO: Make the UiPresenter.Refresh() a public virtual method and not executed by the UiService
 	}

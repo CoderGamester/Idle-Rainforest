@@ -47,6 +47,8 @@ namespace Logic
 		/// <inheritdoc cref="ITimeService"/>
 		ITimeService TimeService { get; }
 		
+		/// <inheritdoc cref="IDataProviderLogic"/>
+		IDataProviderLogic DataProviderLogic { get; }
 		/// <inheritdoc cref="IEntityLogic"/>
 		IEntityLogic EntityLogic { get; }
 		/// <inheritdoc cref="IGameObjectLogic"/>
@@ -67,8 +69,6 @@ namespace Logic
 	/// </remarks>
 	public interface IGameInternalLogic : IGameLogic
 	{
-		/// <inheritdoc cref="IDataProviderLogic"/>
-		IDataProviderLogic DataProviderLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -117,6 +117,9 @@ namespace Logic
 			
 			LoadData(dataProviderLogic);
 			
+			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
+			dataProviderLogic.AppData.LastLoginTime = timeService.DateTimeUtcNow;
+			
 			ConfigsProvider = new ConfigsProvider();
 			MessageBrokerService = messageBroker;
 			TimeService = timeService;
@@ -124,22 +127,22 @@ namespace Logic
 			DataProviderLogic = dataProviderLogic;
 			EntityLogic = new EntityLogic(this, dataProviderLogic);
 			GameObjectLogic = new GameObjectLogic(this);
-			CurrencyLogic = new CurrencyLogic(this, dataProviderLogic.GetData<CurrencyData>());
+			CurrencyLogic = new CurrencyLogic(this, dataProviderLogic.CurrencyData);
 			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(
 				data => data.Id, 
-				() => dataProviderLogic.GetData<PlayerData>().GameIds));
+				() => dataProviderLogic.PlayerData.GameIds));
 			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
 				data => data.Id, 
-				() => dataProviderLogic.GetData<PlayerData>().Buildings));
+				() => dataProviderLogic.PlayerData.Buildings));
 			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
 				data => data.Id, 
-				() => dataProviderLogic.GetData<PlayerData>().Buildings));
+				() => dataProviderLogic.PlayerData.Buildings));
 			CardLogic = new CardLogic(this, new IdList<GameId, CardData>(
 				data => data.Id, 
-				() => dataProviderLogic.GetData<PlayerData>().Cards));
+				() => dataProviderLogic.PlayerData.Cards));
 		}
 
-		private void LoadData(DataProviderLogic dataProviderLogic)
+		private void LoadData(IDataProviderInternalLogic dataProviderLogic)
 		{
 			var appDataJson = PlayerPrefs.GetString(nameof(AppData), "");
 			var playerDataJson = PlayerPrefs.GetString(nameof(PlayerData), "");
@@ -149,7 +152,6 @@ namespace Logic
 			dataProviderLogic.AddData(string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson));
 			dataProviderLogic.AddData(string.IsNullOrEmpty(currencyDataJson) ? new CurrencyData() : JsonConvert.DeserializeObject<CurrencyData>(currencyDataJson));
 
-			dataProviderLogic.GetData<AppData>().LastLoginTime = DateTime.Now;
 		}
 	}
 }

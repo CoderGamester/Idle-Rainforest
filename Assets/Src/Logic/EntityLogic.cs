@@ -49,7 +49,7 @@ namespace Logic
 				throw new ArgumentException($"The game id {gameId} is not a building type game id");
 			}
 			
-			var uniqueId = _dataProvider.GetData<AppData>().UniqueIdCounter++;
+			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
 			
 			CreateGameIdData(uniqueId, gameId);
 			CreateBuildingData(uniqueId, position);
@@ -59,7 +59,7 @@ namespace Logic
 
 		private void CreateGameIdData(UniqueId uniqueId, GameId gameId)
 		{
-			_dataProvider.GetData<PlayerData>().GameIds.Add(new GameIdData
+			_dataProvider.PlayerData.GameIds.Add(new GameIdData
 			{
 				Id = uniqueId,
 				GameId = gameId
@@ -68,7 +68,7 @@ namespace Logic
 
 		private void CreateBuildingData(UniqueId uniqueId, Vector3 position)
 		{
-			_dataProvider.GetData<PlayerData>().Buildings.Add(new BuildingData
+			_dataProvider.PlayerData.Buildings.Add(new BuildingData
 			{
 				Id = uniqueId,
 				Position = position,

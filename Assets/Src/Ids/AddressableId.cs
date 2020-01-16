@@ -9,6 +9,7 @@ namespace Ids
 		Configs_UiConfigs,
 		Prefabs_Building,
 		Prefabs_Ui_Cards_Panel,
+		Prefabs_Ui_Event_Panel,
 		Prefabs_Ui_Hud,
 		Prefabs_Ui_Loading_Screen
 	}

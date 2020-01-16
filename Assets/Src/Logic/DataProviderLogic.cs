@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Data;
 using Events;
 using GameLovers.Services;
 using Newtonsoft.Json;
@@ -12,6 +13,13 @@ namespace Logic
 	/// </summary>
 	public interface IDataProvider
 	{
+		/// <inheritdoc cref="AppData" />
+		AppData AppData { get; }
+		/// <inheritdoc cref="PlayerData" />
+		PlayerData PlayerData { get; }
+		/// <inheritdoc cref="CurrencyData" />
+		CurrencyData CurrencyData { get; }
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -22,7 +30,7 @@ namespace Logic
 	/// This logic provides the interface to all game's data in the game.
 	/// It is also responsible to save the data so it is persistent for multiple sessions
 	/// </summary>
-	public interface IDataProviderLogic
+	public interface IDataProviderLogic : IDataProvider
 	{
 		/// <summary>
 		/// Saves all game's data locally
@@ -35,10 +43,29 @@ namespace Logic
 		void FlushData<T>() where T : class;
 	}
 
+	/// <inheritdoc />
+	/// <remarks>
+	/// Allows to add data 
+	/// </remarks>
+	public interface IDataProviderInternalLogic
+	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void AddData<T>(T data) where T : class;
+	}
+
 	/// <inheritdoc cref="IDataProviderLogic" />
-	public class DataProviderLogic : IDataProviderLogic, IDataProvider
+	public class DataProviderLogic : IDataProviderLogic, IDataProviderInternalLogic
 	{
 		private readonly IDictionary<Type, object> _data = new Dictionary<Type, object>();
+
+		/// <inheritdoc />
+		public AppData AppData => GetData<AppData>();
+		/// <inheritdoc />
+		public PlayerData PlayerData => GetData<PlayerData>();
+		/// <inheritdoc />
+		public CurrencyData CurrencyData => GetData<CurrencyData>();
 		
 		private DataProviderLogic() {}
 
@@ -47,6 +74,7 @@ namespace Logic
 			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPaused);
 		}
 
+		/// <inheritdoc />
 		public void AddData<T>(T data) where T : class
 		{
 			_data.Add(typeof(T), data);

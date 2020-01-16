@@ -1,3 +1,4 @@
+using System;
 using Events;
 using GameLovers.Services;
 using GameLovers.UiService;
@@ -14,6 +15,7 @@ namespace Presenters
 	/// </summary>
 	public class HudPresenter : UiPresenter
 	{
+		[SerializeField] private TextMeshProUGUI _countdownText;
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
@@ -27,6 +29,7 @@ namespace Presenters
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
+			_services.TickService.SubscribeOnUpdate(UpdateCountdown, 1, true);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
@@ -38,6 +41,11 @@ namespace Presenters
 			_mainCurrencyText.text = $"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
 			_softCurrencyText.text = $"SC: {_dataProvider.CurrencyDataProvider.SoftCurrencyAmount.ToString()}";
 			_hardCurrencyText.text = $"HC: {_dataProvider.CurrencyDataProvider.HardCurrencyAmount.ToString()}";
+		}
+
+		private void UpdateCountdown(float deltaTime)
+		{
+			_countdownText.text = (_dataProvider.BuildingDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)

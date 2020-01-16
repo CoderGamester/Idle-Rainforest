@@ -32,7 +32,7 @@ namespace Systems
 		{
 			for (var i = 0; i < _data.Count; i++)
 			{
-				var info = _dataProvider.BuildingDataProvider.GetInfo(_data[i].Id);
+				var info = _dataProvider.BuildingDataProvider.GetBuildingInfo(_data[i].Id);
 				
 				if (_services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
 				{

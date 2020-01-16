@@ -15,12 +15,17 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
+		EventInfo GetEventInfo();
+		
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		IUniqueIdListReader<BuildingData> Data { get; }
 		
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		BuildingInfo GetInfo(UniqueId id);
+		BuildingInfo GetBuildingInfo(UniqueId id);
 	}
 
 	/// <inheritdoc />
@@ -60,7 +65,17 @@ namespace Logic
 		public IUniqueIdListReader<BuildingData> Data => _data;
 
 		/// <inheritdoc />
-		public BuildingInfo GetInfo(UniqueId id)
+		public EventInfo GetEventInfo()
+		{
+			return new EventInfo
+			{
+				StartTime = DateTime.Today,
+				EndTime = DateTime.Today.AddDays(1)
+			};
+		}
+
+		/// <inheritdoc />
+		public BuildingInfo GetBuildingInfo(UniqueId id)
 		{
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
@@ -85,7 +100,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
-			var info = GetInfo(id);
+			var info = GetBuildingInfo(id);
 
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
 			{
@@ -106,7 +121,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Upgrade(UniqueId id)
 		{
-			var info = GetInfo(id);
+			var info = GetBuildingInfo(id);
 			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) info.GameId);
 
 			info.Data.Level++;
@@ -147,7 +162,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Automate(UniqueId id)
 		{
-			var info = GetInfo(id);
+			var info = GetBuildingInfo(id);
 
 			if (info.AutomationState != AutomationState.Ready)
 			{
@@ -197,9 +212,7 @@ namespace Logic
 				var bracket = config.UpgradeBrackets[i];
 				if (data.Level < bracket.IntKey && nextBracket > bracket.IntKey)
 				{
-					Debug.Log(data.Level + " " + bracket.IntKey + " " + bracket.IntValue);
 					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.IntValue) + 1) * bracket.IntValue;
-					Debug.Log(nextBracket);
 				}
 			}
 

@@ -5,6 +5,7 @@ using GameLovers.Statechart;
 using GameLovers.UiService;
 using Ids;
 using Logic;
+using Presenters;
 using Services;
 using UnityEngine;
 
@@ -70,6 +71,18 @@ namespace Main
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(game);
 			
 			game.OnEnter(InitializeGame);
+			game.OnEnter(InitializeEvent);
+		}
+
+		private void InitializeEvent()
+		{
+			var info = _gameLogic.BuildingLogic.GetEventInfo();
+			
+			if (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime &&
+			    _gameLogic.TimeService.DateTimeUtcNow < info.EndTime)
+			{
+				_services.UiService.LoadUiAsync<EventPanelPresenter>().ContinueWith(task => task.Result.gameObject.SetActive(true));
+			}
 		}
 
 		private void InitializeGame()

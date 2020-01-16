@@ -58,6 +58,15 @@ MonoBehaviour:
     - Ui
     - Cards
   - Id: 6
+    Address: Prefabs/Ui/Event Panel.prefab
+    Path: Assets/Art/Prefabs/Ui/Event Panel.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Ui
+    - Event
+  - Id: 7
     Address: Prefabs/Ui/Hud.prefab
     Path: Assets/Art/Prefabs/Ui/Hud.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -65,7 +74,7 @@ MonoBehaviour:
     AssetGroup:
     - Prefabs
     - Ui
-  - Id: 7
+  - Id: 8
     Address: Prefabs/Ui/Loading Screen.prefab
     Path: Assets/Art/Prefabs/Ui/Loading Screen.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
