@@ -35,7 +35,8 @@ namespace Main
 			await LoadUiConfigsConfigs();
 			await LoadOpenLoadingScreen();
 			await LoadConfigs(0.2f);
-			await LoadInitialUis(0.9f);
+			await LoadInitialUis(0.6f);
+			await LoadGameWorld(0.9f);
 
 			Resources.UnloadUnusedAssets();
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(1);
@@ -75,8 +76,11 @@ namespace Main
 		{
 			var buildingsTask = LoaderUtil.LoadAssetAsync<BuildingConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_BuildingConfigs).Address, true);
+			var cardsTask = LoaderUtil.LoadAssetAsync<CardConfigs>(
+				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
 			
 			_gameConfigs.AddConfigs((await buildingsTask).Configs);
+			_gameConfigs.AddConfigs((await cardsTask).Configs);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);
 		}
@@ -96,10 +100,19 @@ namespace Main
 				var ui = await task;
 
 				loadedUiCount++;
-				
+
 				loadingScreen.SetLoadingPercentage(initialLoadingPercentage + loadedUiCount / loadingBuffer);
 				ui.gameObject.SetActive(false);
 			}
+
+			loadingScreen.SetLoadingPercentage(loadingCap);
+		}
+
+		private async Task LoadGameWorld(float loadingCap)
+		{
+			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
+			
+			// TODO: Load world assets
 			
 			loadingScreen.SetLoadingPercentage(loadingCap);
 		}

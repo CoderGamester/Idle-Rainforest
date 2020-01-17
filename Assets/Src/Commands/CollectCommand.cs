@@ -4,14 +4,14 @@ using Logic;
 namespace Commands
 {
 	/// <inheritdoc cref="IGameCommand" />
-	public struct UpgradeBuildingCommand : IGameCommand
+	public struct CollectCommand : IGameCommand
 	{
-		public EntityId Entity;
+		public UniqueId BuildingId;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Upgrade(Entity);
+			gameLogic.BuildingLogic.Collect(BuildingId);
 		}
 	}
 }

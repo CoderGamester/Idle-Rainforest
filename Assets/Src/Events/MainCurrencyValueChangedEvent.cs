@@ -1,12 +1,13 @@
 using GameLovers.Services;
+using Ids;
 
 namespace Events
 {
 	public struct MainCurrencyValueChangedEvent : IMessage
 	{
-		public float OldValue;
-		public float NewValue;
+		public int OldValue;
+		public int NewValue;
 
-		public float Amount => NewValue - OldValue;
+		public int Amount => NewValue - OldValue;
 	}
 }

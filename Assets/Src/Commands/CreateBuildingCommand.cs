@@ -7,14 +7,14 @@ namespace Commands
 	/// <inheritdoc cref="IGameCommand" />
 	public struct CreateBuildingCommand : IGameCommand
 	{
-		public GameId BuildingId;
+		public GameId BuildingType;
 		public Vector3 Position;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			var entity = gameLogic.EntityLogic.CreateBuilding(BuildingId, Position);
-			gameLogic.GameObjectLogic.LoadGameObject(entity, AddressableId.Prefabs_Building, Position);
+			var id = gameLogic.EntityLogic.CreateBuilding(BuildingType, Position);
+			gameLogic.GameObjectLogic.LoadGameObject(id, AddressableId.Prefabs_Building, Position);
 		}
 	}
 }

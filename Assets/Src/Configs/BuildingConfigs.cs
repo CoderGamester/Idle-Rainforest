@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using Data;
 using GameLovers.ConfigsContainer;
+using GameLovers.GoogleSheetImporter;
 using Ids;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Configs
@@ -9,14 +14,31 @@ namespace Configs
 	[Serializable]
 	public struct BuildingConfig : IConfig
 	{
-		public GameId Id;
-		public float ProductionAmountBase;
-		public float ProductionAmountIncrease;
+		public GameId Building;
+		public int ProductionAmountBase;
+		public int ProductionAmountIncrease;
 		public float ProductionTimeBase;
-		public float UpgradeCostBase;
-		public float UpgradeCostIncrease;
+		public int UpgradeCostBase;
+		public int UpgradeCostIncrease;
+		public int AutomationCurrencyRequired;
+		public int AutomationCardLevelRequired;
+
+		[SerializeField] private List<IntData> _upgradeRewards;
+		[SerializeField] private List<IntPairData> _upgradeBrackets;
 		
-		public int ConfigId => (int) Id;
+		public int ConfigId => (int) Building;
+
+		public ReadOnlyCollection<IntData> UpgradeRewards
+		{
+			get => _upgradeRewards.AsReadOnly();
+			set => _upgradeRewards = new List<IntData>(value);
+		}
+
+		public ReadOnlyCollection<IntPairData> UpgradeBrackets
+		{
+			get => _upgradeBrackets.AsReadOnly();
+			set => _upgradeBrackets = new List<IntPairData>(value);
+		}
 	}
 	
 	/// <summary>

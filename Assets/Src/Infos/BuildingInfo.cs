@@ -1,20 +1,28 @@
 using System;
+using Data;
 using Ids;
-using UnityEngine;
 
 namespace Infos
 {
+	public enum AutomationState
+	{
+		MissingRequirements,
+		Ready,
+		Automated
+	}
+	
 	public struct BuildingInfo
 	{
-		public EntityId Entity;
 		public GameId GameId;
-		public int Level;
-		public Vector3 Position;
-		public float ProductionAmount;
+		public BuildingData Data;
+		public int NextBracketLevel;
+		public int MaxLevel;
+		public int ProductionAmount;
 		public float ProductionTime;
-		public DateTime ProductionStartTime;
-		public float UpgradeCost;
+		public int UpgradeCost;
+		public int AutomateCost;
+		public AutomationState AutomationState;
 
-		public DateTime ProductionEndTime => ProductionStartTime.AddSeconds(ProductionTime);
+		public DateTime ProductionEndTime => Data.ProductionStartTime.AddSeconds(ProductionTime);
 	}
 }

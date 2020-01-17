@@ -11,11 +11,8 @@ namespace Data
 	[Serializable]
 	public class PlayerData
 	{
-		public float MainCurrency;
-		public int SoftCurrency;
-		public int HardCurrency;
-		
-		public List<ResourceData> Resources = new List<ResourceData>();
+		public List<GameIdData> GameIds = new List<GameIdData>();
 		public List<BuildingData> Buildings = new List<BuildingData>();
+		public List<CardData> Cards = new List<CardData>();
 	}
 }

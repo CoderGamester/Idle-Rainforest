@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Data;
 using Ids;
 
 namespace Logic
@@ -8,15 +8,7 @@ namespace Logic
 	/// </summary>
 	public interface IGameIdDataProvider
 	{
-		/// <summary>
-		/// Requests the <see cref="GameId"/> of the given <paramref name="entity"/>
-		/// </summary>
-		GameId GetGameId(EntityId entity);
-
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		bool IsInGroup(EntityId entity, GameIdGroup group);
+		IUniqueIdListReader<GameIdData> Data { get; }
 	}
 
 	/// <inheritdoc />
@@ -28,26 +20,17 @@ namespace Logic
 	public class GameIdLogic : IGameIdLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IDictionary<EntityId, GameId> _data;
+		private readonly IUniqueIdList<GameIdData> _data;
 		
 		private GameIdLogic() {}
 
-		public GameIdLogic(IGameInternalLogic gameLogic, IDictionary<EntityId, GameId> data)
+		public GameIdLogic(IGameInternalLogic gameLogic, IUniqueIdList<GameIdData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
 		}
 
 		/// <inheritdoc />
-		public GameId GetGameId(EntityId entity)
-		{
-			return _data[entity];
-		}
-
-		/// <inheritdoc />
-		public bool IsInGroup(EntityId entity, GameIdGroup group)
-		{
-			return GetGameId(entity).IsInGroup(group);
-		}
+		public IUniqueIdListReader<GameIdData> Data => _data;
 	}
 }

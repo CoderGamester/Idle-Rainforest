@@ -1,18 +1,17 @@
-using Events;
 using Ids;
 using Logic;
 
 namespace Commands
 {
 	/// <inheritdoc cref="IGameCommand" />
-	public struct CollectSeedsCommand : IGameCommand
+	public struct UpgradeLevelBuildingCommand : IGameCommand
 	{
-		public EntityId Entity;
+		public UniqueId BuildingId;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Collect(Entity);
+			gameLogic.BuildingLogic.Upgrade(BuildingId);
 		}
 	}
 }

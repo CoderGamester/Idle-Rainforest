@@ -6,18 +6,25 @@ namespace Ids
 {
 	public enum GameId
 	{
-		Seeds,
-		Fruits,
-		Acorns,
+		Random,
+		Time,
+		MainCurrency,
+		SoftCurrency,
+		HardCurrency,
 		BuildingZoo,
 		BuildingPark,
-		BuildingAquarium
+		BuildingAquarium,
+		Animal1,
+		Animal2,
+		Animal3
 	}
 
 	public enum GameIdGroup
 	{
-		UserResource,
-		Building
+		GameDesign,
+		Currency,
+		Building,
+		Card
 	}
 
 	public static class GameIdLookup
@@ -71,21 +78,33 @@ namespace Ids
 			new Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> (new GameIdComparer())
 			{
 				{
-					GameId.Seeds, new List<GameIdGroup>
+					GameId.Random, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.GameDesign
 					}.AsReadOnly()
 				},
 				{
-					GameId.Fruits, new List<GameIdGroup>
+					GameId.Time, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.GameDesign
 					}.AsReadOnly()
 				},
 				{
-					GameId.Acorns, new List<GameIdGroup>
+					GameId.MainCurrency, new List<GameIdGroup>
 					{
-						GameIdGroup.UserResource
+						GameIdGroup.Currency
+					}.AsReadOnly()
+				},
+				{
+					GameId.SoftCurrency, new List<GameIdGroup>
+					{
+						GameIdGroup.Currency
+					}.AsReadOnly()
+				},
+				{
+					GameId.HardCurrency, new List<GameIdGroup>
+					{
+						GameIdGroup.Currency
 					}.AsReadOnly()
 				},
 				{
@@ -106,17 +125,42 @@ namespace Ids
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
+				{
+					GameId.Animal1, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
+				{
+					GameId.Animal2, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
+				{
+					GameId.Animal3, new List<GameIdGroup>
+					{
+						GameIdGroup.Card
+					}.AsReadOnly()
+				},
 			};
 
 		private static readonly Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> _ids =
 			new Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> (new GameIdGroupComparer())
 			{
 				{
-					GameIdGroup.UserResource, new List<GameId>
+					GameIdGroup.GameDesign, new List<GameId>
 					{
-						GameId.Seeds,
-						GameId.Fruits,
-						GameId.Acorns
+						GameId.Random,
+						GameId.Time
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Currency, new List<GameId>
+					{
+						GameId.MainCurrency,
+						GameId.SoftCurrency,
+						GameId.HardCurrency
 					}.AsReadOnly()
 				},
 				{
@@ -125,6 +169,14 @@ namespace Ids
 						GameId.BuildingZoo,
 						GameId.BuildingPark,
 						GameId.BuildingAquarium
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Card, new List<GameId>
+					{
+						GameId.Animal1,
+						GameId.Animal2,
+						GameId.Animal3
 					}.AsReadOnly()
 				},
 			};

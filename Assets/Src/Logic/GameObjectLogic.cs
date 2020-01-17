@@ -16,60 +16,59 @@ namespace Logic
 	public interface IGameObjectDataProvider
 	{
 		/// <summary>
-		/// Requests the <see cref="GameObject"/> of the given <paramref name="entity"/>
+		/// Requests the <see cref="GameObject"/> of the given <paramref name="id"/>
 		/// </summary>
-		GameObject GetGameObject(EntityId entity);
+		GameObject GetGameObject(UniqueId id);
 
 		/// <summary>
-		/// Requests if the given <paramref name="entity"/> has a <see cref="GameObject"/> component in ti
+		/// Requests if the given <paramref name="id"/> has a <see cref="GameObject"/> component in ti
 		/// </summary>
-		bool HasGameObject(EntityId entity);
+		bool HasGameObject(UniqueId id);
+		
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		Task<GameObject> LoadGameObject(UniqueId id, AddressableId addressable, Vector3 position);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void UnloadGameObject(UniqueId id);
 	}
 
 	/// <inheritdoc />
 	public interface IGameObjectLogic : IGameObjectDataProvider
 	{
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		Task<GameObject> LoadGameObject(EntityId entity, AddressableId addressable, Vector3 position);
-
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		void UnloadGameObject(EntityId entity);
 	}
 	
 	/// <inheritdoc />
 	public class GameObjectLogic : IGameObjectLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IDictionary<EntityId, GameObjectData> _data;
+		private readonly IDictionary<UniqueId, GameObjectData> _data;
 		
 		private GameObjectLogic() {}
 
 		public GameObjectLogic(IGameInternalLogic gameLogic)
 		{
 			_gameLogic = gameLogic;
-			_data = new Dictionary<EntityId, GameObjectData>();
-			
-			_gameLogic.MessageBrokerService.Subscribe<EntityDestroyedEvent>(eventData => UnloadGameObject(eventData.Entity));
+			_data = new Dictionary<UniqueId, GameObjectData>();
 		}
 
 		/// <inheritdoc />
-		public GameObject GetGameObject(EntityId entity)
+		public GameObject GetGameObject(UniqueId id)
 		{
-			return _data[entity].Instance;
+			return _data[id].Instance;
 		}
 
 		/// <inheritdoc />
-		public bool HasGameObject(EntityId entity)
+		public bool HasGameObject(UniqueId id)
 		{
-			return _data.ContainsKey(entity);
+			return _data.ContainsKey(id);
 		}
 
 		/// <inheritdoc />
-		public async Task<GameObject> LoadGameObject(EntityId entity, AddressableId addressable, Vector3 position)
+		public async Task<GameObject> LoadGameObject(UniqueId id, AddressableId addressable, Vector3 position)
 		{
 			var address = _gameLogic.ConfigsProvider.GetConfig<AddressableConfig>((int) addressable).Address;
 			var task = LoaderUtil.LoadAssetAsync<GameObject>(address, false);
@@ -79,9 +78,9 @@ namespace Logic
 			// ReSharper disable once AccessToStaticMemberViaDerivedType
 			var gameObject = GameObject.Instantiate(task.Result, position, Quaternion.identity);
 			
-			gameObject.GetComponent<EntityMonoComponent>().Entity = entity;
+			gameObject.GetComponent<EntityMonoComponent>().UniqueId = id;
 			
-			_data.Add(entity, new GameObjectData
+			_data.Add(id, new GameObjectData
 			{
 				Instance = gameObject,
 				LoadReference = task.Result
@@ -91,7 +90,7 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void UnloadGameObject(EntityId entity)
+		public void UnloadGameObject(UniqueId entity)
 		{
 			var gameObjectData = _data[entity];
 			

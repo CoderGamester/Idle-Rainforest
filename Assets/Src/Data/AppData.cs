@@ -1,4 +1,5 @@
 using System;
+using Ids;
 
 namespace Data
 {
@@ -8,7 +9,9 @@ namespace Data
 	[Serializable]
 	public class AppData
 	{
-		public DateTime LastLoginTime = DateTime.Now;
-		public DateTime FirstLoginTime = DateTime.Now;
+		public DateTime FirstLoginTime;
+		public DateTime LastLoginTime;
+		public DateTime LoginTime;
+		public UniqueId UniqueIdCounter = UniqueId.Invalid;
 	}
 }

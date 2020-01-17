@@ -20,9 +20,9 @@
     "com.unity.ide.vscode": "1.1.3",
     "com.unity.inputsystem": "1.0.0-preview.3",
     "com.unity.quicksearch": "1.4.1",
-    "com.unity.test-framework": "1.1.3",
+    "com.unity.test-framework": "1.1.9",
     "com.unity.textmeshpro": "2.0.1",
-    "com.unity.timeline": "1.2.6",
+    "com.unity.timeline": "1.2.9",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -67,7 +67,7 @@
     },
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
-      "hash": "737e1b29f7d27d1d4df32fb77808aacb5a35fe43"
+      "hash": "bb09671497d686deda33e3c322e89b49f2beb139"
     },
     "com.gamelovers.loadextension": {
       "revision": "HEAD",

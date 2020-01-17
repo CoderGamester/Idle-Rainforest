@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Data;
 using Events;
 using GameLovers.Services;
-using Ids;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -14,115 +11,99 @@ namespace Logic
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public interface IPersistentDataProvider
+	public interface IDataProvider
 	{
-		/// <inheritdoc cref="AppData"/>
-		AppData AppData { get; set; }
-		/// <inheritdoc cref="PlayerData"/>
-		PlayerData PlayerData { get; set; }
-	}
-
-	/// <summary>
-	/// TODO:
-	/// </summary>
-	public interface ISessionDataProvider
-	{
-		/// <summary>
-		/// Requests the current <see cref="EntityId"/> counter
-		/// </summary>
-		EntityId EntityCounter { get; set; }
+		/// <inheritdoc cref="AppData" />
+		AppData AppData { get; }
+		/// <inheritdoc cref="PlayerData" />
+		PlayerData PlayerData { get; }
+		/// <inheritdoc cref="CurrencyData" />
+		CurrencyData CurrencyData { get; }
 		
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		IReadOnlyDictionary<Type, IEntityDictionary> SessionData { get; }
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		IDictionary<EntityId, T> GetSessionData<T>();
+		T GetData<T>() where T : class;
 	}
 	
 	/// <summary>
 	/// This logic provides the interface to all game's data in the game.
 	/// It is also responsible to save the data so it is persistent for multiple sessions
 	/// </summary>
-	public interface IDataProviderLogic : IPersistentDataProvider
+	public interface IDataProviderLogic : IDataProvider
 	{
 		/// <summary>
-		/// When this method is invoked, all the data is locally saved
+		/// Saves all game's data locally
 		/// </summary>
 		void FlushData();
+		
+		/// <summary>
+		/// Saves the game's given <typeparamref name="T"/> data locally
+		/// </summary>
+		void FlushData<T>() where T : class;
 	}
 
 	/// <inheritdoc cref="IDataProviderLogic" />
-	public class DataProviderLogic : IDataProviderLogic, ISessionDataProvider
+	/// <remarks>
+	/// Allows to add data 
+	/// </remarks>
+	public interface IDataProviderInternalLogic : IDataProvider
 	{
-		/// <inheritdoc />
-		public AppData AppData { get; set; }
-		/// <inheritdoc />
-		public PlayerData PlayerData { get; set; }
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void AddData<T>(T data) where T : class;
+	}
+
+	/// <inheritdoc cref="IDataProviderLogic" />
+	public class DataProviderLogic : IDataProviderLogic, IDataProviderInternalLogic
+	{
+		private readonly IDictionary<Type, object> _data = new Dictionary<Type, object>();
 
 		/// <inheritdoc />
-		public EntityId EntityCounter { get; set; }
-
+		public AppData AppData => GetData<AppData>();
 		/// <inheritdoc />
-		public IReadOnlyDictionary<Type, IEntityDictionary> SessionData { get; private set; }
+		public PlayerData PlayerData => GetData<PlayerData>();
+		/// <inheritdoc />
+		public CurrencyData CurrencyData => GetData<CurrencyData>();
 		
 		private DataProviderLogic() {}
 
 		public DataProviderLogic(IMessageBrokerService messageBrokerService)
 		{
-			LoadData();
-			
 			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPaused);
 		}
 
 		/// <inheritdoc />
-		public IDictionary<EntityId, T> GetSessionData<T>()
+		public void AddData<T>(T data) where T : class
 		{
-			return SessionData[typeof(T)] as IDictionary<EntityId, T>;
+			_data.Add(typeof(T), data);
+		}
+
+		/// <inheritdoc />
+		public T GetData<T>() where T : class
+		{
+			return _data[typeof(T)] as T;
 		}
 
 		/// <inheritdoc />
 		public void FlushData()
 		{
-			PlayerPrefs.SetString("AppData", JsonConvert.SerializeObject(AppData));
-			PlayerPrefs.SetString("PlayerData", JsonConvert.SerializeObject(PlayerData));
+			foreach (var data in _data)
+			{
+				PlayerPrefs.SetString(data.Key.Name, JsonConvert.SerializeObject(data.Value));
+			}
+			
 			PlayerPrefs.Save();
 		}
 
-		private void LoadData()
+		/// <inheritdoc />
+		public void FlushData<T>() where T : class
 		{
-			var appDataJson = PlayerPrefs.GetString("AppData", "");
-			var playerDataJson = PlayerPrefs.GetString("PlayerData", "");
+			var type = typeof(T);
 			
-			AppData = string.IsNullOrEmpty(appDataJson) ? new AppData() : JsonConvert.DeserializeObject<AppData>(appDataJson);
-			PlayerData = string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson);
-
-			AppData.LastLoginTime = DateTime.Now;
-
-			SetSessionData();
-		}
-
-		private void SetSessionData()
-		{
-			var sessionData = new Dictionary<Type, IEntityDictionary>();
-			var gameIdDictionary = new EntityDictionary<GameId>();
-			var buildingDictionary = new EntityDictionary<int>();
-
-			for (var i = 0; i < PlayerData.Buildings.Count; i++)
-			{
-				var entity = EntityCounter++;
-
-				buildingDictionary.Add(entity, i);
-				gameIdDictionary.Add(entity, PlayerData.Buildings[i].GameId);
-			}
-
-			sessionData.Add(typeof(int), buildingDictionary);
-			sessionData.Add(typeof(GameId), gameIdDictionary);
-			
-			SessionData = new ReadOnlyDictionary<Type, IEntityDictionary>(sessionData);
+			PlayerPrefs.SetString(type.Name, JsonConvert.SerializeObject(_data[type]));
+			PlayerPrefs.Save();
 		}
 
 		private void OnApplicationPaused(ApplicationPausedEvent eventData)
