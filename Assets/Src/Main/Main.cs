@@ -47,6 +47,7 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
+		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
 		// TODO: Rename Buildings to LevelBuildings/Level and make it mapped by GameId and not UniqueId
 		// TODO: AutoCollectSystem optimize
 		// TODO: LoadData in GameLogic or LoadingState???
@@ -55,6 +56,7 @@ namespace Main
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: GameLogic custom exception
 		// TODO: Systems Architecture. Use Unity DOTS???
+		// TODO: Add SRDebugger and Time cheat
 		
 		// TODO: Select Google Sheet asset
 		// TODO: Select UiConfigs asset

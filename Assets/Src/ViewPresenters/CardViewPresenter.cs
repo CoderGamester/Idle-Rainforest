@@ -37,18 +37,27 @@ namespace ViewPresenters
 		public void SetData(CardInfo info)
 		{
 			_card = info.GameId;
-			_cardNameText.text = $"lvl {info.Data.Level.ToString()} {info.GameId} {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
-			_upgradeCostText.text = info.UpgradeCost.ToString();
+
+			UpdateView(info);
 		}
 
 		private void OnUpgradeClicked()
 		{
 			var info = _dataProvider.CardDataProvider.GetInfo(_card);
-
-			if (_dataProvider.CurrencyDataProvider.SoftCurrencyAmount >= info.UpgradeCost)
+			
+			if (_dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost && info.Data.Amount >= info.AmountRequired)
 			{
 				_services.CommandService.ExecuteCommand(new UpgradeCardCommand { Card = _card});
+				
+				// Update with new values
+				UpdateView(_dataProvider.CardDataProvider.GetInfo(_card));
 			}
+		}
+
+		private void UpdateView(CardInfo info)
+		{
+			_cardNameText.text = $"lvl {info.Data.Level.ToString()} {info.GameId} {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			_upgradeCostText.text = info.UpgradeCost.ToString();
 		}
 	}
 }

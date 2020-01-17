@@ -68,13 +68,16 @@ namespace Logic
 				data = new CardData { Id = card, Amount = 0, Level = 0};
 			}
 
+			var index = data.Level == 0 ? 0 : data.Level - 1;
+
 			return new CardInfo
 			{
 				GameId = card,
 				Data = data,
 				MaxLevel = config.UpgradeCost.Count + 1,
-				AmountRequired = data.Level == 0 ? config.UpgradeCardsRequired[0] : config.UpgradeCardsRequired[data.Level - 1],
-				UpgradeCost = data.Level == 0 ? config.UpgradeCost[0] : config.UpgradeCost[data.Level - 1]
+				AmountRequired = config.UpgradeCardsRequired[index],
+				UpgradeCost = config.UpgradeCost[index],
+				ProductionBonus = data.Level == 0 ? 1 : config.LevelBonus[index]
 			};
 		}
 
@@ -148,7 +151,7 @@ namespace Logic
 			info.Data.Amount -= info.AmountRequired;
 			info.Data.Level++;
 			
-			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
+			_gameLogic.CurrencyLogic.DeductHardCurrency(info.UpgradeCost);
 			_data.Set(info.Data);
 			_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card, NewLevel = info.Data.Level });
 		}

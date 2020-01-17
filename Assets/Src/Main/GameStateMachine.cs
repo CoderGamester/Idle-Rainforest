@@ -1,6 +1,7 @@
 using Systems;
 using Commands;
 using Configs;
+using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Statechart;
 using GameLovers.UiService;
@@ -71,34 +72,37 @@ namespace Main
 			
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(game);
 			
-			game.OnEnter(InitializeEvent);
 			game.OnEnter(InitializeGame);
 		}
 
-		private async void InitializeEvent()
+		private async void InitializeGame()
 		{
+			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
+
+			// TODO: Delete horrible code below
+			
 			var info = _gameLogic.BuildingLogic.GetEventInfo();
+			var reset = false;
 			
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.EndTime && 
 			    (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime || 
 			     _gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime))
 			{
+				reset = true;
+				
+				_gameLogic.DataProviderLogic.PlayerData.Buildings.Clear();
+				_gameLogic.DataProviderLogic.PlayerData.GameIds.Clear();
+				_gameLogic.DataProviderLogic.PlayerData.Cards.Clear();
+				_gameLogic.DataProviderLogic.CurrencyData.MainCurrency = 0;
+				
 				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
 				
 				ui.gameObject.SetActive(true);
-
-				// TODO: RESET
 			}
-		}
-
-		private void InitializeGame()
-		{
-			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
-
-			// TODO: Delete below
+			
 			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.PlayerData.Buildings);
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
-			if (_gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime)
+			if (reset && _gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime)
 			{
 				var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
 			

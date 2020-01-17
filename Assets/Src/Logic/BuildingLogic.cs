@@ -89,7 +89,7 @@ namespace Logic
 				Data = data,
 				NextBracketLevel = Mathf.Min(nextBracket, maxLevel),
 				MaxLevel = maxLevel,
-				ProductionAmount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level,
+				ProductionAmount = ProductionAmount(data, config),
 				ProductionTime = config.ProductionTimeBase,
 				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
 				AutomateCost = config.AutomationCurrencyRequired,
@@ -221,6 +221,20 @@ namespace Logic
 						throw new ArgumentOutOfRangeException($"Wrong reward {config.UpgradeRewards[i].GameId} for the upgrade {building}");
 				}
 			}
+		}
+
+		private int ProductionAmount(BuildingData data, BuildingConfig config)
+		{
+			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
+			var cards = _gameLogic.CardLogic.GetBuildingCards(config.Building);
+			var totalAmount = 0;
+
+			foreach (var card in cards)
+			{
+				totalAmount += amount * card.ProductionBonus;
+			}
+
+			return totalAmount;
 		}
 	}
 }

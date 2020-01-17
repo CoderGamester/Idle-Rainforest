@@ -123,7 +123,7 @@ namespace MonoComponent
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
-			UpdateState(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateView(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private async void OnReadyToCollect(float time)

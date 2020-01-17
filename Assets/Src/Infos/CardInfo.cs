@@ -10,5 +10,6 @@ namespace Infos
 		public int AmountRequired;
 		public int MaxLevel;
 		public int UpgradeCost;
+		public int ProductionBonus;
 	}
 }
