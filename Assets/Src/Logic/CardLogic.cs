@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Configs;
 using Data;
+using Events;
 using Ids;
 using Infos;
 using Utils;
@@ -121,6 +122,7 @@ namespace Logic
 				data = new CardData { Id = card, Amount = 0, Level = 1 };
 				
 				_data.Add(data);
+				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card, NewLevel = data.Level });
 			}
 
 			data.Amount += amount;
@@ -148,6 +150,7 @@ namespace Logic
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
 			_data.Set(info.Data);
+			_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card, NewLevel = info.Data.Level });
 		}
 	}
 }

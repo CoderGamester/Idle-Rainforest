@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using Commands;
 using Data;
 using GameLovers.Services;
+using Infos;
 using Logic;
 using Services;
 using UnityEngine;
@@ -34,7 +34,7 @@ namespace Systems
 			{
 				var info = _dataProvider.BuildingDataProvider.GetBuildingInfo(_data[i].Id);
 				
-				if (_services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
+				if (info.AutomationState == AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
 				{
 					var times = Mathf.FloorToInt((float) (info.ProductionEndTime - info.Data.ProductionStartTime).TotalSeconds / info.ProductionTime);
 					

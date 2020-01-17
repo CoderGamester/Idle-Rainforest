@@ -43,11 +43,11 @@ namespace Logic
 		void FlushData<T>() where T : class;
 	}
 
-	/// <inheritdoc />
+	/// <inheritdoc cref="IDataProviderLogic" />
 	/// <remarks>
 	/// Allows to add data 
 	/// </remarks>
-	public interface IDataProviderInternalLogic
+	public interface IDataProviderInternalLogic : IDataProvider
 	{
 		/// <summary>
 		/// TODO:

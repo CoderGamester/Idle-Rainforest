@@ -24,11 +24,7 @@ namespace Logic
 		/// Requests if the given <paramref name="id"/> has a <see cref="GameObject"/> component in ti
 		/// </summary>
 		bool HasGameObject(UniqueId id);
-	}
-
-	/// <inheritdoc />
-	public interface IGameObjectLogic : IGameObjectDataProvider
-	{
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -38,6 +34,11 @@ namespace Logic
 		/// TODO:
 		/// </summary>
 		void UnloadGameObject(UniqueId id);
+	}
+
+	/// <inheritdoc />
+	public interface IGameObjectLogic : IGameObjectDataProvider
+	{
 	}
 	
 	/// <inheritdoc />

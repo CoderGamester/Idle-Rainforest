@@ -113,8 +113,7 @@ namespace Ids
 	public class UniqueIdList<T> : IdList<UniqueId, T>, IUniqueIdList<T> 
 		where T : struct
 	{
-		public UniqueIdList(Func<T, UniqueId> referenceIdResolver, Func<List<T>> persistentListResolver) : 
-			base(referenceIdResolver, persistentListResolver)
+		public UniqueIdList(Func<T, UniqueId> referenceIdResolver, IList<T> list) : base(referenceIdResolver, list)
 		{
 		}
 	}

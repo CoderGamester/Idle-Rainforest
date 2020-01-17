@@ -102,14 +102,14 @@ namespace Logic
 		{
 			var info = GetBuildingInfo(id);
 
-			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
-			{
-				throw new InvalidOperationException($"The building {info.GameId} is still not ready to collect");
-			}
-
 			if (info.AutomationState == AutomationState.Automated)
 			{
 				throw new InvalidOperationException($"The building {info.GameId} is already automated and cannot be collected by the player anymore");
+			}
+
+			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
+			{
+				throw new InvalidOperationException($"The building {info.GameId} is still not ready to collect");
 			}
 			
 			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
@@ -122,40 +122,15 @@ namespace Logic
 		public void Upgrade(UniqueId id)
 		{
 			var info = GetBuildingInfo(id);
-			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) info.GameId);
 
 			info.Data.Level++;
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
 			_data.Set(info.Data);
 
-			if (info.Data.Level != info.NextBracketLevel)
+			if (info.Data.Level == info.NextBracketLevel)
 			{
-				return;
-			}
-			
-			for (var i = 0; i < config.UpgradeRewards.Count; i++)
-			{
-				if (config.UpgradeRewards[i].GameId.IsInGroup(GameIdGroup.Card))
-				{
-					_gameLogic.CardLogic.AddCard(config.UpgradeRewards[i].GameId, config.UpgradeRewards[i].IntValue);
-					continue;
-				}
-					
-				switch (config.UpgradeRewards[i].GameId)
-				{
-					case GameId.MainCurrency:
-						_gameLogic.CurrencyLogic.AddMainCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					case GameId.SoftCurrency:
-						_gameLogic.CurrencyLogic.AddSoftCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					case GameId.HardCurrency:
-						_gameLogic.CurrencyLogic.AddHardCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException($"Wrong reward {config.UpgradeRewards[i].GameId} for the upgrade {info.GameId}");
-				}
+				BracketReward(info.GameId);
 			}
 		}
 
@@ -217,6 +192,35 @@ namespace Logic
 			}
 
 			return nextBracket;
+		}
+
+		private void BracketReward(GameId building)
+		{
+			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) building);
+			
+			for (var i = 0; i < config.UpgradeRewards.Count; i++)
+			{
+				if (config.UpgradeRewards[i].GameId.IsInGroup(GameIdGroup.Card))
+				{
+					_gameLogic.CardLogic.AddCard(config.UpgradeRewards[i].GameId, config.UpgradeRewards[i].IntValue);
+					continue;
+				}
+					
+				switch (config.UpgradeRewards[i].GameId)
+				{
+					case GameId.MainCurrency:
+						_gameLogic.CurrencyLogic.AddMainCurrency(config.UpgradeRewards[i].IntValue);
+						break;
+					case GameId.SoftCurrency:
+						_gameLogic.CurrencyLogic.AddSoftCurrency(config.UpgradeRewards[i].IntValue);
+						break;
+					case GameId.HardCurrency:
+						_gameLogic.CurrencyLogic.AddHardCurrency(config.UpgradeRewards[i].IntValue);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException($"Wrong reward {config.UpgradeRewards[i].GameId} for the upgrade {building}");
+				}
+			}
 		}
 	}
 }

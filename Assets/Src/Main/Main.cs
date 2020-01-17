@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Systems;
 using Events;
 using GameLovers.Services;
 using Logic;
@@ -45,14 +47,15 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
-		// TODO: Event Start Screen
-		// TODO: Event countdown timer
 		// TODO: Rename Buildings to LevelBuildings/Level and make it mapped by GameId and not UniqueId
 		// TODO: AutoCollectSystem optimize
 		// TODO: LoadData in GameLogic or LoadingState???
+		// TODO: LoadingSystem for loading the initial game objects from the data
+		// TODO: DataProvider data access. Free from everywhere (including the view?)
+		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: GameLogic custom exception
+		// TODO: Systems Architecture. Use Unity DOTS???
 		
-		// TODO: Try IdListResolver without Func<List> and use List reference directly
 		// TODO: Select Google Sheet asset
 		// TODO: Select UiConfigs asset
 		// TODO: UiService Unload also removes Ui from visibleUiList. Rename method to "Remove" and add proper Unload

@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Data;
+using GameLovers.Services;
+using Logic;
 using UnityEngine;
 
 namespace Utils
@@ -79,7 +83,7 @@ namespace Utils
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<TValue> GetList();
+		IList<TValue> GetList();
 		
 		/// <summary>
 		/// Removes the data associated with the given <paramref name="id"/>
@@ -115,7 +119,7 @@ namespace Utils
 		where TValue : struct
 	{
 		private readonly Func<TValue, TKey> _referenceIdResolver;
-		private readonly Func<List<TValue>> _persistentListResolver;
+		private readonly IList<TValue> _list;
 		private readonly EqualityComparer<TKey> _comparer = EqualityComparer<TKey>.Default;
 		private readonly IDictionary<TKey, IList<Action<TValue>>> _onAddActions = new Dictionary<TKey, IList<Action<TValue>>>();
 		private readonly IDictionary<TKey, IList<Action<TValue>>> _onUpdateActions = new Dictionary<TKey, IList<Action<TValue>>>();
@@ -123,10 +127,10 @@ namespace Utils
 		
 		private IdList() {}
  
-		public IdList(Func<TValue, TKey> referenceIdResolver, Func<List<TValue>> persistentListResolver)
+		public IdList(Func<TValue, TKey> referenceIdResolver, IList<TValue> list)
 		{
-			_persistentListResolver = persistentListResolver;
 			_referenceIdResolver = referenceIdResolver;
+			_list = list;
 		}
 
 		/// <inheritdoc />
@@ -140,7 +144,7 @@ namespace Utils
 				return false;
 			}
  
-			value =  _persistentListResolver()[index];
+			value = _list[index];
 
 			return true;
 		}
@@ -159,7 +163,7 @@ namespace Utils
 		/// <inheritdoc />
 		public IReadOnlyList<TValue> GetReadOnlyList()
 		{
-			return _persistentListResolver().AsReadOnly();
+			return new ReadOnlyCollection<TValue>(_list);
 		}
 
 		/// <inheritdoc />
@@ -261,7 +265,7 @@ namespace Utils
 				throw new ArgumentException($"Cannot add {nameof(TValue)} with id {id.ToString()}, because it already exists");
 			}
  
-			_persistentListResolver().Add(data);
+			_list.Add(data);
 			
 			if (_onAddActions.TryGetValue(id, out var actions))
 			{
@@ -273,9 +277,9 @@ namespace Utils
 		}
  
 		/// <inheritdoc />
-		public List<TValue> GetList()
+		public IList<TValue> GetList()
 		{
-			return _persistentListResolver();
+			return _list;
 		}
 
 		/// <inheritdoc />
@@ -322,7 +326,7 @@ namespace Utils
 				throw new ArgumentException($"Could not find: {nameof(TValue)} with id {id.ToString()}");
 			}
  
-			_persistentListResolver()[index] = data;
+			_list[index] = data;
 			
 			if (_onUpdateActions.TryGetValue(id, out var actions))
 			{
@@ -335,7 +339,7 @@ namespace Utils
 		
 		private int FindIndex(TKey id)
 		{
-			var list = _persistentListResolver();
+			var list = _list;
 			for (var i = 0; i < list.Count; i++)
 			{
 				if (_comparer.Equals(_referenceIdResolver(list[i]), id))
@@ -351,7 +355,7 @@ namespace Utils
 		{
 			if (_onRemoveActions.TryGetValue(id, out var actions))
 			{
-				var data = _persistentListResolver()[index];
+				var data = _list[index];
 				
 				for (var i = 0; i < actions.Count; i++)
 				{
@@ -359,7 +363,7 @@ namespace Utils
 				}
 			}
 			
-			_persistentListResolver().RemoveAt(index);
+			_list.RemoveAt(index);
 		}
 	}
 }

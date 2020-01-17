@@ -115,10 +115,7 @@ namespace Logic
 		{
 			var dataProviderLogic = new DataProviderLogic(messageBroker);
 			
-			LoadData(dataProviderLogic);
-			
-			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
-			dataProviderLogic.AppData.LastLoginTime = timeService.DateTimeUtcNow;
+			LoadData(dataProviderLogic, timeService.DateTimeUtcNow);
 			
 			ConfigsProvider = new ConfigsProvider();
 			MessageBrokerService = messageBroker;
@@ -130,19 +127,16 @@ namespace Logic
 			CurrencyLogic = new CurrencyLogic(this, dataProviderLogic.CurrencyData);
 			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(
 				data => data.Id, 
-				() => dataProviderLogic.PlayerData.GameIds));
+				dataProviderLogic.PlayerData.GameIds));
 			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
 				data => data.Id, 
-				() => dataProviderLogic.PlayerData.Buildings));
-			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
-				data => data.Id, 
-				() => dataProviderLogic.PlayerData.Buildings));
+				dataProviderLogic.PlayerData.Buildings));
 			CardLogic = new CardLogic(this, new IdList<GameId, CardData>(
 				data => data.Id, 
-				() => dataProviderLogic.PlayerData.Cards));
+				dataProviderLogic.PlayerData.Cards));
 		}
 
-		private void LoadData(IDataProviderInternalLogic dataProviderLogic)
+		private void LoadData(IDataProviderInternalLogic dataProviderLogic, DateTime time)
 		{
 			var appDataJson = PlayerPrefs.GetString(nameof(AppData), "");
 			var playerDataJson = PlayerPrefs.GetString(nameof(PlayerData), "");
@@ -152,6 +146,14 @@ namespace Logic
 			dataProviderLogic.AddData(string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson));
 			dataProviderLogic.AddData(string.IsNullOrEmpty(currencyDataJson) ? new CurrencyData() : JsonConvert.DeserializeObject<CurrencyData>(currencyDataJson));
 
+			if (string.IsNullOrEmpty(appDataJson))
+			{
+				dataProviderLogic.AppData.FirstLoginTime = time;
+				dataProviderLogic.AppData.LoginTime = time;
+			}
+			
+			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
+			dataProviderLogic.AppData.LoginTime = time;
 		}
 	}
 }

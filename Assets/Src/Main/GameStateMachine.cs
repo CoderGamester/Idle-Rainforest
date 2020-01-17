@@ -1,3 +1,4 @@
+using Systems;
 using Commands;
 using Configs;
 using GameLovers.ConfigsContainer;
@@ -70,35 +71,53 @@ namespace Main
 			
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(game);
 			
-			game.OnEnter(InitializeGame);
 			game.OnEnter(InitializeEvent);
+			game.OnEnter(InitializeGame);
 		}
 
-		private void InitializeEvent()
+		private async void InitializeEvent()
 		{
 			var info = _gameLogic.BuildingLogic.GetEventInfo();
 			
-			if (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime &&
-			    _gameLogic.TimeService.DateTimeUtcNow < info.EndTime)
+			if (_gameLogic.TimeService.DateTimeUtcNow < info.EndTime && 
+			    (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime || 
+			     _gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime))
 			{
-				_services.UiService.LoadUiAsync<EventPanelPresenter>().ContinueWith(task => task.Result.gameObject.SetActive(true));
+				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
+				
+				ui.gameObject.SetActive(true);
+
+				// TODO: RESET
 			}
 		}
 
 		private void InitializeGame()
 		{
-			var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
-			
-			for (var i = 0; i < list.Count; i++)
-			{
-				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
-				{
-					BuildingType = list[i].Building,
-					Position = i * 5 * Vector3.forward
-				});
-			}
-			
 			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
+
+			// TODO: Delete below
+			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.PlayerData.Buildings);
+			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
+			if (_gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime)
+			{
+				var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
+			
+				for (var i = 0; i < list.Count; i++)
+				{
+					_services.CommandService.ExecuteCommand(new CreateBuildingCommand
+					{
+						BuildingType = list[i].Building,
+						Position = i * 5 * Vector3.forward + Vector3.left * 1.5f
+					});
+				}
+			}
+			else
+			{
+				foreach (var buildingData in _gameLogic.DataProviderLogic.PlayerData.Buildings)
+				{
+					_gameLogic.GameObjectDataProvider.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Building, buildingData.Position);
+				}
+			}
 		}
 	}
 }

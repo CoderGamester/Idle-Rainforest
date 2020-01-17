@@ -5,7 +5,6 @@ using Logic;
 using Services;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace Presenters
@@ -39,10 +38,8 @@ namespace Presenters
 
 		private void OnCloseClicked()
 		{
-			var ui = _services.UiService.UnloadUi<CardsPanelPresenter>();
-			
-			Addressables.Release(ui.gameObject);
-			Destroy(ui.gameObject);
+			_services.UiService.UnloadUi<EventPanelPresenter>();
+			Destroy(gameObject);
 		}
 	}
 }

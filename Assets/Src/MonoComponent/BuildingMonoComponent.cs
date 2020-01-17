@@ -40,11 +40,13 @@ namespace MonoComponent
 			_readyState.SetActive(false);
 			_upgradableState.SetActive(false);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
 		}
 
 		private void OnDestroy()
 		{
 			_cancellationToken?.Cancel();
+			_services?.MessageBrokerService?.UnsubscribeAll(this);
 		}
 
 		private void Start()
@@ -91,6 +93,8 @@ namespace MonoComponent
 			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
 			_automateState.SetActive(false);
+			_cancellationToken?.Cancel();
+			_readyState.SetActive(false);
 		}
 
 		private void UpdateView(BuildingInfo info)
@@ -109,9 +113,15 @@ namespace MonoComponent
 		{
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
 			_automateState.SetActive(info.AutomationState == AutomationState.Ready);
+			_readyState.SetActive(info.AutomationState != AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime);
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
+		{
+			UpdateState(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
+		}
+
+		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
 			UpdateState(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
 		}

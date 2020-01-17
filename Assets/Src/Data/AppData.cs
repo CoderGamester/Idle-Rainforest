@@ -9,9 +9,9 @@ namespace Data
 	[Serializable]
 	public class AppData
 	{
+		public DateTime FirstLoginTime;
+		public DateTime LastLoginTime;
+		public DateTime LoginTime;
 		public UniqueId UniqueIdCounter = UniqueId.Invalid;
-		public DateTime FirstLoginTime = DateTime.UtcNow;
-		public DateTime LastLoginTime = DateTime.UtcNow;
-		public DateTime LoginTime = DateTime.UtcNow;
 	}
 }
