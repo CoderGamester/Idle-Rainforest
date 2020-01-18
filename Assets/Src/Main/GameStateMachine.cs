@@ -82,14 +82,10 @@ namespace Main
 			// TODO: Delete horrible code below
 			
 			var info = _gameLogic.BuildingLogic.GetEventInfo();
-			var reset = false;
 			
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.EndTime && 
-			    (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime || 
-			     _gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime))
+			    (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime || _gameLogic.DataProviderLogic.AppData.LoginCount == 1))
 			{
-				reset = true;
-				
 				_gameLogic.DataProviderLogic.PlayerData.Buildings.Clear();
 				_gameLogic.DataProviderLogic.PlayerData.GameIds.Clear();
 				_gameLogic.DataProviderLogic.PlayerData.Cards.Clear();
@@ -102,7 +98,7 @@ namespace Main
 			
 			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.PlayerData.Buildings);
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
-			if (reset && _gameLogic.DataProviderLogic.AppData.FirstLoginTime == _gameLogic.DataProviderLogic.AppData.LoginTime)
+			if (_gameLogic.DataProviderLogic.PlayerData.Buildings.Count == 0)
 			{
 				var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
 			

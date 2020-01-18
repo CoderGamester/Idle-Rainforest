@@ -21,12 +21,14 @@ MonoBehaviour:
     m_Address: Configs
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_mainAssetType: 
+    m_mainAssetType: UnityEditor.DefaultAsset, UnityEditor, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - m_GUID: e9473c222ebb349d79d931627b690e0f
     m_Address: Prefabs
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_mainAssetType: 
+    m_mainAssetType: UnityEditor.DefaultAsset, UnityEditor, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84d0e2bd97df24e95a85e355dd79a2b5, type: 2}
   m_SchemaSet:

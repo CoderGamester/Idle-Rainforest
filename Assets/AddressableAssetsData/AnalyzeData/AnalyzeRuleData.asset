@@ -19,255 +19,9 @@ MonoBehaviour:
       m_Severity: 0
   - RuleName: Check Resources to Addressable Duplicate Dependencies
     Results:
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/TMP Settings.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Fonts/LiberationSans.ttf
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/TMP Settings.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/TMP Settings.asset:defaultlocalgroup_assets_all.bundle:Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/TMP Settings.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/TMP Settings.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Drop Shadow.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Fonts/LiberationSans.ttf
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Drop Shadow.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Drop Shadow.mat:defaultlocalgroup_assets_all.bundle:Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Drop Shadow.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Drop Shadow.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Fallback.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Fonts/LiberationSans.ttf
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Fallback.asset:defaultlocalgroup_assets_all.bundle:Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Fallback.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Fallback.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Outline.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Fonts/LiberationSans.ttf
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Outline.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Outline.mat:defaultlocalgroup_assets_all.bundle:Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Outline.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF - Outline.mat:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh Pro/Fonts/LiberationSans.ttf
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh Pro/Resources/Fonts
-        & Materials/LiberationSans SDF.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF.asset:defaultlocalgroup_assets_all.bundle:Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh Pro/Resources/Fonts
-        & Materials/LiberationSans SDF - Fallback.asset
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Fonts & Materials/LiberationSans
-        SDF.asset:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/Plugins/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile.shader:defaultlocalgroup_assets_all.bundle:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/CanvasScaler.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportPopover.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportSheet.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportSheet.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportSheet.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/BugReportSheet.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Slider.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/CanvasScaler.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Mask.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/DebugPanel.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/CanvasScaler.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinEntry.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/GridLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/EventSystem/EventTrigger.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/CanvasScaler.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Scrollbar.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Mask.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/PinnedUI.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Trigger.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/CanvasScaler.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Trigger.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Trigger.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/ActionOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/ActionOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/BoolOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/EnumOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/EnumOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/NumberOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/ReadOnlyOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/ReadOnlyOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/StringOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Options/StringOption.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Mask.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/BugReporter.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Slider.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Scrollbar.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Mask.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Console.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Mask.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Options.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/GraphicRaycaster.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/Profiler.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Slider.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/System.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Image.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/System.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/ContentSizeFitter.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/System.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/ScrollRect.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/System.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Button.cs
-      m_Severity: 2
-    - m_ResultName: Assets/StompyRobot/SRDebugger/Resources/SRDebugger/UI/Prefabs/Tabs/System.prefab:defaultlocalgroup_assets_all.bundle:Packages/com.unity.ugui/Runtime/UI/Core/Layout/VerticalLayoutGroup.cs
-      m_Severity: 2
+    - m_ResultName: Check Resources to Addressable Duplicate Dependencies - No issues
+        found.
+      m_Severity: 0
   - RuleName: Check Scene to Addressable Duplicate Dependencies
     Results:
     - m_ResultName: Check Scene to Addressable Duplicate Dependencies - No issues
@@ -279,56 +33,55 @@ MonoBehaviour:
       m_Severity: 0
   - RuleName: Build Bundle Layout
     Results:
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/AddressableConfigs.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/AddressableConfigs.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/BuildingConfigs.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/BuildingConfigs.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/CardConfigs.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/CardConfigs.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/UiConfigs.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/ScriptableObjects/Configs/UiConfigs.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/Art/Prefabs/Building.prefab
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/Art/Prefabs/Building.prefab
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Cards
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Cards
         Panel.prefab
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Event
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Event
         Panel.prefab
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Hud.prefab
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Hud.prefab
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Loading
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Explicit:Assets/Art/Prefabs/Ui/Loading
         Screen.prefab
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
         Pro/Fonts/LiberationSans.ttf
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
         Pro/Fonts/LiberationSans.ttf
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
         Pro/Fonts/LiberationSans.ttf
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF - Fallback.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF - Fallback.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Fonts
+        & Materials/LiberationSans SDF - Fallback.asset
       m_Severity: 0
-    - m_ResultName: defaultlocalgroup_assets_all.bundle:Implicit:Assets/Plugins/TextMesh
-        Pro/Resources/Shaders/TMP_SDF-Mobile.shader
+    - m_ResultName: f4ffff6dea548a00ceb7446673232ee5_assets_all.bundle:Implicit:Assets/Art/Resources/Shaders/TMP_SDF-Mobile.shader
       m_Severity: 0
   - RuleName: UnityEditor.AddressableAssets.Build.AnalyzeRules.AnalyzeRule
     Results: []

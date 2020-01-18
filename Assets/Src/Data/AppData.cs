@@ -12,6 +12,7 @@ namespace Data
 		public DateTime FirstLoginTime;
 		public DateTime LastLoginTime;
 		public DateTime LoginTime;
+		public ulong LoginCount;
 		public UniqueId UniqueIdCounter = UniqueId.Invalid;
 	}
 }
