@@ -56,8 +56,12 @@ namespace ViewPresenters
 
 		private void UpdateView(CardInfo info)
 		{
-			_cardNameText.text = $"lvl {info.Data.Level.ToString()} {info.GameId} {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "max";
+			
+			_cardNameText.text = $"lvl {levelText} {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
 			_upgradeCostText.text = info.UpgradeCost.ToString();
+			
+			_upgradeButton.gameObject.SetActive(info.Data.Level < info.MaxLevel);
 		}
 	}
 }

@@ -56,11 +56,10 @@ namespace Main
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: GameLogic custom exception
 		// TODO: Systems Architecture. Use Unity DOTS???
-		// TODO: Add SRDebugger and Time cheat
+		// TODO: Add Time cheat into SRDebugger
 		
 		// TODO: Select Google Sheet asset
 		// TODO: Select UiConfigs asset
-		// TODO: UiService Unload also removes Ui from visibleUiList. Rename method to "Remove" and add proper Unload
 		// TODO: UiService Close(this);
 		// TODO: UiPresenter protected Close() method
 		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat

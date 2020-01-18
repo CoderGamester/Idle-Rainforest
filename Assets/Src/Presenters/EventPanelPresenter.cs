@@ -39,7 +39,6 @@ namespace Presenters
 		private void OnCloseClicked()
 		{
 			_services.UiService.UnloadUi<EventPanelPresenter>();
-			Destroy(gameObject);
 		}
 	}
 }

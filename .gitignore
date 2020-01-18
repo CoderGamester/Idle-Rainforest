@@ -61,7 +61,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-#OS generated
+# OS generated
 **/.DS_Store
 **/DS_Store
 **/DS_Store?*
@@ -71,11 +71,12 @@ crashlytics-build.properties
 **/ehthumbs.db
 **/Thumbs.db
 
-#Windows generated
+# Windows generated
 *Thumbs*
 *.orig
 *.orig.meta
 *.uxf
 
 
-
+#Project Spefic
+[Aa]ssets/StreamingAssets

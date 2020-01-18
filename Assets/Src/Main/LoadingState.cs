@@ -8,6 +8,7 @@ using GameLovers.UiService;
 using Ids;
 using Presenters;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Main
 {
@@ -50,11 +51,11 @@ namespace Main
 
 		private async Task LoadAddressableConfigs()
 		{
-			var configTask = LoaderUtil.LoadAssetAsync<AddressableConfigs>($"Configs/{nameof(AddressableConfigs)}.asset", true);
-
-			await configTask;
+			await Addressables.InitializeAsync().Task;
 			
-			_gameConfigs.AddConfigs(configTask.Result.Configs);
+			var configTask = LoaderUtil.LoadAssetAsync<AddressableConfigs>($"Configs/{nameof(AddressableConfigs)}.asset", true);
+			
+			_gameConfigs.AddConfigs((await configTask).Configs);
 		}
 
 		private async Task LoadUiConfigsConfigs()

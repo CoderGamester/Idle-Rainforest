@@ -154,6 +154,7 @@ namespace Logic
 			
 			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
 			dataProviderLogic.AppData.LoginTime = time;
+			dataProviderLogic.AppData.LoginCount++;
 		}
 	}
 }
