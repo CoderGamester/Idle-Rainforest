@@ -58,15 +58,10 @@ namespace Main
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Add Time cheat into SRDebugger
 		
-		// TODO: Select Google Sheet asset
-		// TODO: Select UiConfigs asset
-		// TODO: UiService Close(this);
-		// TODO: UiPresenter protected Close() method
 		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat
-		// TODO: KeyValuePair Serialization on CsvParser
-		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
-		// TODO: Have possibility of independent pool outside of the PoolService
-		// TODO: Make the UiPresenter.Refresh() a public virtual method and not executed by the UiService
+		// TODO: Async Await working
+		// TODO: Move Frameworks to GitHub
+		// TOOD: Missing RuntimeTests for services
 	}
 }

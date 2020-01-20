@@ -59,15 +59,15 @@
   "lock": {
     "com.gamelovers.addressableidsscriptgenerator": {
       "revision": "HEAD",
-      "hash": "f95207542f58aed26a587f21d04cab3281fff03f"
+      "hash": "e3086888c582d444c46c2cefec518d4a120eca23"
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
-      "hash": "68443c6feacb296aa4508712bd092b4dca8d127c"
+      "hash": "f4f340ef5aee5c3f6396297492e06bf35d8fe829"
     },
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
-      "hash": "bb09671497d686deda33e3c322e89b49f2beb139"
+      "hash": "bbee11ea86512ddde60aff863dafeca0e0821042"
     },
     "com.gamelovers.loadextension": {
       "revision": "HEAD",
@@ -87,7 +87,7 @@
     },
     "com.gamelovers.services": {
       "revision": "HEAD",
-      "hash": "cf9f4d6d8f1690c080bc0738cdc4f6fa6c167af0"
+      "hash": "dc14561a2969e140a79eae02a002e9d3e342a6be"
     },
     "com.gamelovers.statechart": {
       "revision": "HEAD",
@@ -95,7 +95,7 @@
     },
     "com.gamelovers.uiservice": {
       "revision": "HEAD",
-      "hash": "753c9627effd999cb33bae375533a4b7c3beafca"
+      "hash": "9ecda58b1e5992dd6e6ab7ed89ea68870b415f6f"
     }
   }
 }

@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Configs
 {
 	[Serializable]
-	public struct BuildingConfig : IConfig
+	public struct BuildingConfig
 	{
 		public GameId Building;
 		public int ProductionAmountBase;
@@ -25,8 +25,6 @@ namespace Configs
 
 		[SerializeField] private List<IntData> _upgradeRewards;
 		[SerializeField] private List<IntPairData> _upgradeBrackets;
-		
-		public int ConfigId => (int) Building;
 
 		public ReadOnlyCollection<IntData> UpgradeRewards
 		{

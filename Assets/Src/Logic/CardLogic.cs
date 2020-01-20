@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Configs;
 using Data;
 using Events;
+using GameLovers.ConfigsContainer;
 using Ids;
 using Infos;
-using Utils;
 
 namespace Logic
 {
@@ -52,7 +52,7 @@ namespace Logic
 		
 		private CardLogic() {}
 
-		public CardLogic(IGameInternalLogic gameLogic, IIdList<GameId, CardData> data)
+		public CardLogic(IGameInternalLogic gameLogic, IdList<GameId, CardData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;

@@ -53,9 +53,9 @@ namespace Main
 		{
 			await Addressables.InitializeAsync().Task;
 			
-			var configTask = LoaderUtil.LoadAssetAsync<AddressableConfigs>($"Configs/{nameof(AddressableConfigs)}.asset", true);
+			var configs = await LoaderUtil.LoadAssetAsync<AddressableConfigs>($"Configs/{nameof(AddressableConfigs)}.asset", true);
 			
-			_gameConfigs.AddConfigs((await configTask).Configs);
+			_gameConfigs.AddConfigs(config => config.Id, configs.Configs);
 		}
 
 		private async Task LoadUiConfigsConfigs()
@@ -75,13 +75,13 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			var buildingsTask = LoaderUtil.LoadAssetAsync<BuildingConfigs>(
+			var buildings = await LoaderUtil.LoadAssetAsync<BuildingConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_BuildingConfigs).Address, true);
-			var cardsTask = LoaderUtil.LoadAssetAsync<CardConfigs>(
+			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
 			
-			_gameConfigs.AddConfigs((await buildingsTask).Configs);
-			_gameConfigs.AddConfigs((await cardsTask).Configs);
+			_gameConfigs.AddConfigs(building => (int) building.Building, buildings.Configs);
+			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);
 		}

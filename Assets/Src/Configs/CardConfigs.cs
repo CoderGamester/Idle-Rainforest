@@ -7,15 +7,13 @@ using UnityEngine;
 namespace Configs
 {
 	[Serializable]
-	public struct CardConfig : IConfig
+	public struct CardConfig
 	{
 		public GameId Id;
 		public GameId Building;
 		public List<int> UpgradeCost;
 		public List<int> UpgradeCardsRequired;
 		public List<int> LevelBonus;
-		
-		public int ConfigId => (int) Id;
 	}
 	
 	/// <summary>

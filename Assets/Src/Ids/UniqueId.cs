@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Main;
-using Utils;
+using GameLovers.ConfigsContainer;
 
 namespace Ids
 {
