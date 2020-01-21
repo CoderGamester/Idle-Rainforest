@@ -15,17 +15,12 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		EventInfo GetEventInfo();
+		IUniqueIdListReader<LevelBuildingData> Data { get; }
 		
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		IUniqueIdListReader<BuildingData> Data { get; }
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		BuildingInfo GetBuildingInfo(UniqueId id);
+		LevelBuildingInfo GetLevelBuildingInfo(UniqueId id);
 	}
 
 	/// <inheritdoc />
@@ -51,44 +46,33 @@ namespace Logic
 	public class BuildingLogic : IBuildingLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IUniqueIdList<BuildingData> _data;
+		private readonly IUniqueIdList<LevelBuildingData> _data;
+
+		/// <inheritdoc />
+		public IUniqueIdListReader<LevelBuildingData> Data => _data;
 		
 		private BuildingLogic() {}
 
-		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<BuildingData> data)
+		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<LevelBuildingData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
 		}
 
 		/// <inheritdoc />
-		public IUniqueIdListReader<BuildingData> Data => _data;
-
-		/// <inheritdoc />
-		public EventInfo GetEventInfo()
-		{
-			return new EventInfo
-			{
-				StartTime = DateTime.Today,
-				EndTime = DateTime.Today.AddDays(1)
-			};
-		}
-
-		/// <inheritdoc />
-		public BuildingInfo GetBuildingInfo(UniqueId id)
+		public LevelBuildingInfo GetLevelBuildingInfo(UniqueId id)
 		{
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
-			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) gameId);
+			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) gameId);
 			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].IntValue;
 			var nextBracket = GetNextLevelBracket(data, config);
 
-			return new BuildingInfo
+			return new LevelBuildingInfo
 			{
 				GameId = gameId,
 				Data = data,
 				NextBracketLevel = Mathf.Min(nextBracket, maxLevel),
-				MaxLevel = maxLevel,
 				ProductionAmount = ProductionAmount(data, config),
 				ProductionTime = config.ProductionTimeBase,
 				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
@@ -100,7 +84,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
-			var info = GetBuildingInfo(id);
+			var info = GetLevelBuildingInfo(id);
 
 			if (info.AutomationState == AutomationState.Automated)
 			{
@@ -121,7 +105,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Upgrade(UniqueId id)
 		{
-			var info = GetBuildingInfo(id);
+			var info = GetLevelBuildingInfo(id);
 
 			info.Data.Level++;
 			
@@ -137,7 +121,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Automate(UniqueId id)
 		{
-			var info = GetBuildingInfo(id);
+			var info = GetLevelBuildingInfo(id);
 
 			if (info.AutomationState != AutomationState.Ready)
 			{
@@ -150,7 +134,7 @@ namespace Logic
 			_data.Set(info.Data);
 		}
 
-		private AutomationState GetBuildingState(BuildingData data, BuildingConfig config)
+		private AutomationState GetBuildingState(LevelBuildingData data, LevelBuildingConfig config)
 		{
 			var state = AutomationState.Ready;
 			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
@@ -178,7 +162,7 @@ namespace Logic
 			return state;
 		}
 
-		private int GetNextLevelBracket(BuildingData data, BuildingConfig config)
+		private int GetNextLevelBracket(LevelBuildingData data, LevelBuildingConfig config)
 		{
 			var nextBracket = int.MaxValue;
 
@@ -196,7 +180,7 @@ namespace Logic
 
 		private void BracketReward(GameId building)
 		{
-			var config = _gameLogic.ConfigsProvider.GetConfig<BuildingConfig>((int) building);
+			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) building);
 			
 			for (var i = 0; i < config.UpgradeRewards.Count; i++)
 			{
@@ -223,7 +207,7 @@ namespace Logic
 			}
 		}
 
-		private int ProductionAmount(BuildingData data, BuildingConfig config)
+		private int ProductionAmount(LevelBuildingData data, LevelBuildingConfig config)
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
 			var cards = _gameLogic.CardLogic.GetBuildingCards(config.Building);

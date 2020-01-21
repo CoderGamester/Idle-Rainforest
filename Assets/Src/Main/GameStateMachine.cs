@@ -1,7 +1,6 @@
 using Systems;
 using Commands;
 using Configs;
-using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Statechart;
 using GameLovers.UiService;
@@ -32,9 +31,12 @@ namespace Main
 
 		public GameStateMachine(IGameInternalLogic gameLogic, IGameServices services)
 		{
+			var configsProvider = (ConfigsProvider) gameLogic.ConfigsProvider;
+			var uiService = (UiService) services.UiService;
+			
 			_gameLogic = gameLogic;
 			_services = services;
-			_loadingState = new LoadingState((ConfigsProvider) gameLogic.ConfigsProvider, (UiService) services.UiService);
+			_loadingState = new LoadingState(configsProvider,uiService, services, gameLogic);
 			_stateMachine = new Statechart(Setup);
 		}
 
@@ -70,37 +72,18 @@ namespace Main
 			
 			initial.Transition().Target(initialLoading);
 			
+			initialLoading.OnEnter(FirstSessionCheck);
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(game);
+			initialLoading.OnExit(EventCheck);
 			
 			game.OnEnter(InitializeGame);
 		}
 
-		private async void InitializeGame()
+		private void FirstSessionCheck()
 		{
-			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
-
-			// TODO: Delete horrible code below
-			
-			var info = _gameLogic.BuildingLogic.GetEventInfo();
-			
-			if (_gameLogic.TimeService.DateTimeUtcNow < info.EndTime && 
-			    (_gameLogic.DataProviderLogic.AppData.LastLoginTime < info.StartTime || _gameLogic.DataProviderLogic.AppData.LoginCount == 1))
+			if (_gameLogic.IsFirstSession)
 			{
-				_gameLogic.DataProviderLogic.PlayerData.Buildings.Clear();
-				_gameLogic.DataProviderLogic.PlayerData.GameIds.Clear();
-				_gameLogic.DataProviderLogic.PlayerData.Cards.Clear();
-				_gameLogic.DataProviderLogic.CurrencyData.MainCurrency = 0;
-				
-				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
-				
-				ui.gameObject.SetActive(true);
-			}
-			
-			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.PlayerData.Buildings);
-			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
-			if (_gameLogic.DataProviderLogic.PlayerData.Buildings.Count == 0)
-			{
-				var list = _gameLogic.ConfigsProvider.GetConfigsList<BuildingConfig>();
+				var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelBuildingConfig>();
 			
 				for (var i = 0; i < list.Count; i++)
 				{
@@ -111,13 +94,32 @@ namespace Main
 					});
 				}
 			}
-			else
+		}
+
+		private async void EventCheck()
+		{
+			// Load Event Ui
+			var info = _gameLogic.EventDataProvider.GetEventInfo();
+			
+			if (info.IsRunning && (_gameLogic.IsFirstSession || _gameLogic.DataProviderInternalLogic.AppData.LastLoginTime < info.StartTime))
 			{
-				foreach (var buildingData in _gameLogic.DataProviderLogic.PlayerData.Buildings)
-				{
-					_gameLogic.GameObjectDataProvider.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Building, buildingData.Position);
-				}
+				_gameLogic.DataProviderLogic.LevelData.Buildings.Clear();
+				_gameLogic.DataProviderLogic.PlayerData.GameIds.Clear();
+				_gameLogic.DataProviderLogic.PlayerData.Cards.Clear();
+				_gameLogic.DataProviderLogic.CurrencyData.MainCurrency = 0;
+				
+				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
+				
+				ui.gameObject.SetActive(true);
 			}
+		}
+
+		private void InitializeGame()
+		{
+			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
+			
+			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.LevelData.Buildings);
+			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
 		}
 	}
 }

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Data;
-using Events;
-using GameLovers.Services;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -19,18 +17,15 @@ namespace Logic
 		PlayerData PlayerData { get; }
 		/// <inheritdoc cref="CurrencyData" />
 		CurrencyData CurrencyData { get; }
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		T GetData<T>() where T : class;
+		/// <inheritdoc cref="LevelData" />
+		LevelData LevelData { get; }
 	}
 	
 	/// <summary>
 	/// This logic provides the interface to all game's data in the game.
 	/// It is also responsible to save the data so it is persistent for multiple sessions
 	/// </summary>
-	public interface IDataProviderLogic : IDataProvider
+	public interface IDataProviderLogic
 	{
 		/// <summary>
 		/// Saves all game's data locally
@@ -47,8 +42,13 @@ namespace Logic
 	/// <remarks>
 	/// Allows to add data 
 	/// </remarks>
-	public interface IDataProviderInternalLogic : IDataProvider
+	public interface IDataProviderInternalLogic : IDataProviderLogic, IDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		T GetData<T>() where T : class;
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -56,7 +56,7 @@ namespace Logic
 	}
 
 	/// <inheritdoc cref="IDataProviderLogic" />
-	public class DataProviderLogic : IDataProviderLogic, IDataProviderInternalLogic
+	public class DataProviderLogic : IDataProviderInternalLogic
 	{
 		private readonly IDictionary<Type, object> _data = new Dictionary<Type, object>();
 
@@ -66,20 +66,15 @@ namespace Logic
 		public PlayerData PlayerData => GetData<PlayerData>();
 		/// <inheritdoc />
 		public CurrencyData CurrencyData => GetData<CurrencyData>();
-		
-		private DataProviderLogic() {}
-
-		public DataProviderLogic(IMessageBrokerService messageBrokerService)
-		{
-			messageBrokerService.Subscribe<ApplicationPausedEvent>(OnApplicationPaused);
-		}
+		/// <inheritdoc />
+		public LevelData LevelData => GetData<LevelData>();
 
 		/// <inheritdoc />
 		public void AddData<T>(T data) where T : class
 		{
 			_data.Add(typeof(T), data);
 		}
-
+		
 		/// <inheritdoc />
 		public T GetData<T>() where T : class
 		{
@@ -104,14 +99,6 @@ namespace Logic
 			
 			PlayerPrefs.SetString(type.Name, JsonConvert.SerializeObject(_data[type]));
 			PlayerPrefs.Save();
-		}
-
-		private void OnApplicationPaused(ApplicationPausedEvent eventData)
-		{
-			if (eventData.IsPaused)
-			{
-				FlushData();
-			}
 		}
 	}
 }

@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Configs
 {
 	[Serializable]
-	public struct BuildingConfig
+	public struct LevelBuildingConfig
 	{
 		public GameId Building;
 		public int ProductionAmountBase;
@@ -40,15 +40,15 @@ namespace Configs
 	}
 	
 	/// <summary>
-	/// Scriptable Object tool to import the <seealso cref="BuildingConfig"/> sheet data
+	/// Scriptable Object tool to import the <seealso cref="LevelBuildingConfig"/> sheet data
 	/// </summary>
-	[CreateAssetMenu(fileName = "BuildingConfigs", menuName = "ScriptableObjects/Configs/BuildingConfigs")]
-	public class BuildingConfigs : ScriptableObject, IConfigsContainer<BuildingConfig>
+	[CreateAssetMenu(fileName = "LevelBuildingConfigs", menuName = "ScriptableObjects/Configs/LevelBuildingConfigs")]
+	public class LevelBuildingConfigs : ScriptableObject, IConfigsContainer<LevelBuildingConfig>
 	{
 		[SerializeField]
-		private List<BuildingConfig> _configs = new List<BuildingConfig>();
+		private List<LevelBuildingConfig> _configs = new List<LevelBuildingConfig>();
 
 		// ReSharper disable once ConvertToAutoProperty
-		public List<BuildingConfig> Configs => _configs;
+		public List<LevelBuildingConfig> Configs => _configs;
 	}
 }

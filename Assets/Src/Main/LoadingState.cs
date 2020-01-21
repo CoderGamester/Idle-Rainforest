@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Commands;
 using Configs;
 using GameLovers.AddressableIdsScriptGenerator;
 using GameLovers.ConfigsContainer;
@@ -6,7 +8,9 @@ using GameLovers.LoaderExtension;
 using GameLovers.Statechart;
 using GameLovers.UiService;
 using Ids;
+using Logic;
 using Presenters;
+using Services;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -19,11 +23,15 @@ namespace Main
 	{
 		private readonly ConfigsProvider _gameConfigs;
 		private readonly UiService _uiService;
+		private readonly IGameServices _services;
+		private readonly IGameInternalLogic _gameLogic;
 		
-		public LoadingState(ConfigsProvider gameConfigs, UiService uiService)
+		public LoadingState(ConfigsProvider gameConfigs, UiService uiService, IGameServices services, IGameInternalLogic gamelogic)
 		{
 			_gameConfigs = gameConfigs;
 			_uiService = uiService;
+			_services = services;
+			_gameLogic = gamelogic;
 		}
 
 		/// <summary>
@@ -75,7 +83,7 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			var buildings = await LoaderUtil.LoadAssetAsync<BuildingConfigs>(
+			var buildings = await LoaderUtil.LoadAssetAsync<LevelBuildingConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_BuildingConfigs).Address, true);
 			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
@@ -94,7 +102,7 @@ namespace Main
 			var loadingBuffer = tasks.Length / loadingCap - initialLoadingPercentage;
 			var loadedUiCount = 0f;
 
-			// Load all
+			// Load all initial uis
 			foreach (var taskTemplate in tasks)
 			{
 				var task = await taskTemplate;
@@ -112,8 +120,17 @@ namespace Main
 		private async Task LoadGameWorld(float loadingCap)
 		{
 			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
+			var taskList = new List<Task<GameObject>>();
 			
-			// TODO: Load world assets
+			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Buildings)
+			{
+				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Building, buildingData.Position));
+			}
+
+			foreach (var task in LoaderUtil.Interleaved(taskList))
+			{
+				await await task;
+			}
 			
 			loadingScreen.SetLoadingPercentage(loadingCap);
 		}

@@ -6,5 +6,6 @@ namespace Infos
 	{
 		public DateTime StartTime;
 		public DateTime EndTime;
+		public bool IsRunning;
 	}
 }

@@ -8,17 +8,17 @@ using Ids;
 namespace SheetImporters
 {
 	/// <inheritdoc />
-	public class BuildingsImporter : GoogleSheetConfigsImporter<BuildingConfig, BuildingConfigs>
+	public class BuildingsImporter : GoogleSheetConfigsImporter<LevelBuildingConfig, LevelBuildingConfigs>
 	{
 		/// <inheritdoc />
 		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=880604694";
 		
 		/// <inheritdoc />
-		protected override BuildingConfig Deserialize(Dictionary<string, string> data)
+		protected override LevelBuildingConfig Deserialize(Dictionary<string, string> data)
 		{
-			var config = CsvParser.DeserializeTo<BuildingConfig>(data);
-			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(BuildingConfig.UpgradeRewards)}"]);
-			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(BuildingConfig.UpgradeBrackets)}"]);
+			var config = CsvParser.DeserializeTo<LevelBuildingConfig>(data);
+			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(LevelBuildingConfig.UpgradeRewards)}"]);
+			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(LevelBuildingConfig.UpgradeBrackets)}"]);
 			var rewards = new List<IntData>();
 			var brackets = new List<IntPairData>();
 			

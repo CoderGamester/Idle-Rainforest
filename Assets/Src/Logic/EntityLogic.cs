@@ -68,7 +68,7 @@ namespace Logic
 
 		private void CreateBuildingData(UniqueId uniqueId, Vector3 position)
 		{
-			_dataProvider.PlayerData.Buildings.Add(new BuildingData
+			_dataProvider.LevelData.Buildings.Add(new LevelBuildingData
 			{
 				Id = uniqueId,
 				Position = position,

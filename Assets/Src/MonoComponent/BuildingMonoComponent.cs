@@ -51,7 +51,7 @@ namespace MonoComponent
 
 		private void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 
 			UpdateView(info);
 
@@ -71,7 +71,7 @@ namespace MonoComponent
 				_services.CommandService.ExecuteCommand(new CollectCommand { BuildingId = _entityMonoComponent.UniqueId });
 				_readyState.SetActive(false);
 				
-				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId).ProductionTime);
+				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId).ProductionTime);
 			}
 		}
 
@@ -82,7 +82,7 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			UpdateView(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateView(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		/// <summary>
@@ -97,7 +97,7 @@ namespace MonoComponent
 			_readyState.SetActive(false);
 		}
 
-		private void UpdateView(BuildingInfo info)
+		private void UpdateView(LevelBuildingInfo info)
 		{
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
@@ -109,7 +109,7 @@ namespace MonoComponent
 			UpdateState(info);
 		}
 
-		private void UpdateState(BuildingInfo info)
+		private void UpdateState(LevelBuildingInfo info)
 		{
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
 			_automateState.SetActive(info.AutomationState == AutomationState.Ready);
@@ -118,12 +118,12 @@ namespace MonoComponent
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			UpdateState(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateState(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
-			UpdateView(_dataProvider.BuildingDataProvider.GetBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateView(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private async void OnReadyToCollect(float time)

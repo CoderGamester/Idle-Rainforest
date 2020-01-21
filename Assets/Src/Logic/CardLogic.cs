@@ -17,6 +17,11 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
+		IIdListReader<GameId, CardData> Data { get; }
+		
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		CardInfo GetInfo(GameId card);
 
 		/// <summary>
@@ -49,6 +54,9 @@ namespace Logic
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IIdList<GameId, CardData> _data;
+
+		/// <inheritdoc />
+		public IIdListReader<GameId, CardData> Data => _data;
 		
 		private CardLogic() {}
 

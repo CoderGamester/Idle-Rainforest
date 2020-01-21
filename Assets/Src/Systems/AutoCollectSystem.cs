@@ -16,11 +16,11 @@ namespace Systems
 	{
 		private IGameServices _services;
 		private IGameDataProvider _dataProvider;
-		private IList<BuildingData> _data;
+		private IList<LevelBuildingData> _data;
 		
 		private AutoCollectSystem() {}
 		
-		public AutoCollectSystem(IList<BuildingData> data)
+		public AutoCollectSystem(IList<LevelBuildingData> data)
 		{
 			_services = MainInstaller.Resolve<IGameServices>();
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
@@ -32,7 +32,7 @@ namespace Systems
 		{
 			for (var i = 0; i < _data.Count; i++)
 			{
-				var info = _dataProvider.BuildingDataProvider.GetBuildingInfo(_data[i].Id);
+				var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_data[i].Id);
 				
 				if (info.AutomationState == AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
 				{
