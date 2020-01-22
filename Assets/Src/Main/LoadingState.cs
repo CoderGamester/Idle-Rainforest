@@ -83,8 +83,9 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
+			Debug.Log(_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_LevelBuildingConfigs).Address);
 			var buildings = await LoaderUtil.LoadAssetAsync<LevelBuildingConfigs>(
-				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_BuildingConfigs).Address, true);
+				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_LevelBuildingConfigs).Address, true);
 			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
 			

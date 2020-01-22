@@ -21,16 +21,16 @@ MonoBehaviour:
     AssetGroup:
     - Configs
   - Id: 1
-    Address: Configs/BuildingConfigs.asset
-    Path: Assets/ScriptableObjects/Configs/BuildingConfigs.asset
-    AssetType: Configs.BuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    Address: Configs/CardConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/CardConfigs.asset
+    AssetType: Configs.CardConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
   - Id: 2
-    Address: Configs/CardConfigs.asset
-    Path: Assets/ScriptableObjects/Configs/CardConfigs.asset
-    AssetType: Configs.CardConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    Address: Configs/LevelBuildingConfigs.asset
+    Path: Assets/ScriptableObjects/Configs/LevelBuildingConfigs.asset
+    AssetType: Configs.LevelBuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs

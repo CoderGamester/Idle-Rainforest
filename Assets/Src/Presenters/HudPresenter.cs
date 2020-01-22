@@ -7,6 +7,7 @@ using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ViewPresenters;
 
 namespace Presenters
 {
@@ -19,7 +20,9 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
+		[SerializeField] private Slider _achivementProgressBar;
 		[SerializeField] private Button _cardsButton;
+		[SerializeField] private AchievementViewPresenter[] _achievementsViews;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -41,12 +44,12 @@ namespace Presenters
 			_mainCurrencyText.text = $"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
 			_softCurrencyText.text = $"SC: {_dataProvider.CurrencyDataProvider.SoftCurrencyAmount.ToString()}";
 			_hardCurrencyText.text = $"HC: {_dataProvider.CurrencyDataProvider.HardCurrencyAmount.ToString()}";
-			_countdownText.text = (_dataProvider.BuildingDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
+			_countdownText.text = (_dataProvider.EventDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
 		}
 
 		private void UpdateCountdown(float deltaTime)
 		{
-			_countdownText.text = (_dataProvider.BuildingDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
+			_countdownText.text = (_dataProvider.EventDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)

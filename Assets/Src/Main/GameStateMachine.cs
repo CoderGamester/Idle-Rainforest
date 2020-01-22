@@ -98,15 +98,17 @@ namespace Main
 
 		private async void EventCheck()
 		{
+			// TODO: Review code below
+			
 			// Load Event Ui
 			var info = _gameLogic.EventDataProvider.GetEventInfo();
 			
 			if (info.IsRunning && (_gameLogic.IsFirstSession || _gameLogic.DataProviderInternalLogic.AppData.LastLoginTime < info.StartTime))
 			{
-				_gameLogic.DataProviderLogic.LevelData.Buildings.Clear();
-				_gameLogic.DataProviderLogic.PlayerData.GameIds.Clear();
-				_gameLogic.DataProviderLogic.PlayerData.Cards.Clear();
-				_gameLogic.DataProviderLogic.CurrencyData.MainCurrency = 0;
+				_gameLogic.DataProviderInternalLogic.LevelData.Buildings.Clear();
+				_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Clear();
+				_gameLogic.DataProviderInternalLogic.PlayerData.Cards.Clear();
+				_gameLogic.DataProviderInternalLogic.CurrencyData.MainCurrency = 0;
 				
 				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
 				
@@ -116,9 +118,11 @@ namespace Main
 
 		private void InitializeGame()
 		{
+			// TODO: Review code below
+			
 			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
 			
-			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderLogic.LevelData.Buildings);
+			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
 		}
 	}

@@ -81,6 +81,7 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
+		// TODO: Do the TODOS in GameStateMachine
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Remove create gameobject from CreateBuildingCommand
 		// TODO: AutoCollectSystem optimize
@@ -95,5 +96,8 @@ namespace Main
 		// TODO: Async Await working
 		// TODO: Move Frameworks to GitHub
 		// TODO: Missing RuntimeTests for services
+		// TODO: InspectorGUI on Addressables like UiConfig
+		// TODO: Review Addressables configs. remove cache
+		// TODO: UIService Unload(this)
 	}
 }
