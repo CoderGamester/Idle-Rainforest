@@ -81,6 +81,8 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
+		// TODO: Move achievementsystem to achievementlogic
+		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: Do the TODOS in GameStateMachine
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Remove create gameobject from CreateBuildingCommand
@@ -99,5 +101,7 @@ namespace Main
 		// TODO: InspectorGUI on Addressables like UiConfig
 		// TODO: Review Addressables configs. remove cache
 		// TODO: UIService Unload(this)
+		// TODO: UiService Load(bool openAfter = false);
+		// TODO: UiService Add(bool openAfter = falsE);
 	}
 }

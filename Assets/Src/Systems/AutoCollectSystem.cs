@@ -14,9 +14,9 @@ namespace Systems
 	/// </summary>
 	public class AutoCollectSystem : ITickSystem
 	{
-		private IGameServices _services;
-		private IGameDataProvider _dataProvider;
-		private IList<LevelBuildingData> _data;
+		private readonly IGameServices _services;
+		private readonly IGameDataProvider _dataProvider;
+		private readonly IList<LevelBuildingData> _data;
 		
 		private AutoCollectSystem() {}
 		

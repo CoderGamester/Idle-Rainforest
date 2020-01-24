@@ -81,18 +81,27 @@ namespace Main
 
 		private void FirstSessionCheck()
 		{
-			if (_gameLogic.IsFirstSession)
-			{
-				var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelBuildingConfig>();
+			const int initTotalAchievements = 10;
 			
-				for (var i = 0; i < list.Count; i++)
+			if (!_gameLogic.IsFirstSession)
+			{
+				return;
+			}
+			
+			var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelBuildingConfig>();
+			
+			for (var i = 0; i < list.Count; i++)
+			{
+				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
-					_services.CommandService.ExecuteCommand(new CreateBuildingCommand
-					{
-						BuildingType = list[i].Building,
-						Position = i * 5 * Vector3.forward + Vector3.left * 1.5f
-					});
-				}
+					BuildingType = list[i].Building,
+					Position = i * 5 * Vector3.forward + Vector3.left * 1.5f
+				});
+			}
+
+			for (var i = 0; i < initTotalAchievements; i++)
+			{
+				_gameLogic.AchievementLogic.GenerateRandomAchievement();
 			}
 		}
 
@@ -103,16 +112,19 @@ namespace Main
 			// Load Event Ui
 			var info = _gameLogic.EventDataProvider.GetEventInfo();
 			
-			if (info.IsRunning && (_gameLogic.IsFirstSession || _gameLogic.DataProviderInternalLogic.AppData.LastLoginTime < info.StartTime))
+			if (info.ShowEventPopUp)
 			{
+				/*
 				_gameLogic.DataProviderInternalLogic.LevelData.Buildings.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.Cards.Clear();
+				_gameLogic.DataProviderInternalLogic.LevelData.Achievements.Clear();
 				_gameLogic.DataProviderInternalLogic.CurrencyData.MainCurrency = 0;
+				*/
 				
-				var ui = await _services.UiService.LoadUiAsync<EventPanelPresenter>();
-				
-				ui.gameObject.SetActive(true);
+				await _services.UiService.LoadUiAsync<EventPanelPresenter>();
+
+				_services.UiService.OpenUi<EventPanelPresenter>();
 			}
 		}
 
@@ -120,10 +132,11 @@ namespace Main
 		{
 			// TODO: Review code below
 			
-			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
-			
+			var achievementSystem = new AchievementSystem(_gameLogic.DataProviderInternalLogic.LevelData.Achievements);
 			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
+			
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
+			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
 		}
 	}
 }

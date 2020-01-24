@@ -38,12 +38,14 @@ namespace Logic
 		{
 			var startTime = _gameLogic.TimeService.DateTimeUtcNow.Date;
 			var endTime = startTime.AddDays(1);
+			var isRunning = _gameLogic.TimeService.DateTimeUtcNow > startTime && _gameLogic.TimeService.DateTimeUtcNow < endTime;
 			
 			return new EventInfo
 			{
 				StartTime = startTime,
 				EndTime = endTime,
-				IsRunning = _gameLogic.TimeService.DateTimeUtcNow > startTime && _gameLogic.TimeService.DateTimeUtcNow < endTime
+				IsRunning = isRunning,
+				ShowEventPopUp = isRunning && (_gameLogic.IsFirstSession || _gameLogic.DataProviderInternalLogic.AppData.LastLoginTime < startTime)
 			};
 		}
 	}

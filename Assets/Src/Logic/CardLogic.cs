@@ -41,7 +41,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void AddCard(GameId card, int amount);
+		void AddCard(IntData card);
 
 		/// <summary>
 		/// TODO:
@@ -126,17 +126,17 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void AddCard(GameId card, int amount)
+		public void AddCard(IntData card)
 		{
-			if(!_data.TryGet(card, out CardData data))
+			if(!_data.TryGet(card.GameId, out CardData data))
 			{
-				data = new CardData { Id = card, Amount = 0, Level = 1 };
+				data = new CardData { Id = card.GameId, Amount = 0, Level = 1 };
 				
 				_data.Add(data);
-				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card, NewLevel = data.Level });
+				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card.GameId, NewLevel = data.Level });
 			}
 
-			data.Amount += amount;
+			data.Amount += card.Value;
 			
 			_data.Set(data);
 		}

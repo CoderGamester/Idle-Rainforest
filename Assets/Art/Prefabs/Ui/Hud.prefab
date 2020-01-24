@@ -1090,7 +1090,7 @@ MonoBehaviour:
   _mainCurrencyText: {fileID: 5243085416767266735}
   _softCurrencyText: {fileID: 4740854481510900994}
   _hardCurrencyText: {fileID: 6358101415435684319}
-  _achivementProgressBar: {fileID: 3926273321679382504}
+  _achievementProgressBar: {fileID: 3926273321679382504}
   _cardsButton: {fileID: 4033363758878450715}
   _achievementsViews:
   - {fileID: 2867074642602797240}
@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _descriptionText: {fileID: 994655380386668030}
-  _completeButton: {fileID: 6462443659147049385}
+  _collectButton: {fileID: 6462443659147049385}
 --- !u!1 &6460746468923320761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _descriptionText: {fileID: 2791118973811253117}
-  _completeButton: {fileID: 321454556523247939}
+  _collectButton: {fileID: 321454556523247939}
 --- !u!1 &7093414659072502894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,7 +1878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _descriptionText: {fileID: 6955556710312362012}
-  _completeButton: {fileID: 7014131191184070966}
+  _collectButton: {fileID: 7014131191184070966}
 --- !u!1 &7703334274506066447
 GameObject:
   m_ObjectHideFlags: 0

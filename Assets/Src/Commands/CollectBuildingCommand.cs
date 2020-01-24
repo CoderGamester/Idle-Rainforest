@@ -4,7 +4,7 @@ using Logic;
 namespace Commands
 {
 	/// <inheritdoc cref="IGameCommand" />
-	public struct CollectCommand : IGameCommand
+	public struct CollectBuildingCommand : IGameCommand
 	{
 		public UniqueId BuildingId;
 		

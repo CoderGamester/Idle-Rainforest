@@ -1,6 +1,7 @@
 using System;
 using Configs;
 using Data;
+using Events;
 using Ids;
 using Infos;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace Logic
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) gameId);
-			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].IntValue;
+			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Value;
 			var nextBracket = GetNextLevelBracket(data, config);
 
 			return new LevelBuildingInfo
@@ -116,6 +117,8 @@ namespace Logic
 			{
 				BracketReward(info.GameId);
 			}
+			
+			_gameLogic.MessageBrokerService.Publish(new LevelBuildingUpgradedEvent { Building = info.GameId, NewLevel = info.Data.Level});
 		}
 
 		/// <inheritdoc />
@@ -132,6 +135,8 @@ namespace Logic
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
 			_data.Set(info.Data);
+			
+			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
 		}
 
 		private AutomationState GetBuildingState(LevelBuildingData data, LevelBuildingConfig config)
@@ -169,9 +174,9 @@ namespace Logic
 			for (var i = 0; i < config.UpgradeBrackets.Count; i++)
 			{
 				var bracket = config.UpgradeBrackets[i];
-				if (data.Level < bracket.IntKey && nextBracket > bracket.IntKey)
+				if (data.Level < bracket.Key && nextBracket > bracket.Key)
 				{
-					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.IntValue) + 1) * bracket.IntValue;
+					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.Value) + 1) * bracket.Value;
 				}
 			}
 
@@ -184,26 +189,7 @@ namespace Logic
 			
 			for (var i = 0; i < config.UpgradeRewards.Count; i++)
 			{
-				if (config.UpgradeRewards[i].GameId.IsInGroup(GameIdGroup.Card))
-				{
-					_gameLogic.CardLogic.AddCard(config.UpgradeRewards[i].GameId, config.UpgradeRewards[i].IntValue);
-					continue;
-				}
-					
-				switch (config.UpgradeRewards[i].GameId)
-				{
-					case GameId.MainCurrency:
-						_gameLogic.CurrencyLogic.AddMainCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					case GameId.SoftCurrency:
-						_gameLogic.CurrencyLogic.AddSoftCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					case GameId.HardCurrency:
-						_gameLogic.CurrencyLogic.AddHardCurrency(config.UpgradeRewards[i].IntValue);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException($"Wrong reward {config.UpgradeRewards[i].GameId} for the upgrade {building}");
-				}
+				_gameLogic.RewardLogic.GiveReward(config.UpgradeRewards[i]);
 			}
 		}
 

@@ -20,6 +20,8 @@ namespace Logic
 		/// <inheritdoc cref="IConfigsProvider"/>
 		IConfigsProvider ConfigsProvider { get; }
 		
+		/// <inheritdoc cref="IRewardDataProvider"/>
+		IRewardDataProvider RewardDataProvider { get; }
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
 		/// <inheritdoc cref="IGameObjectDataProvider"/>
@@ -34,6 +36,8 @@ namespace Logic
 		IBuildingDataProvider BuildingDataProvider { get; }
 		/// <inheritdoc cref="ICardDataProvider"/>
 		ICardDataProvider CardDataProvider { get; }
+		/// <inheritdoc cref="IAchievementDataProvider"/>
+		IAchievementDataProvider AchievementDataProvider { get; }
 	}
 
 	/// <summary>
@@ -64,6 +68,8 @@ namespace Logic
 		IBuildingLogic BuildingLogic { get; }
 		/// <inheritdoc cref="ICardLogic"/>
 		ICardLogic CardLogic { get; }
+		/// <inheritdoc cref="IAchievementLogic"/>
+		IAchievementLogic AchievementLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -74,6 +80,8 @@ namespace Logic
 	{
 		/// <inheritdoc cref="IDataProviderLogic"/>
 		IDataProviderInternalLogic DataProviderInternalLogic { get; }
+		/// <inheritdoc cref="IRewardLogic"/>
+		IRewardLogic RewardLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -83,18 +91,15 @@ namespace Logic
 		public bool IsFirstSession => DataProviderInternalLogic.LevelData.Buildings.Count == 1;
 
 		/// <inheritdoc />
-		public IConfigsProvider ConfigsProvider { get; }
-		
-		/// <inheritdoc />
 		public IMessageBrokerService MessageBrokerService { get; }
 		/// <inheritdoc />
 		public ITimeService TimeService { get; }
 
 		/// <inheritdoc />
-		public IDataProviderLogic DataProviderLogic => DataProviderInternalLogic;
+		public IConfigsProvider ConfigsProvider { get; }
+
 		/// <inheritdoc />
-		public IDataProviderInternalLogic DataProviderInternalLogic { get; }
-		
+		public IRewardDataProvider RewardDataProvider => RewardLogic;
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
@@ -110,7 +115,11 @@ namespace Logic
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 		/// <inheritdoc />
 		public ICardDataProvider CardDataProvider => CardLogic;
+		/// <inheritdoc />
+		public IAchievementDataProvider AchievementDataProvider => AchievementLogic;
 
+		/// <inheritdoc />
+		public IDataProviderLogic DataProviderLogic => DataProviderInternalLogic;
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
 		/// <inheritdoc />
@@ -125,6 +134,13 @@ namespace Logic
 		public IBuildingLogic BuildingLogic { get; }
 		/// <inheritdoc />
 		public ICardLogic CardLogic { get; }
+		/// <inheritdoc />
+		public IAchievementLogic AchievementLogic { get; }
+
+		/// <inheritdoc />
+		public IDataProviderInternalLogic DataProviderInternalLogic { get; }
+		/// <inheritdoc />
+		public IRewardLogic RewardLogic { get; }
 
 		public GameLogic(IMessageBrokerService messageBroker, IDataProviderInternalLogic dataProviderInternalLogic,
 			ITimeService timeService)
@@ -134,6 +150,7 @@ namespace Logic
 			DataProviderInternalLogic = dataProviderInternalLogic;
 			
 			ConfigsProvider = new ConfigsProvider();
+			RewardLogic = new RewardLogic(this);
 			EntityLogic = new EntityLogic(this, DataProviderInternalLogic);
 			GameObjectLogic = new GameObjectLogic(this);
 			CurrencyLogic = new CurrencyLogic(this, DataProviderInternalLogic.CurrencyData);
@@ -144,6 +161,7 @@ namespace Logic
 				new UniqueIdList<LevelBuildingData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
 			CardLogic = new CardLogic(this, 
 				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
+			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
 		}
 	}
 }

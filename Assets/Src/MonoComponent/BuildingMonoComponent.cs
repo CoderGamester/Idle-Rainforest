@@ -68,7 +68,7 @@ namespace MonoComponent
 		{
 			if (_readyState.activeSelf)
 			{
-				_services.CommandService.ExecuteCommand(new CollectCommand { BuildingId = _entityMonoComponent.UniqueId });
+				_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 				_readyState.SetActive(false);
 				
 				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId).ProductionTime);
