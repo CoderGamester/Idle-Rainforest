@@ -11,7 +11,7 @@ namespace Achievements
 	/// </summary>
 	public class UpgradeLevelBuildingAchievement : Achievement
 	{
-		public unsafe UpgradeLevelBuildingAchievement(IGameServices services, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+		public UpgradeLevelBuildingAchievement(IGameServices services, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
 			base(services, achievementResolver, setter)
 		{
 		}

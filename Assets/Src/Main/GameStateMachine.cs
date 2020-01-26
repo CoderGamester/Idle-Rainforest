@@ -36,7 +36,7 @@ namespace Main
 			
 			_gameLogic = gameLogic;
 			_services = services;
-			_loadingState = new LoadingState(configsProvider,uiService, services, gameLogic);
+			_loadingState = new LoadingState(configsProvider, uiService, gameLogic);
 			_stateMachine = new Statechart(Setup);
 		}
 
@@ -68,22 +68,25 @@ namespace Main
 		{
 			var initial = stateFactory.Initial("Initial");
 			var initialLoading = stateFactory.Wait("Initial Loading");
+			var finalLoading = stateFactory.Wait("Final Loading");
 			var game = stateFactory.State("Game");
 			
 			initial.Transition().Target(initialLoading);
 			
-			initialLoading.OnEnter(FirstSessionCheck);
-			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(game);
-			initialLoading.OnExit(EventCheck);
+			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(finalLoading);
+			initialLoading.OnExit(EventPanelLoad);
+			
+			finalLoading.OnEnter(InitGameData);
+			finalLoading.WaitingFor(_loadingState.FinalLoading).Target(game);
 			
 			game.OnEnter(InitializeGame);
 		}
 
-		private void FirstSessionCheck()
+		private void InitGameData()
 		{
 			const int initTotalAchievements = 10;
 			
-			if (!_gameLogic.IsFirstSession)
+			if (_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Count > 0)
 			{
 				return;
 			}
@@ -105,7 +108,7 @@ namespace Main
 			}
 		}
 
-		private async void EventCheck()
+		private async void EventPanelLoad()
 		{
 			// TODO: Review code below
 			
@@ -114,13 +117,11 @@ namespace Main
 			
 			if (info.ShowEventPopUp)
 			{
-				/*
 				_gameLogic.DataProviderInternalLogic.LevelData.Buildings.Clear();
+				_gameLogic.DataProviderInternalLogic.LevelData.Achievements.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.Cards.Clear();
-				_gameLogic.DataProviderInternalLogic.LevelData.Achievements.Clear();
 				_gameLogic.DataProviderInternalLogic.CurrencyData.MainCurrency = 0;
-				*/
 				
 				await _services.UiService.LoadUiAsync<EventPanelPresenter>();
 
@@ -132,7 +133,7 @@ namespace Main
 		{
 			// TODO: Review code below
 			
-			var achievementSystem = new AchievementSystem(_gameLogic.DataProviderInternalLogic.LevelData.Achievements);
+			var achievementSystem = new AchievementSystem(_gameLogic.AchievementLogic.Data);
 			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
 			
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());

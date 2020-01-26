@@ -3,7 +3,9 @@ using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using Commands;
+using Data;
 using Events;
+using GameLovers.ConfigsContainer;
 using GameLovers.Services;
 using Infos;
 using Logic;
@@ -53,7 +55,12 @@ namespace MonoComponent
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 
-			UpdateView(info);
+			foreach (var card in info.BuildingCards)
+			{
+				_dataProvider.CardDataProvider.Data.Observe(card.GameId, ListUpdateType.Added, OnCardAdded);
+			}
+
+			UpdateView();
 
 			if (info.AutomationState != AutomationState.Automated)
 			{
@@ -82,7 +89,7 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			UpdateView(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateView();
 		}
 
 		/// <summary>
@@ -97,8 +104,9 @@ namespace MonoComponent
 			_readyState.SetActive(false);
 		}
 
-		private void UpdateView(LevelBuildingInfo info)
+		private void UpdateView()
 		{
+			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
 			_buildingNameText.text = $"{info.GameId} - lv {info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}\n" +
@@ -123,7 +131,12 @@ namespace MonoComponent
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
-			UpdateView(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
+			UpdateView();
+		}
+
+		private void OnCardAdded(CardData card)
+		{
+			UpdateView();
 		}
 
 		private async void OnReadyToCollect(float time)
@@ -139,8 +152,12 @@ namespace MonoComponent
 					return;
 				}
 			}
+
+			if (_readyState != null)
+			{
+				_readyState.SetActive(true);
+			}
 			
-			_readyState.SetActive(true);
 			_cancellationToken = null;
 		}
 	}
