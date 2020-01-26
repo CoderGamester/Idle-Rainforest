@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Systems;
+using Data;
 using Events;
 using GameLovers.Services;
 using Logic;
+using Newtonsoft.Json;
 using Services;
 using UnityEngine;
 
@@ -22,8 +24,11 @@ namespace Main
 		{
 			var messageBroker = new MessageBrokerService();
 			var timeService = new TimeService();
+			var dataProvider = new DataProviderLogic();
 			
-			_gameLogic = new GameLogic(messageBroker, timeService);
+			LoadData(dataProvider, timeService);
+			
+			_gameLogic = new GameLogic(messageBroker, dataProvider, timeService);
 			_gameServices = new GameServices(messageBroker, timeService, _gameLogic);
 			
 			MainInstaller.Bind<IGameDataProvider>(_gameLogic);
@@ -40,6 +45,11 @@ namespace Main
 		private void OnApplicationPause(bool pauseStatus)
 		{
 			_gameServices.MessageBrokerService.Publish(new ApplicationPausedEvent { IsPaused = pauseStatus });
+
+			if (pauseStatus)
+			{
+				_gameLogic.DataProviderLogic.FlushData();
+			}
 		}
 
 		private void OnApplicationQuit()
@@ -47,26 +57,51 @@ namespace Main
 			_gameLogic.DataProviderLogic.FlushData();
 		}
 
-		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
-		// TODO: Rename Buildings to LevelBuildings/Level and make it mapped by GameId and not UniqueId
+		private void LoadData(IDataProviderInternalLogic dataProviderLogic, ITimeService timeService)
+		{
+			var time = timeService.DateTimeUtcNow;
+			var appDataJson = PlayerPrefs.GetString(nameof(AppData), "");
+			var playerDataJson = PlayerPrefs.GetString(nameof(PlayerData), "");
+			var currencyDataJson = PlayerPrefs.GetString(nameof(CurrencyData), "");
+			var levelDataJson = PlayerPrefs.GetString(nameof(LevelData), "");
+			
+			dataProviderLogic.AddData(string.IsNullOrEmpty(appDataJson) ? new AppData() : JsonConvert.DeserializeObject<AppData>(appDataJson));
+			dataProviderLogic.AddData(string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson));
+			dataProviderLogic.AddData(string.IsNullOrEmpty(currencyDataJson) ? new CurrencyData() : JsonConvert.DeserializeObject<CurrencyData>(currencyDataJson));
+			dataProviderLogic.AddData(string.IsNullOrEmpty(levelDataJson) ? new LevelData() : JsonConvert.DeserializeObject<LevelData>(levelDataJson));
+
+			if (string.IsNullOrEmpty(appDataJson))
+			{
+				dataProviderLogic.AppData.FirstLoginTime = time;
+				dataProviderLogic.AppData.LoginTime = time;
+			}
+			
+			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
+			dataProviderLogic.AppData.LoginTime = time;
+			dataProviderLogic.AppData.LoginCount++;
+		}
+
+		// TODO: Move achievementsystem to achievementlogic
+		// TODO: Show Achievements Completed UI and reset data when completing all achievements
+		// TODO: Do the TODOS in GameStateMachine
+		// TODO: StartEventCommand that resets all the data and recreates all the world
+		// TODO: Remove create gameobject from CreateBuildingCommand
 		// TODO: AutoCollectSystem optimize
-		// TODO: LoadData in GameLogic or LoadingState???
-		// TODO: LoadingSystem for loading the initial game objects from the data
-		// TODO: DataProvider data access. Free from everywhere (including the view?)
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: GameLogic custom exception
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Add Time cheat into SRDebugger
+		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
 		
-		// TODO: Select Google Sheet asset
-		// TODO: Select UiConfigs asset
-		// TODO: UiService Close(this);
-		// TODO: UiPresenter protected Close() method
 		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat
-		// TODO: KeyValuePair Serialization on CsvParser
-		// TODO: IdResolver in IConfig
 		// TODO: Enum serialize as string
-		// TODO: Have possibility of independent pool outside of the PoolService
-		// TODO: Make the UiPresenter.Refresh() a public virtual method and not executed by the UiService
+		// TODO: Async Await working
+		// TODO: Move Frameworks to GitHub
+		// TODO: Missing RuntimeTests for services
+		// TODO: InspectorGUI on Addressables like UiConfig
+		// TODO: Review Addressables configs. remove cache
+		// TODO: UIService Unload(this)
+		// TODO: UiService Load(bool openAfter = false);
+		// TODO: UiService Add(bool openAfter = falsE);
 	}
 }

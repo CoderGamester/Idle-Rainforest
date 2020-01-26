@@ -12,7 +12,6 @@ namespace Data
 	public class PlayerData
 	{
 		public List<GameIdData> GameIds = new List<GameIdData>();
-		public List<BuildingData> Buildings = new List<BuildingData>();
 		public List<CardData> Cards = new List<CardData>();
 	}
 }

@@ -4,8 +4,8 @@ namespace Ids
 	public enum AddressableId
 	{
 		Configs_AddressableConfigs,
-		Configs_BuildingConfigs,
 		Configs_CardConfigs,
+		Configs_LevelBuildingConfigs,
 		Configs_UiConfigs,
 		Prefabs_Building,
 		Prefabs_Ui_Cards_Panel,

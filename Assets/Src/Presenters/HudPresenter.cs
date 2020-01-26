@@ -7,6 +7,7 @@ using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ViewPresenters;
 
 namespace Presenters
 {
@@ -19,7 +20,9 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
+		[SerializeField] private Slider _achievementProgressBar;
 		[SerializeField] private Button _cardsButton;
+		[SerializeField] private AchievementViewPresenter[] _achievementsViews;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -33,6 +36,7 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
+			_services.MessageBrokerService.Subscribe<AchievementCollectedEvent>(OnAchievementCollected);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
@@ -41,12 +45,14 @@ namespace Presenters
 			_mainCurrencyText.text = $"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
 			_softCurrencyText.text = $"SC: {_dataProvider.CurrencyDataProvider.SoftCurrencyAmount.ToString()}";
 			_hardCurrencyText.text = $"HC: {_dataProvider.CurrencyDataProvider.HardCurrencyAmount.ToString()}";
-			_countdownText.text = (_dataProvider.BuildingDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
+			_countdownText.text = (_dataProvider.EventDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
+			
+			SetAchievementsView();
 		}
 
 		private void UpdateCountdown(float deltaTime)
 		{
-			_countdownText.text = (_dataProvider.BuildingDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
+			_countdownText.text = (_dataProvider.EventDataProvider.GetEventInfo().EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss");
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
@@ -64,9 +70,37 @@ namespace Presenters
 			_softCurrencyText.text = $"SC: {eventData.NewValue.ToString()}";
 		}
 
+		private void OnAchievementCollected(AchievementCollectedEvent eventData)
+		{
+			SetAchievementsView();
+		}
+
 		private void OnCardsClicked()
 		{
 			_services.UiService.OpenUi<CardsPanelPresenter>();
+		}
+
+		private void SetAchievementsView()
+		{
+			var achievementInfo = _dataProvider.AchievementDataProvider.GetInfo();
+			
+			_achievementProgressBar.value = (float) achievementInfo.Collected / achievementInfo.Total;
+
+			foreach (var view in _achievementsViews)
+			{
+				view.gameObject.SetActive(false);
+			}
+			
+			for (int i = 0, j = 0; i < achievementInfo.Achievements.Count && j < _achievementsViews.Length; i++)
+			{
+				if (achievementInfo.Achievements[i].IsCollected)
+				{
+					continue;
+				}
+				
+				_achievementsViews[j].gameObject.SetActive(true);
+				_achievementsViews[j].SetData(achievementInfo.Achievements[i]);
+			}
 		}
 	}
 }

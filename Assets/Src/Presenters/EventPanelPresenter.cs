@@ -31,7 +31,7 @@ namespace Presenters
 
 		private void UpdateCountdown(float deltaTime)
 		{
-			var info = _dataProvider.BuildingDataProvider.GetEventInfo();
+			var info = _dataProvider.EventDataProvider.GetEventInfo();
 			
 			_timeText.text = $"Time for the event to end:\n{(info.EndTime - DateTime.UtcNow).ToString(@"hh\:mm\:ss")}";
 		}

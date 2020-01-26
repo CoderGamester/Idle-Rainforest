@@ -13,8 +13,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			var id = gameLogic.EntityLogic.CreateBuilding(BuildingType, Position);
-			gameLogic.GameObjectLogic.LoadGameObject(id, AddressableId.Prefabs_Building, Position);
+			gameLogic.EntityLogic.CreateBuilding(BuildingType, Position);
 		}
 	}
 }

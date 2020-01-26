@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Configs;
 using Data;
 using Events;
+using GameLovers.ConfigsContainer;
 using Ids;
 using Infos;
-using Utils;
 
 namespace Logic
 {
@@ -14,6 +14,11 @@ namespace Logic
 	/// </summary>
 	public interface ICardDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		IIdListReader<GameId, CardData> Data { get; }
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -36,7 +41,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void AddCard(GameId card, int amount);
+		void AddCard(IntData card);
 
 		/// <summary>
 		/// TODO:
@@ -49,10 +54,13 @@ namespace Logic
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IIdList<GameId, CardData> _data;
+
+		/// <inheritdoc />
+		public IIdListReader<GameId, CardData> Data => _data;
 		
 		private CardLogic() {}
 
-		public CardLogic(IGameInternalLogic gameLogic, IIdList<GameId, CardData> data)
+		public CardLogic(IGameInternalLogic gameLogic, IdList<GameId, CardData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
@@ -118,17 +126,17 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void AddCard(GameId card, int amount)
+		public void AddCard(IntData card)
 		{
-			if(!_data.TryGet(card, out CardData data))
+			if(!_data.TryGet(card.GameId, out CardData data))
 			{
-				data = new CardData { Id = card, Amount = 0, Level = 1 };
+				data = new CardData { Id = card.GameId, Amount = 0, Level = 1 };
 				
 				_data.Add(data);
-				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card, NewLevel = data.Level });
+				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card.GameId, NewLevel = data.Level });
 			}
 
-			data.Amount += amount;
+			data.Amount += card.Value;
 			
 			_data.Set(data);
 		}

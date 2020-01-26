@@ -16,7 +16,12 @@ namespace Ids
 		BuildingAquarium,
 		Animal1,
 		Animal2,
-		Animal3
+		Animal3,
+		CollectMainCurrency,
+		CollectSoftCurrency,
+		UpgradeCard,
+		UpgradeLevelBuilding,
+		AutomateBuilding
 	}
 
 	public enum GameIdGroup
@@ -24,7 +29,8 @@ namespace Ids
 		GameDesign,
 		Currency,
 		Building,
-		Card
+		Card,
+		Achievement
 	}
 
 	public static class GameIdLookup
@@ -143,6 +149,36 @@ namespace Ids
 						GameIdGroup.Card
 					}.AsReadOnly()
 				},
+				{
+					GameId.CollectMainCurrency, new List<GameIdGroup>
+					{
+						GameIdGroup.Achievement
+					}.AsReadOnly()
+				},
+				{
+					GameId.CollectSoftCurrency, new List<GameIdGroup>
+					{
+						GameIdGroup.Achievement
+					}.AsReadOnly()
+				},
+				{
+					GameId.UpgradeCard, new List<GameIdGroup>
+					{
+						GameIdGroup.Achievement
+					}.AsReadOnly()
+				},
+				{
+					GameId.UpgradeLevelBuilding, new List<GameIdGroup>
+					{
+						GameIdGroup.Achievement
+					}.AsReadOnly()
+				},
+				{
+					GameId.AutomateBuilding, new List<GameIdGroup>
+					{
+						GameIdGroup.Achievement
+					}.AsReadOnly()
+				},
 			};
 
 		private static readonly Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> _ids =
@@ -177,6 +213,16 @@ namespace Ids
 						GameId.Animal1,
 						GameId.Animal2,
 						GameId.Animal3
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Achievement, new List<GameId>
+					{
+						GameId.CollectMainCurrency,
+						GameId.CollectSoftCurrency,
+						GameId.UpgradeCard,
+						GameId.UpgradeLevelBuilding,
+						GameId.AutomateBuilding
 					}.AsReadOnly()
 				},
 			};

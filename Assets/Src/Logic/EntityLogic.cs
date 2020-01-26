@@ -3,6 +3,7 @@ using Data;
 using Events;
 using Ids;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Logic
 {
@@ -25,6 +26,11 @@ namespace Logic
 		/// Returns the Entity representing the new building
 		/// </summary>
 		UniqueId CreateBuilding(GameId gameId, Vector3 position);
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		UniqueId CreateAchievement(GameId achievementType, IntData goal, IntData reward);
 	}
 	
 	/// <inheritdoc />
@@ -57,6 +63,17 @@ namespace Logic
 			return uniqueId;
 		}
 
+		/// <inheritdoc />
+		public UniqueId CreateAchievement(GameId achievementType, IntData goal, IntData reward)
+		{
+			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
+			
+			CreateGameIdData(uniqueId, achievementType);
+			CreateAchievementData(uniqueId, achievementType, goal, reward);
+
+			return uniqueId;
+		}
+
 		private void CreateGameIdData(UniqueId uniqueId, GameId gameId)
 		{
 			_dataProvider.PlayerData.GameIds.Add(new GameIdData
@@ -68,13 +85,25 @@ namespace Logic
 
 		private void CreateBuildingData(UniqueId uniqueId, Vector3 position)
 		{
-			_dataProvider.PlayerData.Buildings.Add(new BuildingData
+			_dataProvider.LevelData.Buildings.Add(new LevelBuildingData
 			{
 				Id = uniqueId,
 				Position = position,
 				Level = 1,
 				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow,
 				IsAutomated = false
+			});
+		}
+
+		private void CreateAchievementData(UniqueId uniqueId, GameId achievementType, IntData goal, IntData reward)
+		{
+			_dataProvider.LevelData.Achievements.Add(new AchievementData
+			{
+				Id = uniqueId,
+				AchievementType = achievementType,
+				CurrentValue = 0,
+				Goal = goal,
+				Reward = reward
 			});
 		}
 	}

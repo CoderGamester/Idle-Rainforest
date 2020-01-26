@@ -11,12 +11,11 @@ namespace Infos
 		Automated
 	}
 	
-	public struct BuildingInfo
+	public struct LevelBuildingInfo
 	{
 		public GameId GameId;
-		public BuildingData Data;
+		public LevelBuildingData Data;
 		public int NextBracketLevel;
-		public int MaxLevel;
 		public int ProductionAmount;
 		public float ProductionTime;
 		public int UpgradeCost;

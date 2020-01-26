@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
 using Ids;
-using Newtonsoft.Json;
 using Services;
-using UnityEngine;
-using Utils;
 
 namespace Logic
 {
@@ -18,9 +12,16 @@ namespace Logic
 	/// </summary>
 	public interface IGameDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		bool IsFirstSession { get; }
+		
 		/// <inheritdoc cref="IConfigsProvider"/>
 		IConfigsProvider ConfigsProvider { get; }
 		
+		/// <inheritdoc cref="IRewardDataProvider"/>
+		IRewardDataProvider RewardDataProvider { get; }
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
 		/// <inheritdoc cref="IGameObjectDataProvider"/>
@@ -29,10 +30,14 @@ namespace Logic
 		IGameIdDataProvider GameIdDataProvider { get; }
 		/// <inheritdoc cref="ICurrencyDataProvider"/>
 		ICurrencyDataProvider CurrencyDataProvider { get; }
+		/// <inheritdoc cref="IEventDataProvider"/>
+		IEventDataProvider EventDataProvider { get; }
 		/// <inheritdoc cref="IBuildingDataProvider"/>
 		IBuildingDataProvider BuildingDataProvider { get; }
 		/// <inheritdoc cref="ICardDataProvider"/>
 		ICardDataProvider CardDataProvider { get; }
+		/// <inheritdoc cref="IAchievementDataProvider"/>
+		IAchievementDataProvider AchievementDataProvider { get; }
 	}
 
 	/// <summary>
@@ -57,10 +62,14 @@ namespace Logic
 		IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc cref="ICurrencyLogic"/>
 		ICurrencyLogic CurrencyLogic { get; }
+		/// <inheritdoc cref="IEventLogic"/>
+		IEventLogic EventLogic { get; }
 		/// <inheritdoc cref="IBuildingLogic"/>
 		IBuildingLogic BuildingLogic { get; }
 		/// <inheritdoc cref="ICardLogic"/>
 		ICardLogic CardLogic { get; }
+		/// <inheritdoc cref="IAchievementLogic"/>
+		IAchievementLogic AchievementLogic { get; }
 	}
 
 	/// <inheritdoc />
@@ -69,22 +78,28 @@ namespace Logic
 	/// </remarks>
 	public interface IGameInternalLogic : IGameLogic
 	{
+		/// <inheritdoc cref="IDataProviderLogic"/>
+		IDataProviderInternalLogic DataProviderInternalLogic { get; }
+		/// <inheritdoc cref="IRewardLogic"/>
+		IRewardLogic RewardLogic { get; }
 	}
 
 	/// <inheritdoc />
 	public class GameLogic : IGameInternalLogic
 	{
 		/// <inheritdoc />
-		public IConfigsProvider ConfigsProvider { get; }
-		
+		public bool IsFirstSession => DataProviderInternalLogic.LevelData.Buildings.Count == 1;
+
 		/// <inheritdoc />
 		public IMessageBrokerService MessageBrokerService { get; }
 		/// <inheritdoc />
 		public ITimeService TimeService { get; }
 
 		/// <inheritdoc />
-		public IDataProviderLogic DataProviderLogic { get; }
-		
+		public IConfigsProvider ConfigsProvider { get; }
+
+		/// <inheritdoc />
+		public IRewardDataProvider RewardDataProvider => RewardLogic;
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
@@ -94,10 +109,17 @@ namespace Logic
 		/// <inheritdoc />
 		public ICurrencyDataProvider CurrencyDataProvider => CurrencyLogic;
 		/// <inheritdoc />
+		public IEventDataProvider EventDataProvider => EventLogic;
+
+		/// <inheritdoc />
 		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
 		/// <inheritdoc />
 		public ICardDataProvider CardDataProvider => CardLogic;
+		/// <inheritdoc />
+		public IAchievementDataProvider AchievementDataProvider => AchievementLogic;
 
+		/// <inheritdoc />
+		public IDataProviderLogic DataProviderLogic => DataProviderInternalLogic;
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
 		/// <inheritdoc />
@@ -107,54 +129,39 @@ namespace Logic
 		/// <inheritdoc />
 		public ICurrencyLogic CurrencyLogic { get; }
 		/// <inheritdoc />
+		public IEventLogic EventLogic { get; }
+		/// <inheritdoc />
 		public IBuildingLogic BuildingLogic { get; }
 		/// <inheritdoc />
 		public ICardLogic CardLogic { get; }
+		/// <inheritdoc />
+		public IAchievementLogic AchievementLogic { get; }
 
-		public GameLogic(IMessageBrokerService messageBroker, ITimeService timeService)
+		/// <inheritdoc />
+		public IDataProviderInternalLogic DataProviderInternalLogic { get; }
+		/// <inheritdoc />
+		public IRewardLogic RewardLogic { get; }
+
+		public GameLogic(IMessageBrokerService messageBroker, IDataProviderInternalLogic dataProviderInternalLogic,
+			ITimeService timeService)
 		{
-			var dataProviderLogic = new DataProviderLogic(messageBroker);
-			
-			LoadData(dataProviderLogic, timeService.DateTimeUtcNow);
-			
-			ConfigsProvider = new ConfigsProvider();
 			MessageBrokerService = messageBroker;
 			TimeService = timeService;
+			DataProviderInternalLogic = dataProviderInternalLogic;
 			
-			DataProviderLogic = dataProviderLogic;
-			EntityLogic = new EntityLogic(this, dataProviderLogic);
+			ConfigsProvider = new ConfigsProvider();
+			RewardLogic = new RewardLogic(this);
+			EntityLogic = new EntityLogic(this, DataProviderInternalLogic);
 			GameObjectLogic = new GameObjectLogic(this);
-			CurrencyLogic = new CurrencyLogic(this, dataProviderLogic.CurrencyData);
-			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(
-				data => data.Id, 
-				dataProviderLogic.PlayerData.GameIds));
-			BuildingLogic = new BuildingLogic(this, new UniqueIdList<BuildingData>(
-				data => data.Id, 
-				dataProviderLogic.PlayerData.Buildings));
-			CardLogic = new CardLogic(this, new IdList<GameId, CardData>(
-				data => data.Id, 
-				dataProviderLogic.PlayerData.Cards));
-		}
-
-		private void LoadData(IDataProviderInternalLogic dataProviderLogic, DateTime time)
-		{
-			var appDataJson = PlayerPrefs.GetString(nameof(AppData), "");
-			var playerDataJson = PlayerPrefs.GetString(nameof(PlayerData), "");
-			var currencyDataJson = PlayerPrefs.GetString(nameof(CurrencyData), "");
-			
-			dataProviderLogic.AddData(string.IsNullOrEmpty(appDataJson) ? new AppData() : JsonConvert.DeserializeObject<AppData>(appDataJson));
-			dataProviderLogic.AddData(string.IsNullOrEmpty(playerDataJson) ? new PlayerData() : JsonConvert.DeserializeObject<PlayerData>(playerDataJson));
-			dataProviderLogic.AddData(string.IsNullOrEmpty(currencyDataJson) ? new CurrencyData() : JsonConvert.DeserializeObject<CurrencyData>(currencyDataJson));
-
-			if (string.IsNullOrEmpty(appDataJson))
-			{
-				dataProviderLogic.AppData.FirstLoginTime = time;
-				dataProviderLogic.AppData.LoginTime = time;
-			}
-			
-			dataProviderLogic.AppData.LastLoginTime = dataProviderLogic.AppData.LoginTime;
-			dataProviderLogic.AppData.LoginTime = time;
-			dataProviderLogic.AppData.LoginCount++;
+			CurrencyLogic = new CurrencyLogic(this, DataProviderInternalLogic.CurrencyData);
+			EventLogic = new EventLogic(this);
+			GameIdLogic = new GameIdLogic(this, 
+				new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));
+			BuildingLogic = new BuildingLogic(this, 
+				new UniqueIdList<LevelBuildingData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
+			CardLogic = new CardLogic(this, 
+				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
+			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
 		}
 	}
 }

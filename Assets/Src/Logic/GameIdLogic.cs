@@ -8,6 +8,9 @@ namespace Logic
 	/// </summary>
 	public interface IGameIdDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		IUniqueIdListReader<GameIdData> Data { get; }
 	}
 
@@ -21,6 +24,9 @@ namespace Logic
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IUniqueIdList<GameIdData> _data;
+
+		/// <inheritdoc />
+		public IUniqueIdListReader<GameIdData> Data => _data;
 		
 		private GameIdLogic() {}
 
@@ -29,8 +35,5 @@ namespace Logic
 			_gameLogic = gameLogic;
 			_data = data;
 		}
-
-		/// <inheritdoc />
-		public IUniqueIdListReader<GameIdData> Data => _data;
 	}
 }
