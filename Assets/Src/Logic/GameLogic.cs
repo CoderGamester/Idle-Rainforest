@@ -88,7 +88,7 @@ namespace Logic
 	public class GameLogic : IGameInternalLogic
 	{
 		/// <inheritdoc />
-		public bool IsFirstSession => DataProviderInternalLogic.LevelData.Buildings.Count == 1;
+		public bool IsFirstSession => DataProviderInternalLogic.AppData.LoginCount == 1;
 
 		/// <inheritdoc />
 		public IMessageBrokerService MessageBrokerService { get; }

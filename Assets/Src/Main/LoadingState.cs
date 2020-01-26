@@ -23,14 +23,12 @@ namespace Main
 	{
 		private readonly ConfigsProvider _gameConfigs;
 		private readonly UiService _uiService;
-		private readonly IGameServices _services;
 		private readonly IGameInternalLogic _gameLogic;
 		
-		public LoadingState(ConfigsProvider gameConfigs, UiService uiService, IGameServices services, IGameInternalLogic gamelogic)
+		public LoadingState(ConfigsProvider gameConfigs, UiService uiService, IGameInternalLogic gamelogic)
 		{
 			_gameConfigs = gameConfigs;
 			_uiService = uiService;
-			_services = services;
 			_gameLogic = gamelogic;
 		}
 
@@ -45,10 +43,18 @@ namespace Main
 			await LoadOpenLoadingScreen();
 			await LoadConfigs(0.2f);
 			await LoadInitialUis(0.6f);
-			await LoadGameWorld(0.9f);
+			
+			activity.Complete();
+		}
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		public async void FinalLoading(IWaitActivity activity)
+		{
+			await LoadGameWorld(1f);
 
 			Resources.UnloadUnusedAssets();
-			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(1);
 
 			// Small delay to give the loading complete feedback
 			await Task.Delay(500);
@@ -83,7 +89,6 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			Debug.Log(_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_LevelBuildingConfigs).Address);
 			var buildings = await LoaderUtil.LoadAssetAsync<LevelBuildingConfigs>(
 				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_LevelBuildingConfigs).Address, true);
 			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(

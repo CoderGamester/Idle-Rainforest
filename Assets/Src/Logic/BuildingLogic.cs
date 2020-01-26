@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Configs;
 using Data;
 using Events;
@@ -67,6 +68,7 @@ namespace Logic
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) gameId);
 			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Value;
+			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
 			var nextBracket = GetNextLevelBracket(data, config);
 
 			return new LevelBuildingInfo
@@ -78,7 +80,8 @@ namespace Logic
 				ProductionTime = config.ProductionTimeBase,
 				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
 				AutomateCost = config.AutomationCurrencyRequired,
-				AutomationState = GetBuildingState(data, config)
+				AutomationState = GetBuildingState(data, config, buildingCards),
+				BuildingCards = buildingCards
 			};
 		}
 
@@ -115,7 +118,12 @@ namespace Logic
 
 			if (info.Data.Level == info.NextBracketLevel)
 			{
-				BracketReward(info.GameId);
+				var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) info.GameId);
+			
+				for (var i = 0; i < config.UpgradeRewards.Count; i++)
+				{
+					_gameLogic.RewardLogic.GiveReward(config.UpgradeRewards[i]);
+				}
 			}
 			
 			_gameLogic.MessageBrokerService.Publish(new LevelBuildingUpgradedEvent { Building = info.GameId, NewLevel = info.Data.Level});
@@ -139,10 +147,9 @@ namespace Logic
 			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
 		}
 
-		private AutomationState GetBuildingState(LevelBuildingData data, LevelBuildingConfig config)
+		private AutomationState GetBuildingState(LevelBuildingData data, LevelBuildingConfig config, List<CardInfo> buildingCards)
 		{
 			var state = AutomationState.Ready;
-			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
 			
 			if (data.IsAutomated)
 			{
@@ -174,23 +181,14 @@ namespace Logic
 			for (var i = 0; i < config.UpgradeBrackets.Count; i++)
 			{
 				var bracket = config.UpgradeBrackets[i];
-				if (data.Level < bracket.Key && nextBracket > bracket.Key)
+				
+				if (data.Level < bracket.Key && bracket.Key < nextBracket)
 				{
 					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.Value) + 1) * bracket.Value;
 				}
 			}
 
 			return nextBracket;
-		}
-
-		private void BracketReward(GameId building)
-		{
-			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) building);
-			
-			for (var i = 0; i < config.UpgradeRewards.Count; i++)
-			{
-				_gameLogic.RewardLogic.GiveReward(config.UpgradeRewards[i]);
-			}
 		}
 
 		private int ProductionAmount(LevelBuildingData data, LevelBuildingConfig config)

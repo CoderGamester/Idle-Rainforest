@@ -133,7 +133,6 @@ namespace Logic
 				data = new CardData { Id = card.GameId, Amount = 0, Level = 1 };
 				
 				_data.Add(data);
-				_gameLogic.MessageBrokerService.Publish(new CardUpgradedEvent { Card = card.GameId, NewLevel = data.Level });
 			}
 
 			data.Amount += card.Value;

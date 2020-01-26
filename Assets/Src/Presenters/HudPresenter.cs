@@ -2,6 +2,7 @@ using System;
 using Events;
 using GameLovers.Services;
 using GameLovers.UiService;
+using Infos;
 using Logic;
 using Services;
 using TMPro;
@@ -16,22 +17,28 @@ namespace Presenters
 	/// </summary>
 	public class HudPresenter : UiPresenter
 	{
+		private const int _achievementCount = 3;
+		
+		[SerializeField] private TextMeshProUGUI _achievementCountText;
 		[SerializeField] private TextMeshProUGUI _countdownText;
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
 		[SerializeField] private Slider _achievementProgressBar;
 		[SerializeField] private Button _cardsButton;
-		[SerializeField] private AchievementViewPresenter[] _achievementsViews;
+		[SerializeField] private AchievementViewPresenter _achievementRef;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
+		private IObjectPool<AchievementViewPresenter> _pool;
 
 		private void Awake()
 		{
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
+			_pool = new ObjectPool<AchievementViewPresenter>(3, AchievementInstantiator);
 			
+			_achievementRef.gameObject.SetActive(false);
 			_services.TickService.SubscribeOnUpdate(UpdateCountdown, 1, true);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
@@ -40,7 +47,7 @@ namespace Presenters
 			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
-		private void Start()
+		protected override void OnOpened()
 		{
 			_mainCurrencyText.text = $"MC: {_dataProvider.CurrencyDataProvider.MainCurrencyAmount.ToString()}";
 			_softCurrencyText.text = $"SC: {_dataProvider.CurrencyDataProvider.SoftCurrencyAmount.ToString()}";
@@ -85,22 +92,30 @@ namespace Presenters
 			var achievementInfo = _dataProvider.AchievementDataProvider.GetInfo();
 			
 			_achievementProgressBar.value = (float) achievementInfo.Collected / achievementInfo.Total;
+			_achievementCountText.text = $"{achievementInfo.Collected.ToString()}/{achievementInfo.Total.ToString()}";
 
-			foreach (var view in _achievementsViews)
-			{
-				view.gameObject.SetActive(false);
-			}
+			_pool.DespawnAll();
 			
-			for (int i = 0, j = 0; i < achievementInfo.Achievements.Count && j < _achievementsViews.Length; i++)
+			for (int i = 0, j = 0; i < achievementInfo.Total && j <_achievementCount; i++)
 			{
 				if (achievementInfo.Achievements[i].IsCollected)
 				{
 					continue;
 				}
-				
-				_achievementsViews[j].gameObject.SetActive(true);
-				_achievementsViews[j].SetData(achievementInfo.Achievements[i]);
+
+				_pool.Spawn().SetData(achievementInfo.Achievements[i]);
+
+				j++;
 			}
+		}
+
+		private AchievementViewPresenter AchievementInstantiator()
+		{
+			var newRef = Instantiate(_achievementRef, _achievementRef.transform.parent);
+				
+			newRef.gameObject.SetActive(false);
+				
+			return newRef;
 		}
 	}
 }

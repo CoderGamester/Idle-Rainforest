@@ -14,28 +14,26 @@ namespace Systems
 	public class AchievementSystem
 	{
 		private readonly IGameServices _services;
-		private readonly IUniqueIdList<AchievementData> _achievements;
 		private readonly IList<Achievement> _runningAchievements = new List<Achievement>();
 		
 		private AchievementSystem() {}
 
-		public AchievementSystem(IList<AchievementData> achievements)
+		public AchievementSystem(IUniqueIdList<AchievementData> achievements)
 		{
 			_services = MainInstaller.Resolve<IGameServices>();
-			_achievements = new UniqueIdList<AchievementData>(x => x.Id, achievements);
 
-			CreateAchievements();
+			CreateAchievements(achievements);
 		}
 
-		private void CreateAchievements()
+		private void CreateAchievements(IUniqueIdList<AchievementData> achievements)
 		{
-			var list = _achievements.GetList();
+			var list = achievements.GetList();
 			
 			for (var i = 0; i < list.Count; i++)
 			{
 				var index = i;
 				Func<AchievementData> resolver = () => list[index];
-				Action<AchievementData> setter = data => _achievements.Set(data);
+				Action<AchievementData> setter = achievements.Set;
 				
 				switch (list[i].AchievementType)
 				{

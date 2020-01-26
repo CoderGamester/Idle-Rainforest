@@ -18,44 +18,47 @@ namespace Presenters
 		[SerializeField] private CardViewPresenter _cardRef;
 		
 		private IGameDataProvider _dataProvider;
-		private IGameServices _services;
+		private IObjectPool<CardViewPresenter> _pool;
 
 		private void Awake()
 		{
 			const int poolSize = 10;
 
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
-			_services = MainInstaller.Resolve<IGameServices>();
+			_pool = new ObjectPool<CardViewPresenter>(poolSize, CardInstantiator);
 			
 			_cardRef.gameObject.SetActive(false);
 			_closeButton.onClick.AddListener(OnCloseClicked);
-			_services.PoolService.InitPool(poolSize, _cardRef, card =>
-			{
-				var newRef = Instantiate(card, _cardRef.transform.parent);
-				
-				newRef.gameObject.SetActive(false);
-				
-				return newRef;
-			});
 		}
 
 		protected override void OnOpened()
 		{
 			var cards = _dataProvider.CardDataProvider.GetAllCards();
 			
-			_services.PoolService.DespawnAll<CardViewPresenter>();
+			_pool.DespawnAll();
 			foreach (var cardInfo in cards)
 			{
-				var card = _services.PoolService.Spawn<CardViewPresenter>();
+				var card = _pool.Spawn();
 				
 				card.gameObject.SetActive(true);
 				card.SetData(cardInfo);
 			}
+			
+			Debug.Log(cards.Count);
 		}
 
 		private void OnCloseClicked()
 		{
-			_services.UiService.CloseUi<CardsPanelPresenter>();
+			Close();
+		}
+
+		private CardViewPresenter CardInstantiator()
+		{
+			var newRef = Instantiate(_cardRef, _cardRef.transform.parent);
+				
+			newRef.gameObject.SetActive(false);
+				
+			return newRef;
 		}
 	}
 }

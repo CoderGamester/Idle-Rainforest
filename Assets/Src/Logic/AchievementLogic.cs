@@ -28,6 +28,11 @@ namespace Logic
 	public interface IAchievementLogic : IAchievementDataProvider
 	{
 		/// <summary>
+		/// TODO: REMOVE
+		/// </summary>
+		new IUniqueIdList<AchievementData> Data { get; }
+		
+		/// <summary>
 		/// TODO:
 		/// </summary>
 		UniqueId GenerateRandomAchievement();
@@ -46,6 +51,9 @@ namespace Logic
 
 		/// <inheritdoc />
 		public IUniqueIdListReader<AchievementData> Data => _data;
+
+		/// <inheritdoc />
+		IUniqueIdList<AchievementData> IAchievementLogic.Data => _data;
 
 		private AchievementLogic() {}
 
@@ -109,7 +117,7 @@ namespace Logic
 					break;
 				case GameId.AutomateBuilding:
 					goal.GameId = GameId.Random;
-					goal.Value = Random.Range(1, 5);
+					goal.Value = Random.Range(1, 3);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException($"The given id {type} is no of {nameof(GameIdGroup.Achievement)} group type");
