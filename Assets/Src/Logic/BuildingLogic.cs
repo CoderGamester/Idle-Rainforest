@@ -92,12 +92,12 @@ namespace Logic
 
 			if (info.AutomationState == AutomationState.Automated)
 			{
-				throw new InvalidOperationException($"The building {info.GameId} is already automated and cannot be collected by the player anymore");
+				throw new LogicException($"The building {info.GameId} is already automated and cannot be collected by the player anymore");
 			}
 
 			if (_gameLogic.TimeService.DateTimeUtcNow < info.ProductionEndTime)
 			{
-				throw new InvalidOperationException($"The building {info.GameId} is still not ready to collect");
+				throw new LogicException($"The building {info.GameId} is still not ready to collect");
 			}
 			
 			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
@@ -136,7 +136,7 @@ namespace Logic
 
 			if (info.AutomationState != AutomationState.Ready)
 			{
-				throw new InvalidOperationException($"The building {info.GameId} is still not ready to be automated");
+				throw new LogicException($"The building {info.GameId} is still not ready to be automated");
 			}
 
 			info.Data.IsAutomated = true;

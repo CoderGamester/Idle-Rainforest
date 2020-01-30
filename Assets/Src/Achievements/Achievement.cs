@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Events;
+using GameLovers.Services;
 using Services;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Achievements
 	/// </summary>
 	public abstract class Achievement
 	{
-		protected readonly IGameServices Services;
+		protected readonly IMessageBrokerService MessageBroker;
 		
 		private readonly Func<AchievementData> _achievementResolver;
 		private readonly Action<AchievementData> _setter;
@@ -21,9 +22,9 @@ namespace Achievements
 		/// </summary>
 		public AchievementData Data => _achievementResolver();
 		
-		protected Achievement(IGameServices services, Func<AchievementData> achievementResolver, Action<AchievementData> setter)
+		protected Achievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter)
 		{
-			Services = services;
+			MessageBroker = messageBroker;
 			_achievementResolver = achievementResolver;
 			_setter = setter;
 
@@ -39,7 +40,7 @@ namespace Achievements
 		/// </summary>
 		public void Disable()
 		{
-			Services.MessageBrokerService.UnsubscribeAll(this);
+			MessageBroker.UnsubscribeAll(this);
 
 			OnDisable();
 		}
@@ -61,7 +62,7 @@ namespace Achievements
 
 			if (data.IsCompleted)
 			{
-				Services.MessageBrokerService.Publish(new AchievementCompletedEvent { Id = data.Id } );
+				MessageBroker.Publish(new AchievementCompletedEvent { Id = data.Id } );
 				
 				Disable();
 			}

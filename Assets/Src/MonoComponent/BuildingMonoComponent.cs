@@ -12,43 +12,45 @@ using Logic;
 using Services;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using ViewPresenters;
+using UnityEngine.UI;
 
 namespace MonoComponent
 {
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class BuildingMonoComponent : MonoBehaviour, IPointerClickHandler
+	public class BuildingMonoComponent : MonoBehaviour
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private TextMeshPro _buildingNameText;
-		[SerializeField] private TextMeshPro _productionAmountText;
+		[SerializeField] private TextMeshProUGUI _collectValueText;
+		[SerializeField] private TextMeshProUGUI _collectionText;
 		[SerializeField] private TextMeshPro _upgradeCostText;
-		[SerializeField] private GameObject _readyState;
+		[SerializeField] private Button _collectButton;
+		[SerializeField] private Button _automateButton;
+		[SerializeField] private Image _fillingImage;
 		[SerializeField] private GameObject _upgradableState;
-		[SerializeField] private GameObject _automateState;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
-		private CancellationTokenSource _cancellationToken;
+		private Coroutine _coroutine;
 
 		private void Awake()
 		{
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
-			_readyState.SetActive(false);
 			_upgradableState.SetActive(false);
+			_collectButton.onClick.AddListener(OnCollectClicked);
+			_automateButton.onClick.AddListener(OnAutomateClicked);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
 		}
 
 		private void OnDestroy()
 		{
-			_cancellationToken?.Cancel();
 			_services?.MessageBrokerService?.UnsubscribeAll(this);
+			_services?.CoroutineService?.StopCoroutine(_coroutine);
 		}
 
 		private void Start()
@@ -61,25 +63,6 @@ namespace MonoComponent
 			}
 
 			UpdateView();
-
-			if (info.AutomationState != AutomationState.Automated)
-			{
-				OnReadyToCollect(info.ProductionTime);
-			}
-		}
-
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		public void OnPointerClick(PointerEventData eventData)
-		{
-			if (_readyState.activeSelf)
-			{
-				_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
-				_readyState.SetActive(false);
-				
-				OnReadyToCollect(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId).ProductionTime);
-			}
 		}
 
 		/// <summary>
@@ -91,17 +74,19 @@ namespace MonoComponent
 			
 			UpdateView();
 		}
-
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		public void AutomateClicked()
+		
+		private void OnAutomateClicked()
 		{
 			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+
+			UpdateView();
+		}
+		
+		private void OnCollectClicked()
+		{
+			_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			_automateState.SetActive(false);
-			_cancellationToken?.Cancel();
-			_readyState.SetActive(false);
+			StartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView()
@@ -111,17 +96,17 @@ namespace MonoComponent
 
 			_buildingNameText.text = $"{info.GameId} - lv {info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}\n" +
 			                         $"{seedsSec.ToString("0.##")}/s";
-			_productionAmountText.text = info.ProductionAmount.ToString();
+			_collectValueText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost.ToString();
 
 			UpdateState(info);
+			StartCircleCoroutine(info);
 		}
 
 		private void UpdateState(LevelBuildingInfo info)
 		{
 			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
-			_automateState.SetActive(info.AutomationState == AutomationState.Ready);
-			_readyState.SetActive(info.AutomationState != AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime);
+			_automateButton.gameObject.SetActive(info.AutomationState == AutomationState.Ready);
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
@@ -136,29 +121,55 @@ namespace MonoComponent
 
 		private void OnCardAdded(CardData card)
 		{
+			if (card.Level > 1)
+			{
+				return;
+			}
+			
 			UpdateView();
 		}
 
-		private async void OnReadyToCollect(float time)
+		private void StartCircleCoroutine(LevelBuildingInfo info)
 		{
-			using (_cancellationToken = new CancellationTokenSource())
+			if (_coroutine != null)
 			{
-				try
+				_services.CoroutineService.StopCoroutine(_coroutine);
+			}
+			
+			_coroutine = _services.CoroutineService.StartCoroutine(CircleCoroutine(info));
+		}
+
+		private IEnumerator CircleCoroutine(LevelBuildingInfo info)
+		{
+			var loop = true;
+			
+			_collectionText.text = info.AutomationState == AutomationState.Automated ? "Automated" : "";
+			_collectButton.interactable = false;
+
+			while (loop)
+			{
+				var timespan = _services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime;
+
+				while (timespan.TotalSeconds < info.ProductionTime)
 				{
-					await Task.Delay(new TimeSpan(0, 0, Mathf.RoundToInt(time)), _cancellationToken.Token);
+					yield return null;
+				
+					_fillingImage.fillAmount =  (float) timespan.TotalSeconds / info.ProductionTime;
+					timespan = _services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime;
 				}
-				catch (Exception)
+
+				loop = info.AutomationState == AutomationState.Automated;
+				
+				if (info.AutomationState == AutomationState.Automated)
 				{
-					return;
+					info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 				}
 			}
 
-			if (_readyState != null)
-			{
-				_readyState.SetActive(true);
-			}
-			
-			_cancellationToken = null;
+			_fillingImage.fillAmount = 1f;
+			_collectionText.text = "Collect";
+			_collectButton.interactable = true;
+			_coroutine = null;
 		}
 	}
 }

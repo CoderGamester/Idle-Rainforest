@@ -91,7 +91,7 @@ namespace Logic
 		{
 			if (_currencyData.MainCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player needs {amount.ToString()} main currency and only has " +
+				throw new LogicException($"The player needs {amount.ToString()} main currency and only has " +
 				                                    $"{_currencyData.MainCurrency.ToString()}");
 			}
 
@@ -117,7 +117,7 @@ namespace Logic
 		{
 			if (_currencyData.SoftCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player needs {amount.ToString()} soft currency and only has " +
+				throw new LogicException($"The player needs {amount.ToString()} soft currency and only has " +
 				                                    $"{_currencyData.SoftCurrency.ToString()}");
 			}
 
@@ -143,7 +143,7 @@ namespace Logic
 		{
 			if (_currencyData.HardCurrency - amount < 0)
 			{
-				throw new InvalidOperationException($"The player needs {amount.ToString()} hard currency and only has " +
+				throw new LogicException($"The player needs {amount.ToString()} hard currency and only has " +
 				                                    $"{_currencyData.HardCurrency.ToString()}");
 			}
 
@@ -180,7 +180,7 @@ namespace Logic
 					});
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(currencyType), currencyType, "Wrong currency type");
+					throw new LogicException($"Wrong currency type {currencyType}");
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Events;
+using GameLovers.Services;
 using Services;
 
 namespace Achievements
@@ -10,15 +11,15 @@ namespace Achievements
 	/// </summary>
 	public class CollectSoftCurrencyAchievement : Achievement
 	{
-		public CollectSoftCurrencyAchievement(IGameServices services, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
-			base(services, achievementResolver, setter)
+		public CollectSoftCurrencyAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+			base(messageBroker, achievementResolver, setter)
 		{
 		}
 		
 		/// <inheritdoc />
 		protected override void SubscribeMessages()
 		{
-			Services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
+			MessageBroker.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
 		}
 
 		private void OnSoftCurrencyValueChanged(SoftCurrencyValueChangedEvent eventData)

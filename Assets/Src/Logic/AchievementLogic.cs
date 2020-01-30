@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Achievements;
 using Data;
 using Events;
 using Ids;
@@ -61,6 +62,8 @@ namespace Logic
 		{
 			_gameLogic = gameLogic;
 			_data = new UniqueIdList<AchievementData>(x => x.Id, levelData.Achievements);
+
+			CreateAchievements();
 		}
 
 		/// <inheritdoc />
@@ -120,7 +123,7 @@ namespace Logic
 					goal.Value = Random.Range(1, 3);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException($"The given id {type} is no of {nameof(GameIdGroup.Achievement)} group type");
+					throw new LogicException($"The given id {type} is no of {nameof(GameIdGroup.Achievement)} group type");
 			}
 
 			return _gameLogic.EntityLogic.CreateAchievement(type, goal, reward);
@@ -133,7 +136,7 @@ namespace Logic
 
 			if (data.IsCollected)
 			{
-				throw new InvalidOperationException($"Cannot collect the {data.AchievementType} achievement because is already collected");
+				throw new LogicException($"Cannot collect the {data.AchievementType} achievement because is already collected");
 			}
 
 			data.IsCollected = true;
@@ -141,6 +144,40 @@ namespace Logic
 			_data.Set(data);
 			_gameLogic.RewardLogic.GiveReward(data.Reward);
 			_gameLogic.MessageBrokerService.Publish(new AchievementCollectedEvent { Id = id });
+		}
+
+		private void CreateAchievements()
+		{
+			var list = _data.GetList();
+			
+			for (var i = 0; i < list.Count; i++)
+			{
+				var index = i;
+				Func<AchievementData> resolver = () => list[index];
+				Action<AchievementData> setter = _data.Set;
+				
+				switch (list[i].AchievementType)
+				{
+					case GameId.CollectMainCurrency:
+						new CollectMainCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						break;
+					case GameId.CollectSoftCurrency:
+						new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						break;
+					case GameId.UpgradeCard:
+						new UpgradeCardAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						break;
+					case GameId.UpgradeLevelBuilding:
+						new UpgradeLevelBuildingAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						break;
+					case GameId.AutomateBuilding:
+						new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						break;
+					default:
+						throw new LogicException($"The given id {list[i].AchievementType} is not " +
+						                                      $"of {nameof(GameIdGroup.Achievement)} group type");
+				}
+			}
 		}
 	}
 }
