@@ -3,6 +3,9 @@ namespace Ids
 {
 	public enum AddressableId
 	{
+		Sprites_Trees_AppleTree,
+		Sprites_Trees_ChristmasTree,
+		Sprites_Trees_NormalTree,
 		Configs_AddressableConfigs,
 		Configs_CardConfigs,
 		Configs_LevelBuildingConfigs,
@@ -16,6 +19,8 @@ namespace Ids
 
 	public enum AddressableIdGroup
 	{
+		Sprites,
+		Trees,
 		Configs,
 		Prefabs,
 		Ui

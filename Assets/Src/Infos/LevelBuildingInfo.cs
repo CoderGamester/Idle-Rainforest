@@ -16,6 +16,7 @@ namespace Infos
 	{
 		public GameId GameId;
 		public LevelBuildingData Data;
+		public int BracketSize;
 		public int NextBracketLevel;
 		public int ProductionAmount;
 		public float ProductionTime;

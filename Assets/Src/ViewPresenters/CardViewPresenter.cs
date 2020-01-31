@@ -58,8 +58,9 @@ namespace ViewPresenters
 		{
 			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "max";
 			
-			_cardNameText.text = $"lvl {levelText} {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
-			_upgradeCostText.text = info.UpgradeCost.ToString();
+			_cardNameText.text = $"{info.GameId} - lvl {levelText} - {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			_upgradeCostText.text = $"Upgrade {info.UpgradeCost.ToString()}";
+			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired;
 			
 			_upgradeButton.gameObject.SetActive(info.Data.Level < info.MaxLevel);
 		}

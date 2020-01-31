@@ -41,7 +41,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void Collect(UniqueId id);
+		void CollectAchievement(UniqueId id);
 	}
 	
 	/// <inheritdoc />
@@ -130,7 +130,7 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void Collect(UniqueId id)
+		public void CollectAchievement(UniqueId id)
 		{
 			var data = _data.Get(id);
 

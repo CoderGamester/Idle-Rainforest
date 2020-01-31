@@ -11,9 +11,9 @@ namespace Ids
 		MainCurrency,
 		SoftCurrency,
 		HardCurrency,
-		BuildingZoo,
-		BuildingPark,
-		BuildingAquarium,
+		AppleTree,
+		ChristmasTree,
+		NormalTree,
 		Animal1,
 		Animal2,
 		Animal3,
@@ -114,19 +114,19 @@ namespace Ids
 					}.AsReadOnly()
 				},
 				{
-					GameId.BuildingZoo, new List<GameIdGroup>
+					GameId.AppleTree, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
 				{
-					GameId.BuildingPark, new List<GameIdGroup>
+					GameId.ChristmasTree, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
 					}.AsReadOnly()
 				},
 				{
-					GameId.BuildingAquarium, new List<GameIdGroup>
+					GameId.NormalTree, new List<GameIdGroup>
 					{
 						GameIdGroup.Building
 					}.AsReadOnly()
@@ -202,9 +202,9 @@ namespace Ids
 				{
 					GameIdGroup.Building, new List<GameId>
 					{
-						GameId.BuildingZoo,
-						GameId.BuildingPark,
-						GameId.BuildingAquarium
+						GameId.AppleTree,
+						GameId.ChristmasTree,
+						GameId.NormalTree
 					}.AsReadOnly()
 				},
 				{

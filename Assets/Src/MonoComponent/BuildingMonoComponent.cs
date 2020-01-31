@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
-using System.Threading;
-using System.Threading.Tasks;
 using Commands;
 using Data;
 using Events;
 using GameLovers.ConfigsContainer;
+using GameLovers.LoaderExtension;
 using GameLovers.Services;
 using Infos;
 using Logic;
@@ -22,14 +20,17 @@ namespace MonoComponent
 	public class BuildingMonoComponent : MonoBehaviour
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
-		[SerializeField] private TextMeshPro _buildingNameText;
+		[SerializeField] private TextMeshProUGUI _buildingNameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
-		[SerializeField] private TextMeshPro _upgradeCostText;
+		[SerializeField] private TextMeshProUGUI _upgradeCostText;
+		[SerializeField] private TextMeshProUGUI _levelText;
+		[SerializeField] private Slider _levelSlider;
 		[SerializeField] private Button _collectButton;
 		[SerializeField] private Button _automateButton;
+		[SerializeField] private Button _upgradeButton;
 		[SerializeField] private Image _fillingImage;
-		[SerializeField] private GameObject _upgradableState;
+		[SerializeField] private SpriteRenderer _image;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -40,7 +41,7 @@ namespace MonoComponent
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
-			_upgradableState.SetActive(false);
+			_upgradeButton.onClick.AddListener(OnUpgradeClicked);
 			_collectButton.onClick.AddListener(OnCollectClicked);
 			_automateButton.onClick.AddListener(OnAutomateClicked);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
@@ -53,7 +54,7 @@ namespace MonoComponent
 			_services?.CoroutineService?.StopCoroutine(_coroutine);
 		}
 
-		private void Start()
+		private async void Start()
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 
@@ -63,12 +64,11 @@ namespace MonoComponent
 			}
 
 			UpdateView();
+
+			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"Sprites/Trees/{info.GameId}.png", false);
 		}
 
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		public void UpgradeClicked()
+		private void OnUpgradeClicked()
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
@@ -86,26 +86,27 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			StartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
+			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView()
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
-			var seedsSec = info.ProductionAmount / info.ProductionTime;
 
-			_buildingNameText.text = $"{info.GameId} - lv {info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}\n" +
-			                         $"{seedsSec.ToString("0.##")}/s";
+			_buildingNameText.text = $"{info.GameId}";
 			_collectValueText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost.ToString();
+			_levelText.text = $"{info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}";
+			_levelSlider.value = info.Data.Level >= info.NextBracketLevel ? 1 : (float) (info.Data.Level % info.BracketSize)/ info.BracketSize;
 
 			UpdateState(info);
-			StartCircleCoroutine(info);
+			RestartCircleCoroutine(info);
 		}
 
 		private void UpdateState(LevelBuildingInfo info)
 		{
-			_upgradableState.SetActive(_dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost);
+			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost;
+			_collectButton.interactable = info.AutomationState != AutomationState.Automated;
 			_automateButton.gameObject.SetActive(info.AutomationState == AutomationState.Ready);
 		}
 
@@ -121,15 +122,13 @@ namespace MonoComponent
 
 		private void OnCardAdded(CardData card)
 		{
-			if (card.Level > 1)
+			if (card.Level == 1 && card.Amount == 0)
 			{
-				return;
+				UpdateView();
 			}
-			
-			UpdateView();
 		}
 
-		private void StartCircleCoroutine(LevelBuildingInfo info)
+		private void RestartCircleCoroutine(LevelBuildingInfo info)
 		{
 			if (_coroutine != null)
 			{
@@ -141,30 +140,27 @@ namespace MonoComponent
 
 		private IEnumerator CircleCoroutine(LevelBuildingInfo info)
 		{
-			var loop = true;
-			
 			_collectionText.text = info.AutomationState == AutomationState.Automated ? "Automated" : "";
 			_collectButton.interactable = false;
 
-			while (loop)
+			do
 			{
-				var timespan = _services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime;
-
-				while (timespan.TotalSeconds < info.ProductionTime)
+				while (_services.TimeService.DateTimeUtcNow < info.ProductionEndTime)
 				{
 					yield return null;
 				
+					var timespan = _services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime;
+					
 					_fillingImage.fillAmount =  (float) timespan.TotalSeconds / info.ProductionTime;
-					timespan = _services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime;
 				}
 
-				loop = info.AutomationState == AutomationState.Automated;
-				
 				if (info.AutomationState == AutomationState.Automated)
 				{
 					info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
+					yield return null;
 				}
-			}
+			} 
+			while (info.AutomationState == AutomationState.Automated);
 
 			_fillingImage.fillAmount = 1f;
 			_collectionText.text = "Collect";

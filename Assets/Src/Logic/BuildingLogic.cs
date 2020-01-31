@@ -67,7 +67,7 @@ namespace Logic
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) gameId);
-			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Value;
+			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Key;
 			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
 			var nextBracket = GetNextLevelBracket(data, config);
 
@@ -75,7 +75,8 @@ namespace Logic
 			{
 				GameId = gameId,
 				Data = data,
-				NextBracketLevel = Mathf.Min(nextBracket, maxLevel),
+				NextBracketLevel = Mathf.Min(nextBracket.Key, maxLevel),
+				BracketSize = nextBracket.Value,
 				ProductionAmount = ProductionAmount(data, config),
 				ProductionTime = config.ProductionTimeBase,
 				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
@@ -174,17 +175,18 @@ namespace Logic
 			return state;
 		}
 
-		private int GetNextLevelBracket(LevelBuildingData data, LevelBuildingConfig config)
+		private IntPairData GetNextLevelBracket(LevelBuildingData data, LevelBuildingConfig config)
 		{
-			var nextBracket = int.MaxValue;
+			var nextBracket = new IntPairData(int.MaxValue, 0);
 
 			for (var i = 0; i < config.UpgradeBrackets.Count; i++)
 			{
 				var bracket = config.UpgradeBrackets[i];
 				
-				if (data.Level < bracket.Key && bracket.Key < nextBracket)
+				if (data.Level < bracket.Key && bracket.Key < nextBracket.Key)
 				{
-					nextBracket = (Mathf.FloorToInt((float) data.Level / bracket.Value) + 1) * bracket.Value;
+					nextBracket.Key = (Mathf.FloorToInt((float) data.Level / bracket.Value) + 1) * bracket.Value;
+					nextBracket.Value = bracket.Value;
 				}
 			}
 
