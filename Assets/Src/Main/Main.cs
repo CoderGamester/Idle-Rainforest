@@ -81,33 +81,18 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
-		// TODO: Move achievementsystem to achievementlogic
+		// TODO: DataProvider contains all IdLists and remove public achievement list
 		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: Do the TODOS in GameStateMachine
 		// TODO: StartEventCommand that resets all the data and recreates all the world
-		// TODO: Remove create gameobject from CreateBuildingCommand
 		// TODO: AutoCollectSystem optimize
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
-		// TODO: GameLogic custom exception
 		// TODO: Systems Architecture. Use Unity DOTS???
-		// TODO: Add Time cheat and clear all playerprefs into SRDebugger
 		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
-		// TODO: DataProvider contains all IdLists and remove public achievement list
 		
-		// TODO: MainInstaller receives T type as arguemnt
-		// TODO: GoogleSheet Random(2 > 4), RandomInt, RandomFloat
+		// TODO: Move Frameworks to GitHub
 		// TODO: Enum serialize as string
 		// TODO: Async Await working
-		// TODO: Move Frameworks to GitHub
 		// TODO: Missing RuntimeTests for services
-		// TODO: InspectorGUI on Addressables like UiConfig
-		// TODO: Review Addressables configs. remove cache
-		// TODO: Review PoolService. Remove service and remove new() constraint and fix despawnall. Clear == Despawnall???. Generic GameObject Instantiator
-		// TODO: IdList Count
-		// TODO: IntList for an Observable IList
-		// TODO: IdDictionary
-		// TODO: UIService Unload(this)
-		// TODO: UiService Load(bool openAfter = false);
-		// TODO: UiService Add(bool openAfter = falsE);
 	}
 }

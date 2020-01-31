@@ -52,7 +52,7 @@ namespace Logic
 		{
 			if (!gameId.IsInGroup(GameIdGroup.Building))
 			{
-				throw new ArgumentException($"The game id {gameId} is not a building type game id");
+				throw new LogicException($"The game id {gameId} is not a building type game id");
 			}
 			
 			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;

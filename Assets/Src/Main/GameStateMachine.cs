@@ -95,10 +95,11 @@ namespace Main
 			
 			for (var i = 0; i < list.Count; i++)
 			{
+				var right = i % 2 == 0 ? -2 : 2;
 				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
 					BuildingType = list[i].Building,
-					Position = i * 5 * Vector3.forward + Vector3.left * 1.5f
+					Position = i * 5f * Vector3.up - Vector3.up * 8 + Vector3.right * right
 				});
 			}
 
@@ -133,7 +134,6 @@ namespace Main
 		{
 			// TODO: Review code below
 			
-			var achievementSystem = new AchievementSystem(_gameLogic.AchievementLogic.Data);
 			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
 			
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());

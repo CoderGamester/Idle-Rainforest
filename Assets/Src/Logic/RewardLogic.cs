@@ -54,7 +54,7 @@ namespace Logic
 					_gameLogic.CurrencyLogic.AddHardCurrency(reward.Value);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException($"The reward {reward.GameId} is not valid");
+					throw new LogicException($"The reward {reward.GameId} is not valid");
 			}
 		}
 	}

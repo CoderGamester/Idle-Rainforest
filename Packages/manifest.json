@@ -5,7 +5,6 @@
     "com.gamelovers.googlesheetimporter": "https://github.com/CoderGamester/com.gamelovers.googlesheetimporter.git",
     "com.gamelovers.loadextension": "https://github.com/CoderGamester/com.gamelovers.loadextension.git",
     "com.gamelovers.newtonsoftjson": "https://github.com/CoderGamester/com.gamelovers.newtonsoftjson.git",
-    "com.gamelovers.nsubstitute": "https://github.com/CoderGamester/com.gamelovers.nsubstitute.git",
     "com.gamelovers.removeemptyfolders": "https://github.com/CoderGamester/com.gamelovers.removeemptyfolders.git",
     "com.gamelovers.services": "https://github.com/CoderGamester/com.gamelovers.services.git",
     "com.gamelovers.statechart": "https://github.com/CoderGamester/com.gamelovers.statechart.git",
@@ -17,12 +16,11 @@
     "com.unity.device-simulator": "2.0.0-preview",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.inputsystem": "1.0.0-preview.3",
+    "com.unity.inputsystem": "1.0.0-preview.4",
     "com.unity.mobile.android-logcat": "1.0.0",
     "com.unity.quicksearch": "1.4.1",
-    "com.unity.test-framework": "1.1.9",
     "com.unity.textmeshpro": "2.0.1",
-    "com.unity.timeline": "1.2.9",
+    "com.unity.timeline": "1.2.10",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -76,10 +74,6 @@
     "com.gamelovers.newtonsoftjson": {
       "revision": "HEAD",
       "hash": "ec12232149a2b1d7b1f6ab0d4d6508495c1f533f"
-    },
-    "com.gamelovers.nsubstitute": {
-      "revision": "HEAD",
-      "hash": "929d7e430b831ff9037274a4b4119782517aac69"
     },
     "com.gamelovers.removeemptyfolders": {
       "revision": "HEAD",

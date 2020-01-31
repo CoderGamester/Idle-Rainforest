@@ -147,12 +147,12 @@ namespace Logic
 
 			if (info.Data.Level == info.MaxLevel)
 			{
-				throw new InvalidOperationException($"The card {card} already reached the max level");
+				throw new LogicException($"The card {card} already reached the max level");
 			}
 
 			if (info.Data.Amount < info.AmountRequired)
 			{
-				throw new InvalidOperationException($"The player needs {info.AmountRequired} and only has {info.Data.Amount} to upgrade the card {card}");
+				throw new LogicException($"The player needs {info.AmountRequired} and only has {info.Data.Amount} to upgrade the card {card}");
 			}
 
 			info.Data.Amount -= info.AmountRequired;

@@ -1,6 +1,7 @@
 using System;
 using Data;
 using Events;
+using GameLovers.Services;
 using Ids;
 using Services;
 
@@ -11,15 +12,15 @@ namespace Achievements
 	/// </summary>
 	public class UpgradeLevelBuildingAchievement : Achievement
 	{
-		public UpgradeLevelBuildingAchievement(IGameServices services, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
-			base(services, achievementResolver, setter)
+		public UpgradeLevelBuildingAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+			base(messageBroker, achievementResolver, setter)
 		{
 		}
 		
 		/// <inheritdoc />
 		protected override void SubscribeMessages()
 		{
-			Services.MessageBrokerService.Subscribe<LevelBuildingUpgradedEvent>(OnLevelBuildingUpgraded);
+			MessageBroker.Subscribe<LevelBuildingUpgradedEvent>(OnLevelBuildingUpgraded);
 		}
 
 		private void OnLevelBuildingUpgraded(LevelBuildingUpgradedEvent eventData)

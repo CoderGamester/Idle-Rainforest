@@ -11,7 +11,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.AchievementLogic.Collect(Achievement);
+			gameLogic.AchievementLogic.CollectAchievement(Achievement);
 		}
 	}
 }
