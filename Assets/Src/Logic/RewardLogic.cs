@@ -1,5 +1,6 @@
 using System;
 using Data;
+using Events;
 using Ids;
 
 namespace Logic
@@ -36,6 +37,8 @@ namespace Logic
 		/// <inheritdoc />
 		public void GiveReward(IntData reward)
 		{
+			_gameLogic.MessageBrokerService.Publish(new RewardGivingEvent { Reward = reward });
+			
 			if (reward.GameId.IsInGroup(GameIdGroup.Card))
 			{
 				_gameLogic.CardLogic.AddCard(reward);

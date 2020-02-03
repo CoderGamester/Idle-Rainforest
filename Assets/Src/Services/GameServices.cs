@@ -28,6 +28,8 @@ namespace Services
 		ITimeService TimeService { get; }
 		/// <inheritdoc cref="ICoroutineService"/>
 		ICoroutineService CoroutineService { get; }
+		/// <inheritdoc cref="ICoroutineService"/>
+		IVfxService VfxService { get; }
 	}
 
 	/// <inheritdoc />
@@ -47,6 +49,8 @@ namespace Services
 		public ITimeService TimeService { get; }
 		/// <inheritdoc />
 		public ICoroutineService CoroutineService { get; }
+		/// <inheritdoc />
+		public IVfxService VfxService { get; }
 
 		public GameServices(IMessageBrokerService messageBrokerService, ITimeService timeService, IGameLogic gameLogic)
 		{
@@ -58,6 +62,7 @@ namespace Services
 			UiService = new UiService();
 			TickService =  new TickService();
 			CoroutineService = new CoroutineService();
+			VfxService = new VfxService(this, gameLogic);
 		}
 	}
 }

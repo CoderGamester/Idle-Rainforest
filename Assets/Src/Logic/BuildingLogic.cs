@@ -103,6 +103,7 @@ namespace Logic
 			
 			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
 			
+			_gameLogic.MessageBrokerService.Publish(new BuildingCollectedEvent { Building = info.GameId });
 			_gameLogic.CurrencyLogic.AddMainCurrency(info.ProductionAmount);
 			_data.Set(info.Data);
 		}

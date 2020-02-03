@@ -2,6 +2,7 @@ using System;
 using Events;
 using GameLovers.Services;
 using GameLovers.UiService;
+using Ids;
 using Infos;
 using Logic;
 using Services;
@@ -44,7 +45,42 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<SoftCurrencyValueChangedEvent>(OnSoftCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<AchievementCollectedEvent>(OnAchievementCollected);
+			_services.MessageBrokerService.Subscribe<RewardGivingEvent>(OnRewardGivingEvent);
+			_services.MessageBrokerService.Subscribe<BuildingCollectedEvent>(OnBuildingCollected);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
+		}
+
+		private void OnBuildingCollected(BuildingCollectedEvent eventData)
+		{
+			_services.VfxService.PlayUiVfx(_mainCurrencyText.transform.position);
+		}
+
+		private void OnRewardGivingEvent(RewardGivingEvent eventData)
+		{
+			var endPosition = Vector3.zero;
+
+			if (eventData.Reward.GameId == GameId.MainCurrency)
+			{
+				endPosition = _mainCurrencyText.transform.position;
+			}
+			else if (eventData.Reward.GameId == GameId.SoftCurrency)
+			{
+				endPosition = _softCurrencyText.transform.position;
+			}
+			else if (eventData.Reward.GameId == GameId.HardCurrency)
+			{
+				endPosition = _hardCurrencyText.transform.position;
+			}
+			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Card))
+			{
+				endPosition = _cardsButton.transform.position;
+			}
+			else
+			{
+				throw new InvalidOperationException($"Wrong reward type being processed {eventData.Reward.GameId}");
+			}
+			
+			_services.VfxService.PlayUiVfx(endPosition);
 		}
 
 		protected override void OnOpened()

@@ -38,41 +38,68 @@ MonoBehaviour:
     - Sprites
     - Trees
   - Id: 3
+    Address: Sprites/Trees/apple tree.png
+    Path: Assets/Art/Sprites/Trees/apple tree.png
+    AssetType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Sprites
+    - Trees
+    - apple
+  - Id: 4
+    Address: Sprites/Trees/christmas tree.png
+    Path: Assets/Art/Sprites/Trees/christmas tree.png
+    AssetType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Sprites
+    - Trees
+    - christmas
+  - Id: 5
+    Address: Sprites/Trees/normal tree.png
+    Path: Assets/Art/Sprites/Trees/normal tree.png
+    AssetType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Sprites
+    - Trees
+    - normal
+  - Id: 6
     Address: Configs/AddressableConfigs.asset
     Path: Assets/ScriptableObjects/Configs/AddressableConfigs.asset
     AssetType: GameLovers.AddressableIdsScriptGenerator.AddressableConfigs, GameLovers.AddressableIdsScriptGenerator,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     AssetGroup:
     - Configs
-  - Id: 4
+  - Id: 7
     Address: Configs/CardConfigs.asset
     Path: Assets/ScriptableObjects/Configs/CardConfigs.asset
     AssetType: Configs.CardConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
-  - Id: 5
+  - Id: 8
     Address: Configs/LevelBuildingConfigs.asset
     Path: Assets/ScriptableObjects/Configs/LevelBuildingConfigs.asset
     AssetType: Configs.LevelBuildingConfigs, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
-  - Id: 6
+  - Id: 9
     Address: Configs/UiConfigs.asset
     Path: Assets/ScriptableObjects/Configs/UiConfigs.asset
     AssetType: GameLovers.UiService.UiConfigs, UiService, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Configs
-  - Id: 7
+  - Id: 10
     Address: Prefabs/Building.prefab
     Path: Assets/Art/Prefabs/Building.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     AssetGroup:
     - Prefabs
-  - Id: 8
+  - Id: 11
     Address: Prefabs/Ui/Cards Panel.prefab
     Path: Assets/Art/Prefabs/Ui/Cards Panel.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -81,7 +108,7 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Cards
-  - Id: 9
+  - Id: 12
     Address: Prefabs/Ui/Event Panel.prefab
     Path: Assets/Art/Prefabs/Ui/Event Panel.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -90,7 +117,7 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Event
-  - Id: 10
+  - Id: 13
     Address: Prefabs/Ui/Hud.prefab
     Path: Assets/Art/Prefabs/Ui/Hud.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -98,7 +125,7 @@ MonoBehaviour:
     AssetGroup:
     - Prefabs
     - Ui
-  - Id: 11
+  - Id: 14
     Address: Prefabs/Ui/Loading Screen.prefab
     Path: Assets/Art/Prefabs/Ui/Loading Screen.prefab
     AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
@@ -107,3 +134,12 @@ MonoBehaviour:
     - Prefabs
     - Ui
     - Loading
+  - Id: 15
+    Address: Prefabs/Vfx/Ui/Vfx.prefab
+    Path: Assets/Art/Prefabs/Vfx/Ui/Vfx.prefab
+    AssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    AssetGroup:
+    - Prefabs
+    - Vfx
+    - Ui
