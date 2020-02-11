@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84940041ea4f450c945e72ec8315748b, type: 3}
-  m_Name: LevelBuildingConfigs
+  m_Name: LevelTreeConfigs
   m_EditorClassIdentifier: 
   _configs:
-  - Building: 5
+  - Tree: 5
+    BuildCost: 0
     ProductionAmountBase: 1
     ProductionAmountIncrease: 1
     ProductionTimeBase: 1
@@ -21,17 +22,18 @@ MonoBehaviour:
     UpgradeCostIncrease: 1
     AutomationCurrencyRequired: 5
     AutomationCardLevelRequired: 1
-    _upgradeRewards:
+    UpgradeRewards:
     - GameId: 4
       Value: 3
     - GameId: 9
       Value: 2
-    _upgradeBrackets:
+    UpgradeBrackets:
     - Key: 50
       Value: 10
     - Key: 500
       Value: 50
-  - Building: 6
+  - Tree: 6
+    BuildCost: 200
     ProductionAmountBase: 2
     ProductionAmountIncrease: 2
     ProductionTimeBase: 1.5
@@ -39,17 +41,18 @@ MonoBehaviour:
     UpgradeCostIncrease: 2
     AutomationCurrencyRequired: 10
     AutomationCardLevelRequired: 1
-    _upgradeRewards:
+    UpgradeRewards:
     - GameId: 4
       Value: 3
     - GameId: 10
       Value: 2
-    _upgradeBrackets:
+    UpgradeBrackets:
     - Key: 50
       Value: 10
     - Key: 500
       Value: 50
-  - Building: 7
+  - Tree: 7
+    BuildCost: 3000
     ProductionAmountBase: 3
     ProductionAmountIncrease: 3
     ProductionTimeBase: 2
@@ -57,12 +60,12 @@ MonoBehaviour:
     UpgradeCostIncrease: 3
     AutomationCurrencyRequired: 20
     AutomationCardLevelRequired: 1
-    _upgradeRewards:
+    UpgradeRewards:
     - GameId: 4
       Value: 3
     - GameId: 8
       Value: 2
-    _upgradeBrackets:
+    UpgradeBrackets:
     - Key: 50
       Value: 10
     - Key: 500

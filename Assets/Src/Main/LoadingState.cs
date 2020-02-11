@@ -38,7 +38,6 @@ namespace Main
 		/// </summary>
 		public async void InitialLoading(IWaitActivity activity)
 		{
-			await LoadAddressableConfigs();
 			await LoadUiConfigsConfigs();
 			await LoadOpenLoadingScreen();
 			await LoadConfigs(0.2f);
@@ -63,19 +62,9 @@ namespace Main
 			activity.Complete();
 		}
 
-		private async Task LoadAddressableConfigs()
-		{
-			await Addressables.InitializeAsync().Task;
-			
-			var configs = await LoaderUtil.LoadAssetAsync<AddressableConfigs>($"Configs/{nameof(AddressableConfigs)}.asset", true);
-			
-			_gameConfigs.AddConfigs(config => config.Id, configs.Configs);
-		}
-
 		private async Task LoadUiConfigsConfigs()
 		{
-			var address = _gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_UiConfigs).Address;
-			var configs = await LoaderUtil.LoadAssetAsync<UiConfigs>(address, true);
+			var configs = await LoaderUtil.LoadAssetAsync<UiConfigs>(AddressableId.Configs_UiConfigs.GetConfig().Address, true);
 			
 			_uiService.Init(configs);
 		}
@@ -89,12 +78,10 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			var buildings = await LoaderUtil.LoadAssetAsync<LevelBuildingConfigs>(
-				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_LevelBuildingConfigs).Address, true);
-			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(
-				_gameConfigs.GetConfig<AddressableConfig>((int) AddressableId.Configs_CardConfigs).Address, true);
+			var levelTrees = await LoaderUtil.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address, true);
+			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address, true);
 			
-			_gameConfigs.AddConfigs(building => (int) building.Building, buildings.Configs);
+			_gameConfigs.AddConfigs(tree => (int) tree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);

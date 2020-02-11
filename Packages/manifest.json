@@ -11,7 +11,7 @@
     "com.gamelovers.uiservice": "https://github.com/CoderGamester/com.gamelovers.uiservice.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.addressables": "1.5.1",
+    "com.unity.addressables": "1.6.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.device-simulator": "2.0.0-preview",
     "com.unity.ext.nunit": "1.0.0",
@@ -57,7 +57,7 @@
   "lock": {
     "com.gamelovers.addressableidsscriptgenerator": {
       "revision": "HEAD",
-      "hash": "e3086888c582d444c46c2cefec518d4a120eca23"
+      "hash": "53c8ca13c9772756335f2f757fbbde536dcc1e5e"
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
@@ -81,15 +81,15 @@
     },
     "com.gamelovers.services": {
       "revision": "HEAD",
-      "hash": "dc14561a2969e140a79eae02a002e9d3e342a6be"
+      "hash": "95cc9b02a9a3bf0ee0f57f05ddf58ce4f50ec6fa"
     },
     "com.gamelovers.statechart": {
       "revision": "HEAD",
-      "hash": "1eaa88ddddbbddc731b5a08eceeb6447aab7ba12"
+      "hash": "edab931a1ef51e7bd8f77b693bd99dc4125bb168"
     },
     "com.gamelovers.uiservice": {
       "revision": "HEAD",
-      "hash": "9ecda58b1e5992dd6e6ab7ed89ea68870b415f6f"
+      "hash": "cda3fe1df0123889b1b59b6bb914ce78ea3e6fc6"
     }
   }
 }

@@ -90,7 +90,7 @@ namespace Main
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
 		
-		// TODO: Move Frameworks to GitHub
+		// TODO: Merge AddressableIds & LoadExtension into a Asset Loading package
 		// TODO: Enum serialize as string
 		// TODO: Async Await working
 		// TODO: Missing RuntimeTests for services

@@ -8,17 +8,17 @@ using Ids;
 namespace SheetImporters
 {
 	/// <inheritdoc />
-	public class BuildingsImporter : GoogleSheetConfigsImporter<LevelBuildingConfig, LevelBuildingConfigs>
+	public class LevelBuildingImporter : GoogleSheetConfigsImporter<LevelTreeConfig, LevelTreeConfigs>
 	{
 		/// <inheritdoc />
 		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=880604694";
 		
 		/// <inheritdoc />
-		protected override LevelBuildingConfig Deserialize(Dictionary<string, string> data)
+		protected override LevelTreeConfig Deserialize(Dictionary<string, string> data)
 		{
-			var config = CsvParser.DeserializeTo<LevelBuildingConfig>(data);
-			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(LevelBuildingConfig.UpgradeRewards)}"]);
-			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(LevelBuildingConfig.UpgradeBrackets)}"]);
+			var config = CsvParser.DeserializeTo<LevelTreeConfig>(data);
+			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(LevelTreeConfig.UpgradeRewards)}"]);
+			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(LevelTreeConfig.UpgradeBrackets)}"]);
 			var rewards = new List<IntData>();
 			var brackets = new List<IntPairData>();
 			
@@ -38,8 +38,8 @@ namespace SheetImporters
 				brackets.Add(new IntPairData(intKey, intValue));
 			}
 
-			config.UpgradeRewards = rewards.AsReadOnly();
-			config.UpgradeBrackets = brackets.AsReadOnly();
+			config.UpgradeRewards = rewards;
+			config.UpgradeBrackets = brackets;
 
 			return config;
 		}

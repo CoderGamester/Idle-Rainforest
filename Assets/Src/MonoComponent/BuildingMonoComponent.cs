@@ -2,14 +2,17 @@ using System.Collections;
 using Commands;
 using Data;
 using Events;
+using GameLovers.AddressableIdsScriptGenerator;
 using GameLovers.ConfigsContainer;
 using GameLovers.LoaderExtension;
 using GameLovers.Services;
+using Ids;
 using Infos;
 using Logic;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace MonoComponent
@@ -64,8 +67,8 @@ namespace MonoComponent
 			}
 
 			UpdateView();
-
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"Sprites/Trees/{info.GameId}.png", false);
+			
+			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png", false);
 		}
 
 		private void OnUpgradeClicked()

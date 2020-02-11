@@ -92,14 +92,14 @@ namespace Main
 				return;
 			}
 			
-			var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelBuildingConfig>();
+			var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelTreeConfig>();
 			
 			for (var i = 0; i < list.Count; i++)
 			{
 				var right = i % 2 == 0 ? -2 : 2;
 				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
-					BuildingType = list[i].Building,
+					BuildingType = list[i].Tree,
 					Position = i * 5f * Vector3.up - Vector3.up * 8 + Vector3.right * right
 				});
 			}

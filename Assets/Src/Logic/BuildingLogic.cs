@@ -66,9 +66,9 @@ namespace Logic
 		{
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
-			var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) gameId);
+			var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) gameId);
 			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Key;
-			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Building);
+			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Tree);
 			var nextBracket = GetNextLevelBracket(data, config);
 
 			return new LevelBuildingInfo
@@ -120,7 +120,7 @@ namespace Logic
 
 			if (info.Data.Level == info.NextBracketLevel)
 			{
-				var config = _gameLogic.ConfigsProvider.GetConfig<LevelBuildingConfig>((int) info.GameId);
+				var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) info.GameId);
 			
 				for (var i = 0; i < config.UpgradeRewards.Count; i++)
 				{
@@ -149,7 +149,7 @@ namespace Logic
 			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
 		}
 
-		private AutomationState GetBuildingState(LevelBuildingData data, LevelBuildingConfig config, List<CardInfo> buildingCards)
+		private AutomationState GetBuildingState(LevelBuildingData data, LevelTreeConfig config, List<CardInfo> buildingCards)
 		{
 			var state = AutomationState.Ready;
 			
@@ -176,7 +176,7 @@ namespace Logic
 			return state;
 		}
 
-		private IntPairData GetNextLevelBracket(LevelBuildingData data, LevelBuildingConfig config)
+		private IntPairData GetNextLevelBracket(LevelBuildingData data, LevelTreeConfig config)
 		{
 			var nextBracket = new IntPairData(int.MaxValue, 0);
 
@@ -194,10 +194,10 @@ namespace Logic
 			return nextBracket;
 		}
 
-		private int ProductionAmount(LevelBuildingData data, LevelBuildingConfig config)
+		private int ProductionAmount(LevelBuildingData data, LevelTreeConfig config)
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
-			var cards = _gameLogic.CardLogic.GetBuildingCards(config.Building);
+			var cards = _gameLogic.CardLogic.GetBuildingCards(config.Tree);
 			var totalAmount = 0;
 
 			foreach (var card in cards)
