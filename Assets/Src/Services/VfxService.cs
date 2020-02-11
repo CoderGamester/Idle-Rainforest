@@ -33,8 +33,8 @@ namespace Services
 		/// <inheritdoc />
 		public async void PlayUiVfx(Vector3 endPosition)
 		{
-			var address = _dataProvider.ConfigsProvider.GetConfig<AddressableConfig>((int) AddressableId.Prefabs_Vfx_Ui_Vfx).Address;
-			var operation = Addressables.InstantiateAsync(address, Input.mousePosition, Quaternion.identity, _services.UiService.GetLayer(0).transform);
+			var operation = Addressables.InstantiateAsync(AddressableId.Prefabs_Vfx_Ui_Vfx.GetConfig().Address, 
+				Input.mousePosition, Quaternion.identity, _services.UiService.GetLayer(0).transform);
 
 			await operation.Task;
 

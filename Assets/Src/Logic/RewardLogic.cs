@@ -39,7 +39,7 @@ namespace Logic
 		{
 			_gameLogic.MessageBrokerService.Publish(new RewardGivingEvent { Reward = reward });
 			
-			if (reward.GameId.IsInGroup(GameIdGroup.Card))
+			if (reward.GameId.IsInGroup(GameIdGroup.Animal))
 			{
 				_gameLogic.CardLogic.AddCard(reward);
 				return;

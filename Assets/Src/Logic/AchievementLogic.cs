@@ -91,12 +91,12 @@ namespace Logic
 		public UniqueId GenerateRandomAchievement()
 		{
 			var achievements = GameIdGroup.Achievement.GetIds();
-			var cards = GameIdGroup.Card.GetIds();
+			var animals = GameIdGroup.Animal.GetIds();
 			var type = achievements[Random.Range(0, achievements.Count)];
 			var goal = new IntData();
 			var reward = new IntData
 			{
-				GameId = cards[Random.Range(0, cards.Count)],
+				GameId = animals[Random.Range(0, animals.Count)],
 				Value = Random.Range(3, 6)
 			};
 
@@ -110,15 +110,15 @@ namespace Logic
 					goal.GameId = GameId.SoftCurrency;
 					goal.Value = Random.Range(1000, 2001);
 					break;
-				case GameId.UpgradeCard:
+				case GameId.UpgradeAnimal:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(2, 5);
 					break;
-				case GameId.UpgradeLevelBuilding:
+				case GameId.UpgradeLevelTree:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(2, 5);
 					break;
-				case GameId.AutomateBuilding:
+				case GameId.AutomateTree:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(1, 3);
 					break;
@@ -164,13 +164,13 @@ namespace Logic
 					case GameId.CollectSoftCurrency:
 						new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.UpgradeCard:
+					case GameId.UpgradeAnimal:
 						new UpgradeCardAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.UpgradeLevelBuilding:
+					case GameId.UpgradeLevelTree:
 						new UpgradeLevelBuildingAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.AutomateBuilding:
+					case GameId.AutomateTree:
 						new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
 					default:

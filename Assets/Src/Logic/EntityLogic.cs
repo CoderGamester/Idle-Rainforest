@@ -22,10 +22,10 @@ namespace Logic
 	public interface IEntityLogic : IEntityDataProvider
 	{
 		/// <summary>
-		/// Creates a new Building of the given <paramref name="gameId"/> type on the  given <paramref name="position"/>
-		/// Returns the Entity representing the new building
+		/// Creates a new Tree of the given <paramref name="gameId"/> type on the  given <paramref name="position"/>
+		/// and returns the <see cref="UniqueId"/> representing the newly created entity
 		/// </summary>
-		UniqueId CreateBuilding(GameId gameId, Vector3 position);
+		UniqueId CreateTree(GameId gameId, Vector3 position);
 
 		/// <summary>
 		/// TODO:
@@ -48,9 +48,9 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public UniqueId CreateBuilding(GameId gameId, Vector3 position)
+		public UniqueId CreateTree(GameId gameId, Vector3 position)
 		{
-			if (!gameId.IsInGroup(GameIdGroup.Building))
+			if (!gameId.IsInGroup(GameIdGroup.Tree))
 			{
 				throw new LogicException($"The game id {gameId} is not a building type game id");
 			}
@@ -58,7 +58,7 @@ namespace Logic
 			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
 			
 			CreateGameIdData(uniqueId, gameId);
-			CreateBuildingData(uniqueId, position);
+			CreateTreeData(uniqueId, position);
 
 			return uniqueId;
 		}
@@ -83,13 +83,13 @@ namespace Logic
 			});
 		}
 
-		private void CreateBuildingData(UniqueId uniqueId, Vector3 position)
+		private void CreateTreeData(UniqueId uniqueId, Vector3 position)
 		{
 			_dataProvider.LevelData.Buildings.Add(new LevelBuildingData
 			{
 				Id = uniqueId,
 				Position = position,
-				Level = 1,
+				Level = 0,
 				ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow,
 				IsAutomated = false
 			});

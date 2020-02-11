@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: UiConfigs
   m_EditorClassIdentifier: 
   _configs:
+  - AddressableAddress: Prefabs/Ui/Automate PopUp.prefab
+    Layer: 3
+    UiType: Presenters.AutomatePopUpPresenter, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Cards Panel.prefab
     Layer: 0
     UiType: Presenters.CardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -22,11 +26,11 @@ MonoBehaviour:
     UiType: Presenters.EventPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Hud.prefab
-    Layer: 0
+    Layer: 2
     UiType: Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Loading Screen.prefab
-    Layer: 0
+    Layer: 3
     UiType: Presenters.LoadingScreenPresenter, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   _sets:
@@ -35,6 +39,8 @@ MonoBehaviour:
     - Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     - Presenters.CardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    - Presenters.AutomatePopUpPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - SetId: 1
     UiConfigsType:

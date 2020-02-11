@@ -8,7 +8,7 @@ using Ids;
 namespace SheetImporters
 {
 	/// <inheritdoc />
-	public class LevelBuildingImporter : GoogleSheetConfigsImporter<LevelTreeConfig, LevelTreeConfigs>
+	public class LevelImporter : GoogleSheetConfigsImporter<LevelTreeConfig, LevelTreeConfigs>
 	{
 		/// <inheritdoc />
 		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=880604694";
@@ -17,6 +17,7 @@ namespace SheetImporters
 		protected override LevelTreeConfig Deserialize(Dictionary<string, string> data)
 		{
 			var config = CsvParser.DeserializeTo<LevelTreeConfig>(data);
+			var automateRequirement = CsvParser.PairParse<GameId, int>(data[$"{nameof(LevelTreeConfig.AutomationCardRequired)}"]);
 			var arrayRewards = CsvParser.ArrayParse<string>(data[$"{nameof(LevelTreeConfig.UpgradeRewards)}"]);
 			var arrayBrackets = CsvParser.ArrayParse<string>(data[$"{nameof(LevelTreeConfig.UpgradeBrackets)}"]);
 			var rewards = new List<IntData>();
@@ -38,6 +39,7 @@ namespace SheetImporters
 				brackets.Add(new IntPairData(intKey, intValue));
 			}
 
+			config.AutomationCardRequired = new IntData(automateRequirement.Key, automateRequirement.Value);
 			config.UpgradeRewards = rewards;
 			config.UpgradeBrackets = brackets;
 

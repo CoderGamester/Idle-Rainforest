@@ -22,7 +22,7 @@ namespace Configs
 		public int UpgradeCostBase;
 		public int UpgradeCostIncrease;
 		public int AutomationCurrencyRequired;
-		public int AutomationCardLevelRequired;
+		[ParseIgnore] public IntData AutomationCardRequired;
 		[ParseIgnore] public List<IntData> UpgradeRewards;
 		[ParseIgnore] public List<IntPairData> UpgradeBrackets;
 	}

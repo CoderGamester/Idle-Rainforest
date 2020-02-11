@@ -8,11 +8,11 @@ namespace Infos
 	public enum AutomationState
 	{
 		MissingRequirements,
-		Ready,
+		ReadyToAutomate,
 		Automated
 	}
 	
-	public struct LevelBuildingInfo
+	public struct LevelTreeInfo
 	{
 		public GameId GameId;
 		public LevelBuildingData Data;
@@ -22,8 +22,9 @@ namespace Infos
 		public float ProductionTime;
 		public int UpgradeCost;
 		public int AutomateCost;
+		public IntData AutomateCardRequirement;
 		public AutomationState AutomationState;
-		public List<CardInfo> BuildingCards;
+		public List<CardInfo> Cards;
 
 		public DateTime ProductionEndTime => Data.ProductionStartTime.AddSeconds(ProductionTime);
 	}

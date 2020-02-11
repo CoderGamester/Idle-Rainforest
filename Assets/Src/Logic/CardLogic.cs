@@ -27,7 +27,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<CardInfo> GetBuildingCards(GameId building);
+		List<CardInfo> GetTreeCards(GameId building);
 
 		/// <summary>
 		/// TODO:
@@ -90,11 +90,11 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public List<CardInfo> GetBuildingCards(GameId building)
+		public List<CardInfo> GetTreeCards(GameId tree)
 		{
-			if (!building.IsInGroup(GameIdGroup.Building))
+			if (!tree.IsInGroup(GameIdGroup.Tree))
 			{
-				throw new ArgumentException($"The id {building} is not part of the {GameIdGroup.Building} group");
+				throw new ArgumentException($"The id {tree} is not part of the {GameIdGroup.Tree} group");
 			}
 			
 			var list = new List<CardInfo>();
@@ -102,7 +102,7 @@ namespace Logic
 
 			for (var i = 0; i < cardConfigs.Count; i++)
 			{
-				if (cardConfigs[i].Building == building)
+				if (cardConfigs[i].Tree == tree)
 				{
 					list.Add(GetInfo(cardConfigs[i].Id));
 				}

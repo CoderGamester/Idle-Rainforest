@@ -22,7 +22,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		LevelBuildingInfo GetLevelBuildingInfo(UniqueId id);
+		LevelTreeInfo GetLevelBuildingInfo(UniqueId id);
 	}
 
 	/// <inheritdoc />
@@ -62,16 +62,17 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public LevelBuildingInfo GetLevelBuildingInfo(UniqueId id)
+		public LevelTreeInfo GetLevelBuildingInfo(UniqueId id)
 		{
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) gameId);
 			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Key;
-			var buildingCards = _gameLogic.CardDataProvider.GetBuildingCards(config.Tree);
+			var buildingCards = _gameLogic.CardDataProvider.GetTreeCards(config.Tree);
 			var nextBracket = GetNextLevelBracket(data, config);
+			var upgradeCost = data.Level == 0 ? config.BuildCost : config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level;
 
-			return new LevelBuildingInfo
+			return new LevelTreeInfo
 			{
 				GameId = gameId,
 				Data = data,
@@ -79,10 +80,11 @@ namespace Logic
 				BracketSize = nextBracket.Value,
 				ProductionAmount = ProductionAmount(data, config),
 				ProductionTime = config.ProductionTimeBase,
-				UpgradeCost = config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level,
+				UpgradeCost = upgradeCost,
 				AutomateCost = config.AutomationCurrencyRequired,
+				AutomateCardRequirement = config.AutomationCardRequired,
 				AutomationState = GetBuildingState(data, config, buildingCards),
-				BuildingCards = buildingCards
+				Cards = buildingCards
 			};
 		}
 
@@ -136,7 +138,7 @@ namespace Logic
 		{
 			var info = GetLevelBuildingInfo(id);
 
-			if (info.AutomationState != AutomationState.Ready)
+			if (info.AutomationState != AutomationState.ReadyToAutomate)
 			{
 				throw new LogicException($"The building {info.GameId} is still not ready to be automated");
 			}
@@ -151,7 +153,7 @@ namespace Logic
 
 		private AutomationState GetBuildingState(LevelBuildingData data, LevelTreeConfig config, List<CardInfo> buildingCards)
 		{
-			var state = AutomationState.Ready;
+			var state = AutomationState.ReadyToAutomate;
 			
 			if (data.IsAutomated)
 			{
@@ -163,14 +165,11 @@ namespace Logic
 			}
 			else
 			{
-				foreach (var card in buildingCards)
-				{
-					if (card.Data.Level < config.AutomationCardLevelRequired)
-					{
-						state = AutomationState.MissingRequirements;
-						break;
-					}
-				}
+				var cardInfo = buildingCards.Find(card => card.GameId == config.AutomationCardRequired.GameId);
+
+				state = cardInfo.Data.Level < config.AutomationCardRequired.Value
+					? AutomationState.MissingRequirements
+					: AutomationState.ReadyToAutomate;
 			}
 
 			return state;
@@ -197,7 +196,7 @@ namespace Logic
 		private int ProductionAmount(LevelBuildingData data, LevelTreeConfig config)
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
-			var cards = _gameLogic.CardLogic.GetBuildingCards(config.Tree);
+			var cards = _gameLogic.CardLogic.GetTreeCards(config.Tree);
 			var totalAmount = 0;
 
 			foreach (var card in cards)

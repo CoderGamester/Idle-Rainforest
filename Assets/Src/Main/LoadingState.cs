@@ -117,7 +117,7 @@ namespace Main
 			
 			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Buildings)
 			{
-				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Building, buildingData.Position));
+				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Tree, buildingData.Position));
 			}
 
 			foreach (var task in LoaderUtil.Interleaved(taskList))

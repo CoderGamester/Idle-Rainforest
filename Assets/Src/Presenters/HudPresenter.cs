@@ -71,7 +71,7 @@ namespace Presenters
 			{
 				endPosition = _hardCurrencyText.transform.position;
 			}
-			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Card))
+			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Animal))
 			{
 				endPosition = _cardsButton.transform.position;
 			}

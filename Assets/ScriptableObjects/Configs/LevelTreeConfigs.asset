@@ -21,7 +21,9 @@ MonoBehaviour:
     UpgradeCostBase: 1
     UpgradeCostIncrease: 1
     AutomationCurrencyRequired: 5
-    AutomationCardLevelRequired: 1
+    AutomationCardRequired:
+      GameId: 8
+      Value: 1
     UpgradeRewards:
     - GameId: 4
       Value: 3
@@ -40,7 +42,9 @@ MonoBehaviour:
     UpgradeCostBase: 2
     UpgradeCostIncrease: 2
     AutomationCurrencyRequired: 10
-    AutomationCardLevelRequired: 1
+    AutomationCardRequired:
+      GameId: 9
+      Value: 2
     UpgradeRewards:
     - GameId: 4
       Value: 3
@@ -59,7 +63,9 @@ MonoBehaviour:
     UpgradeCostBase: 3
     UpgradeCostIncrease: 3
     AutomationCurrencyRequired: 20
-    AutomationCardLevelRequired: 1
+    AutomationCardRequired:
+      GameId: 10
+      Value: 3
     UpgradeRewards:
     - GameId: 4
       Value: 3

@@ -9,6 +9,7 @@ using GameLovers.Services;
 using Ids;
 using Infos;
 using Logic;
+using Presenters;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -20,9 +21,11 @@ namespace MonoComponent
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class BuildingMonoComponent : MonoBehaviour
+	public class TreeMonoComponent : MonoBehaviour
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
+		[SerializeField] private GameObject _runningState;
+		[SerializeField] private GameObject _animal;
 		[SerializeField] private TextMeshProUGUI _buildingNameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
@@ -49,6 +52,7 @@ namespace MonoComponent
 			_automateButton.onClick.AddListener(OnAutomateClicked);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
+			_services.MessageBrokerService.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomatedEvent);
 		}
 
 		private void OnDestroy()
@@ -61,13 +65,13 @@ namespace MonoComponent
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
 
-			foreach (var card in info.BuildingCards)
+			foreach (var card in info.Cards)
 			{
 				_dataProvider.CardDataProvider.Data.Observe(card.GameId, ListUpdateType.Added, OnCardAdded);
 			}
 
 			UpdateView();
-			
+			 
 			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png", false);
 		}
 
@@ -80,9 +84,7 @@ namespace MonoComponent
 		
 		private void OnAutomateClicked()
 		{
-			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
-
-			UpdateView();
+			_services.UiService.OpenUi<AutomatePopUpPresenter, ulong>(_entityMonoComponent.UniqueId);
 		}
 		
 		private void OnCollectClicked()
@@ -98,19 +100,31 @@ namespace MonoComponent
 
 			_buildingNameText.text = $"{info.GameId}";
 			_collectValueText.text = info.ProductionAmount.ToString();
-			_upgradeCostText.text = info.UpgradeCost.ToString();
+			_upgradeCostText.text = info.UpgradeCost == 0 ? "Free" : info.UpgradeCost.ToString();
 			_levelText.text = $"{info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}";
 			_levelSlider.value = info.Data.Level >= info.NextBracketLevel ? 1 : (float) (info.Data.Level % info.BracketSize)/ info.BracketSize;
-
+			
+			_runningState.SetActive(info.Data.Level > 0);
+			
 			UpdateState(info);
 			RestartCircleCoroutine(info);
 		}
 
-		private void UpdateState(LevelBuildingInfo info)
+		private void UpdateState(LevelTreeInfo info)
 		{
+			var colors = _automateButton.colors;
+			
 			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost;
 			_collectButton.interactable = info.AutomationState != AutomationState.Automated;
-			_automateButton.gameObject.SetActive(info.AutomationState == AutomationState.Ready);
+			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
+			
+			_automateButton.gameObject.SetActive(info.AutomationState != AutomationState.Automated);
+			_animal.SetActive(info.AutomationState == AutomationState.Automated);
+		}
+
+		private void OnBuildingAutomatedEvent(BuildingAutomatedEvent obj)
+		{
+			UpdateView();
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
@@ -131,7 +145,7 @@ namespace MonoComponent
 			}
 		}
 
-		private void RestartCircleCoroutine(LevelBuildingInfo info)
+		private void RestartCircleCoroutine(LevelTreeInfo info)
 		{
 			if (_coroutine != null)
 			{
@@ -141,7 +155,7 @@ namespace MonoComponent
 			_coroutine = _services.CoroutineService.StartCoroutine(CircleCoroutine(info));
 		}
 
-		private IEnumerator CircleCoroutine(LevelBuildingInfo info)
+		private IEnumerator CircleCoroutine(LevelTreeInfo info)
 		{
 			_collectionText.text = info.AutomationState == AutomationState.Automated ? "Automated" : "";
 			_collectButton.interactable = false;

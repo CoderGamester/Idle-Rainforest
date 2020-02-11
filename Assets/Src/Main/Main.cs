@@ -81,16 +81,19 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
+		// TODO: Achievements in the google sheet data
 		// TODO: DataProvider contains all IdLists and remove public achievement list
-		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: Do the TODOS in GameStateMachine
+		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
+		// TODO: Localization
+		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: AutoCollectSystem optimize
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
 		
-		// TODO: Merge AddressableIds & LoadExtension into a Asset Loading package
+		// TODO: Merge AddressableIds & LoadExtension into a Asset Loading package with Load(this Addressable)
 		// TODO: Enum serialize as string
 		// TODO: Async Await working
 		// TODO: Missing RuntimeTests for services
