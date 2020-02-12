@@ -25,7 +25,6 @@ namespace MonoComponent
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private GameObject _runningState;
-		[SerializeField] private GameObject _animal;
 		[SerializeField] private TextMeshProUGUI _buildingNameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
@@ -37,6 +36,7 @@ namespace MonoComponent
 		[SerializeField] private Button _upgradeButton;
 		[SerializeField] private Image _fillingImage;
 		[SerializeField] private SpriteRenderer _image;
+		[SerializeField] private SpriteRenderer _animal;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -73,6 +73,7 @@ namespace MonoComponent
 			UpdateView();
 			 
 			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png", false);
+			_animal.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
 		}
 
 		private void OnUpgradeClicked()
@@ -119,7 +120,7 @@ namespace MonoComponent
 			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
 			
 			_automateButton.gameObject.SetActive(info.AutomationState != AutomationState.Automated);
-			_animal.SetActive(info.AutomationState == AutomationState.Automated);
+			_animal.gameObject.SetActive(info.AutomationState == AutomationState.Automated);
 		}
 
 		private void OnBuildingAutomatedEvent(BuildingAutomatedEvent obj)

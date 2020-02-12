@@ -91,7 +91,7 @@ namespace Main
 		// TODO: AutoCollectSystem optimize
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: Systems Architecture. Use Unity DOTS???
-		// TODO: Change card upgrade cost to soft currency (CardViewPresenter && CardLogic)
+		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
 		// TODO: Merge AddressableIds & LoadExtension into a Asset Loading package with Load(this Addressable)
 		// TODO: Enum serialize as string

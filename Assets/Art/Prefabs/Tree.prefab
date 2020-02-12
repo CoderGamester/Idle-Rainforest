@@ -1173,7 +1173,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 6417536036293007831}
   m_HandleRect: {fileID: 0}
@@ -1786,7 +1786,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityMonoComponent: {fileID: -2000310258285587237}
   _runningState: {fileID: 5868186072637725851}
-  _animal: {fileID: 816141526987450686}
   _buildingNameText: {fileID: 8043599754106951685}
   _collectValueText: {fileID: 2461581660979271238}
   _collectionText: {fileID: 2401991556814516421}
@@ -1798,6 +1797,7 @@ MonoBehaviour:
   _upgradeButton: {fileID: 1543671531398062711}
   _fillingImage: {fileID: 3439870836614203525}
   _image: {fileID: 6363766183003052315}
+  _animal: {fileID: 379058226282932029}
 --- !u!1 &7320433891008417650
 GameObject:
   m_ObjectHideFlags: 0

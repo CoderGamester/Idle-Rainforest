@@ -197,7 +197,7 @@ namespace Logic
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
 			var cards = _gameLogic.CardLogic.GetTreeCards(config.Tree);
-			var totalAmount = 0;
+			var totalAmount = amount;
 
 			foreach (var card in cards)
 			{

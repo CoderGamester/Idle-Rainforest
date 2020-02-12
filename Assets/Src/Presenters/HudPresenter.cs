@@ -37,7 +37,7 @@ namespace Presenters
 		{
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
-			_pool = new ObjectPool<AchievementViewPresenter>(3, AchievementInstantiator);
+			_pool = new GameObjectPool<AchievementViewPresenter>(3, _achievementRef);
 			
 			_achievementRef.gameObject.SetActive(false);
 			_services.TickService.SubscribeOnUpdate(UpdateCountdown, 1, true);
@@ -143,15 +143,6 @@ namespace Presenters
 
 				j++;
 			}
-		}
-
-		private AchievementViewPresenter AchievementInstantiator()
-		{
-			var newRef = Instantiate(_achievementRef, _achievementRef.transform.parent);
-				
-			newRef.gameObject.SetActive(false);
-				
-			return newRef;
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace Presenters
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(Data);
 
 			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
-			_automateCostText.text = info.AutomateCost.ToString();
+			_automateCostText.text = $"{info.AutomateCost.ToString()} MC";
 			_requirementText.text = $"Requires {info.AutomateCardRequirement.GameId} at level {info.AutomateCardRequirement.Value} to automate";
 
 			_automateButton.interactable = info.AutomationState == AutomationState.ReadyToAutomate;
