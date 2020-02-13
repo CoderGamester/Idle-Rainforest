@@ -144,11 +144,10 @@ namespace MonoComponent
 		{
 			var cardInfo = _dataProvider.CardDataProvider.GetInfo(eventData.Card);
 			var treeData = _dataProvider.GameIdDataProvider.Data.Get(_entityMonoComponent.UniqueId);
-			
-			Debug.Log(treeData.GameId +" " +  cardInfo.Tree);
 
 			if (treeData.GameId != cardInfo.Tree)
 			{
+				UpgradeEffect(false);
 				return;
 			}
 
@@ -156,13 +155,13 @@ namespace MonoComponent
 			
 			_services.UiService.CloseUi<CardsPanelPresenter>();
 			UpdateView();
-			UpgradeEffect();
+			UpgradeEffect(true);
 		}
 
-		private async void UpgradeEffect()
+		private async void UpgradeEffect(bool thisUpgrade)
 		{
 			_runningState.SetActive(false);
-			_effectState.SetActive(true);
+			_effectState.SetActive(thisUpgrade);
 			_upgradeButton.gameObject.SetActive(false);
 			_services.WorldReferenceService.DisableInput();
 
