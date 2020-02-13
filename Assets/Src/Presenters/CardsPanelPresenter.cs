@@ -39,10 +39,7 @@ namespace Presenters
 			_pool.DespawnAll();
 			foreach (var cardInfo in cards)
 			{
-				var card = _pool.Spawn();
-				
-				card.gameObject.SetActive(true);
-				card.SetData(cardInfo);
+				_pool.Spawn().SetData(cardInfo);
 			}
 		}
 

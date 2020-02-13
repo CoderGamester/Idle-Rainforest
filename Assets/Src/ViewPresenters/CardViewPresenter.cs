@@ -14,7 +14,7 @@ namespace ViewPresenters
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CardViewPresenter : MonoBehaviour
+	public class CardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
 	{
 		[SerializeField] private TextMeshProUGUI _cardNameText;
 		[SerializeField] private TextMeshProUGUI _levelText;
@@ -44,6 +44,19 @@ namespace ViewPresenters
 			_card = info.GameId;
 
 			UpdateView(info);
+		}
+
+		/// <inheritdoc />
+		public void OnSpawn()
+		{
+			gameObject.SetActive(true);
+			transform.SetAsLastSibling();
+		}
+
+		/// <inheritdoc />
+		public void OnDespawn()
+		{
+			gameObject.SetActive(false);
 		}
 
 		private void OnUpgradeClicked()

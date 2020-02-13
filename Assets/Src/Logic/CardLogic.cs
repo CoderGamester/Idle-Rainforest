@@ -122,7 +122,9 @@ namespace Logic
 			{
 				list.Add(GetInfo(cardConfigs[i].Id));
 			}
-
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
+			
 			return list;
 		}
 

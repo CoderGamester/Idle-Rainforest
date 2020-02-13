@@ -69,7 +69,7 @@ namespace Logic
 		/// <inheritdoc />
 		public AchievementsInfo GetInfo()
 		{
-			var list = _data.GetList();
+			var list = _data.GetList() as List<AchievementData>;
 			var completed = 0;
 			var collected = 0;
 			
@@ -79,11 +79,13 @@ namespace Logic
 				collected += list[i].IsCollected ? 1 : 0;
 			}
 			
+			list.Sort((elem1, elem2) => elem1.Id.CompareTo(elem2.Id));
+			
 			return new AchievementsInfo
 			{
 				Completed = completed,
 				Collected = collected,
-				Achievements = list as IReadOnlyList<AchievementData>
+				Achievements = list
 			};
 		}
 

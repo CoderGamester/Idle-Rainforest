@@ -36,7 +36,7 @@ namespace Systems
 				
 				if (info.AutomationState == AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
 				{
-					var times = Mathf.FloorToInt((float) (info.ProductionEndTime - info.Data.ProductionStartTime).TotalSeconds / info.ProductionTime);
+					var times = Mathf.FloorToInt((float) (_services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime).TotalSeconds / info.ProductionTime);
 					
 					info.Data.ProductionStartTime = info.Data.ProductionStartTime.AddSeconds(info.ProductionTime * times);
 					

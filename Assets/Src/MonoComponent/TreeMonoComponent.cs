@@ -105,12 +105,18 @@ namespace MonoComponent
 		private void UpdateView()
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
+			var fillSize = info.Data.Level % info.BracketSize;
 
 			_buildingNameText.text = $"{info.GameId}";
 			_collectValueText.text = info.ProductionAmount.ToString();
 			_upgradeCostText.text = info.UpgradeCost == 0 ? "Free" : info.UpgradeCost.ToString();
 			_levelText.text = $"{info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}";
-			_levelSlider.value = info.Data.Level >= info.NextBracketLevel ? 1 : (float) (info.Data.Level % info.BracketSize)/ info.BracketSize;
+			_levelSlider.value = info.Data.Level >= info.NextBracketLevel ? 1 : (float) fillSize/ info.BracketSize;
+			
+			if (fillSize == 0)
+			{
+				_levelSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+			}
 			
 			_runningState.SetActive(info.Data.Level > 0);
 			
@@ -145,17 +151,15 @@ namespace MonoComponent
 			var cardInfo = _dataProvider.CardDataProvider.GetInfo(eventData.Card);
 			var treeData = _dataProvider.GameIdDataProvider.Data.Get(_entityMonoComponent.UniqueId);
 
-			if (treeData.GameId != cardInfo.Tree)
+			if (treeData.GameId == cardInfo.Tree)
 			{
-				UpgradeEffect(false);
-				return;
+				_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
+			
+				_services.UiService.CloseUi<CardsPanelPresenter>();
+				UpdateView();
 			}
 
-			_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
-			
-			_services.UiService.CloseUi<CardsPanelPresenter>();
-			UpdateView();
-			UpgradeEffect(true);
+			UpgradeEffect(treeData.GameId == cardInfo.Tree);
 		}
 
 		private async void UpgradeEffect(bool thisUpgrade)

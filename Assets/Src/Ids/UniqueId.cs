@@ -8,7 +8,7 @@ namespace Ids
 	/// Used to reference any entity by an unique Id value
 	/// </summary>
 	[Serializable]
-	public struct UniqueId : IEquatable<UniqueId>
+	public struct UniqueId : IEquatable<UniqueId>, IComparable<UniqueId>, IComparable<ulong>
 	{
 		public static readonly UniqueId Invalid = new UniqueId(0);
 
@@ -26,7 +26,29 @@ namespace Ids
 		{
 			return (int)Id;
 		}
- 
+
+		/// <inheritdoc />
+		public int CompareTo(UniqueId value)
+		{
+			if (Id < value.Id)
+			{
+				return -1;
+			}
+			
+			return Id > value.Id ? 1 : 0;
+		}
+
+		/// <inheritdoc />
+		public int CompareTo(ulong value)
+		{
+			if (Id < value)
+			{
+				return -1;
+			}
+			
+			return Id > value ? 1 : 0;
+		}
+
 		/// <inheritdoc />
 		public override bool Equals(object obj)
 		{
