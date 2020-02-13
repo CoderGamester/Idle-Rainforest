@@ -49,8 +49,6 @@ namespace ViewPresenters
 		private void OnUpgradeClicked()
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeCardCommand { Card = _card});
-				
-			UpdateView(_dataProvider.CardDataProvider.GetInfo(_card));
 		}
 
 		private async void UpdateView(CardInfo info)
@@ -60,7 +58,7 @@ namespace ViewPresenters
 			_levelText.text = $"Level {levelText}";
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
-			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired;
+			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
 			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png", false);
 

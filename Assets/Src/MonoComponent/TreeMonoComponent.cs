@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using System.Threading.Tasks;
 using Commands;
+using Configs;
 using Data;
 using Events;
 using GameLovers.AddressableIdsScriptGenerator;
@@ -14,6 +17,7 @@ using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace MonoComponent
@@ -25,10 +29,12 @@ namespace MonoComponent
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private GameObject _runningState;
+		[SerializeField] private GameObject _effectState;
 		[SerializeField] private TextMeshProUGUI _buildingNameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
+		[SerializeField] private TextMeshProUGUI _effectText;
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private Slider _levelSlider;
 		[SerializeField] private Button _collectButton;
@@ -47,6 +53,7 @@ namespace MonoComponent
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
 			
+			_effectState.SetActive(false);
 			_upgradeButton.onClick.AddListener(OnUpgradeClicked);
 			_collectButton.onClick.AddListener(OnCollectClicked);
 			_automateButton.onClick.AddListener(OnAutomateClicked);
@@ -135,7 +142,36 @@ namespace MonoComponent
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
+			var cardInfo = _dataProvider.CardDataProvider.GetInfo(eventData.Card);
+			var treeData = _dataProvider.GameIdDataProvider.Data.Get(_entityMonoComponent.UniqueId);
+			
+			Debug.Log(treeData.GameId +" " +  cardInfo.Tree);
+
+			if (treeData.GameId != cardInfo.Tree)
+			{
+				return;
+			}
+
+			_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
+			
+			_services.UiService.CloseUi<CardsPanelPresenter>();
 			UpdateView();
+			UpgradeEffect();
+		}
+
+		private async void UpgradeEffect()
+		{
+			_runningState.SetActive(false);
+			_effectState.SetActive(true);
+			_upgradeButton.gameObject.SetActive(false);
+			_services.WorldReferenceService.DisableInput();
+
+			await Task.Delay(TimeSpan.FromSeconds(2));
+			
+			_runningState.SetActive(true);
+			_effectState.SetActive(false);
+			_upgradeButton.gameObject.SetActive(true);
+			_services.WorldReferenceService.EnableInput();
 		}
 
 		private void OnCardAdded(CardData card)

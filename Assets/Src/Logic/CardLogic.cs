@@ -82,6 +82,7 @@ namespace Logic
 			{
 				GameId = card,
 				Data = data,
+				Tree = config.Tree,
 				MaxLevel = config.UpgradeCost.Count + 1,
 				AmountRequired = config.UpgradeCardsRequired[index],
 				UpgradeCost = config.UpgradeCost[index],

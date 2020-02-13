@@ -8,6 +8,7 @@ using Logic;
 using Newtonsoft.Json;
 using Services;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 namespace Main
 {
@@ -16,6 +17,9 @@ namespace Main
 	/// </summary>
 	public class Main : MonoBehaviour
 	{
+		public Camera MainCamera;
+		public InputSystemUIInputModule InputSystem;
+		
 		private GameStateMachine _stateMachine;
 		private GameLogic _gameLogic;
 		private GameServices _gameServices;
@@ -29,7 +33,7 @@ namespace Main
 			LoadData(dataProvider, timeService);
 			
 			_gameLogic = new GameLogic(messageBroker, dataProvider, timeService);
-			_gameServices = new GameServices(messageBroker, timeService, _gameLogic);
+			_gameServices = new GameServices(this, messageBroker, timeService, _gameLogic);
 			
 			MainInstaller.Bind<IGameDataProvider>(_gameLogic);
 			MainInstaller.Bind<IGameServices>(_gameServices);
