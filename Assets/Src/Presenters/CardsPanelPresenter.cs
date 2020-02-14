@@ -28,9 +28,10 @@ namespace Presenters
 			_pool = new ObjectPool<CardViewPresenter>(poolSize, CardInstantiator);
 			
 			_cardRef.gameObject.SetActive(false);
-			_closeButton.onClick.AddListener(OnCloseClicked);
+			_closeButton.onClick.AddListener(Close);
 		}
 
+		/// <inheritdoc />
 		protected override void OnOpened()
 		{
 			var cards = _dataProvider.CardDataProvider.GetAllCards();
@@ -38,18 +39,8 @@ namespace Presenters
 			_pool.DespawnAll();
 			foreach (var cardInfo in cards)
 			{
-				var card = _pool.Spawn();
-				
-				card.gameObject.SetActive(true);
-				card.SetData(cardInfo);
+				_pool.Spawn().SetData(cardInfo);
 			}
-			
-			Debug.Log(cards.Count);
-		}
-
-		private void OnCloseClicked()
-		{
-			Close();
 		}
 
 		private CardViewPresenter CardInstantiator()

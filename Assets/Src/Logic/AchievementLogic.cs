@@ -69,7 +69,7 @@ namespace Logic
 		/// <inheritdoc />
 		public AchievementsInfo GetInfo()
 		{
-			var list = _data.GetList();
+			var list = _data.GetList() as List<AchievementData>;
 			var completed = 0;
 			var collected = 0;
 			
@@ -79,11 +79,13 @@ namespace Logic
 				collected += list[i].IsCollected ? 1 : 0;
 			}
 			
+			list.Sort((elem1, elem2) => elem1.Id.CompareTo(elem2.Id));
+			
 			return new AchievementsInfo
 			{
 				Completed = completed,
 				Collected = collected,
-				Achievements = list as IReadOnlyList<AchievementData>
+				Achievements = list
 			};
 		}
 
@@ -91,12 +93,12 @@ namespace Logic
 		public UniqueId GenerateRandomAchievement()
 		{
 			var achievements = GameIdGroup.Achievement.GetIds();
-			var cards = GameIdGroup.Card.GetIds();
+			var animals = GameIdGroup.Animal.GetIds();
 			var type = achievements[Random.Range(0, achievements.Count)];
 			var goal = new IntData();
 			var reward = new IntData
 			{
-				GameId = cards[Random.Range(0, cards.Count)],
+				GameId = animals[Random.Range(0, animals.Count)],
 				Value = Random.Range(3, 6)
 			};
 
@@ -110,15 +112,15 @@ namespace Logic
 					goal.GameId = GameId.SoftCurrency;
 					goal.Value = Random.Range(1000, 2001);
 					break;
-				case GameId.UpgradeCard:
+				case GameId.UpgradeAnimal:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(2, 5);
 					break;
-				case GameId.UpgradeLevelBuilding:
+				case GameId.UpgradeLevelTree:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(2, 5);
 					break;
-				case GameId.AutomateBuilding:
+				case GameId.AutomateTree:
 					goal.GameId = GameId.Random;
 					goal.Value = Random.Range(1, 3);
 					break;
@@ -164,13 +166,13 @@ namespace Logic
 					case GameId.CollectSoftCurrency:
 						new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.UpgradeCard:
+					case GameId.UpgradeAnimal:
 						new UpgradeCardAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.UpgradeLevelBuilding:
+					case GameId.UpgradeLevelTree:
 						new UpgradeLevelBuildingAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
-					case GameId.AutomateBuilding:
+					case GameId.AutomateTree:
 						new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
 					default:

@@ -158,7 +158,7 @@ namespace Logic
 			GameIdLogic = new GameIdLogic(this, 
 				new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));
 			BuildingLogic = new BuildingLogic(this, 
-				new UniqueIdList<LevelBuildingData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
+				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
 			CardLogic = new CardLogic(this, 
 				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
 			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);

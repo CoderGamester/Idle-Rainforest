@@ -13,7 +13,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.EntityLogic.CreateBuilding(BuildingType, Position);
+			gameLogic.EntityLogic.CreateTree(BuildingType, Position);
 		}
 	}
 }

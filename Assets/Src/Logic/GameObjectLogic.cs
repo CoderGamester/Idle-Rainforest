@@ -69,8 +69,7 @@ namespace Logic
 		/// <inheritdoc />
 		public async Task<GameObject> LoadGameObject(UniqueId id, AddressableId addressable, Vector3 position)
 		{
-			var address = _gameLogic.ConfigsProvider.GetConfig<AddressableConfig>((int) addressable).Address;
-			var task = LoaderUtil.LoadAssetAsync<GameObject>(address, false);
+			var task = LoaderUtil.LoadAssetAsync<GameObject>(addressable.GetConfig().Address, false);
 
 			await task;
 

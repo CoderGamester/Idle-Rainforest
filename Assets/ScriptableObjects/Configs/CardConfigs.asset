@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _configs:
   - Id: 8
-    Building: 5
+    Tree: 5
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000
   - Id: 9
-    Building: 6
+    Tree: 6
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000
   - Id: 10
-    Building: 7
+    Tree: 7
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000

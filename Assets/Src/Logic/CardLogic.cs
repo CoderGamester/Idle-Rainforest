@@ -27,7 +27,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<CardInfo> GetBuildingCards(GameId building);
+		List<CardInfo> GetTreeCards(GameId building);
 
 		/// <summary>
 		/// TODO:
@@ -82,6 +82,7 @@ namespace Logic
 			{
 				GameId = card,
 				Data = data,
+				Tree = config.Tree,
 				MaxLevel = config.UpgradeCost.Count + 1,
 				AmountRequired = config.UpgradeCardsRequired[index],
 				UpgradeCost = config.UpgradeCost[index],
@@ -90,11 +91,11 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public List<CardInfo> GetBuildingCards(GameId building)
+		public List<CardInfo> GetTreeCards(GameId tree)
 		{
-			if (!building.IsInGroup(GameIdGroup.Building))
+			if (!tree.IsInGroup(GameIdGroup.Tree))
 			{
-				throw new ArgumentException($"The id {building} is not part of the {GameIdGroup.Building} group");
+				throw new ArgumentException($"The id {tree} is not part of the {GameIdGroup.Tree} group");
 			}
 			
 			var list = new List<CardInfo>();
@@ -102,7 +103,7 @@ namespace Logic
 
 			for (var i = 0; i < cardConfigs.Count; i++)
 			{
-				if (cardConfigs[i].Building == building)
+				if (cardConfigs[i].Tree == tree)
 				{
 					list.Add(GetInfo(cardConfigs[i].Id));
 				}
@@ -121,7 +122,9 @@ namespace Logic
 			{
 				list.Add(GetInfo(cardConfigs[i].Id));
 			}
-
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
+			
 			return list;
 		}
 

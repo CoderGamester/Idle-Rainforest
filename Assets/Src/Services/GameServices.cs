@@ -30,6 +30,8 @@ namespace Services
 		ICoroutineService CoroutineService { get; }
 		/// <inheritdoc cref="ICoroutineService"/>
 		IVfxService VfxService { get; }
+		/// <inheritdoc cref="IWorldReferenceService"/>
+		IWorldReferenceService WorldReferenceService { get; }
 	}
 
 	/// <inheritdoc />
@@ -51,8 +53,10 @@ namespace Services
 		public ICoroutineService CoroutineService { get; }
 		/// <inheritdoc />
 		public IVfxService VfxService { get; }
+		/// <inheritdoc />
+		public IWorldReferenceService WorldReferenceService { get; }
 
-		public GameServices(IMessageBrokerService messageBrokerService, ITimeService timeService, IGameLogic gameLogic)
+		public GameServices(Main.Main main, IMessageBrokerService messageBrokerService, ITimeService timeService, IGameLogic gameLogic)
 		{
 			MessageBrokerService = messageBrokerService;
 			TimeService = timeService;
@@ -63,6 +67,7 @@ namespace Services
 			TickService =  new TickService();
 			CoroutineService = new CoroutineService();
 			VfxService = new VfxService(this, gameLogic);
+			WorldReferenceService = new WorldReferenceService(main.MainCamera, main.InputSystem);
 		}
 	}
 }

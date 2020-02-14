@@ -18,6 +18,7 @@ namespace Presenters
 	/// </summary>
 	public class HudPresenter : UiPresenter
 	{
+		private readonly uint[] _upgradeSizeBrackets = { 1, 10, UInt32.MaxValue };
 		private const int _achievementCount = 3;
 		
 		[SerializeField] private TextMeshProUGUI _achievementCountText;
@@ -25,19 +26,24 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _mainCurrencyText;
 		[SerializeField] private TextMeshProUGUI _softCurrencyText;
 		[SerializeField] private TextMeshProUGUI _hardCurrencyText;
+		[SerializeField] private TextMeshProUGUI _upgradeSizeText;
 		[SerializeField] private Slider _achievementProgressBar;
 		[SerializeField] private Button _cardsButton;
+		[SerializeField] private Button _upgradeSizeButton;
 		[SerializeField] private AchievementViewPresenter _achievementRef;
 
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
 		private IObjectPool<AchievementViewPresenter> _pool;
+		private int _upgradeSizeIndex;
 
 		private void Awake()
 		{
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
-			_pool = new ObjectPool<AchievementViewPresenter>(3, AchievementInstantiator);
+			_pool = new GameObjectPool<AchievementViewPresenter>(3, _achievementRef);
+			
+			SetUpgradeSizeText();
 			
 			_achievementRef.gameObject.SetActive(false);
 			_services.TickService.SubscribeOnUpdate(UpdateCountdown, 1, true);
@@ -47,6 +53,7 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<AchievementCollectedEvent>(OnAchievementCollected);
 			_services.MessageBrokerService.Subscribe<RewardGivingEvent>(OnRewardGivingEvent);
 			_services.MessageBrokerService.Subscribe<BuildingCollectedEvent>(OnBuildingCollected);
+			_upgradeSizeButton.onClick.AddListener(OnUpgradeSizeClicked);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
@@ -71,7 +78,7 @@ namespace Presenters
 			{
 				endPosition = _hardCurrencyText.transform.position;
 			}
-			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Card))
+			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Animal))
 			{
 				endPosition = _cardsButton.transform.position;
 			}
@@ -118,6 +125,15 @@ namespace Presenters
 			SetAchievementsView();
 		}
 
+		private void OnUpgradeSizeClicked()
+		{
+			_upgradeSizeIndex = _upgradeSizeIndex + 1 < _upgradeSizeBrackets.Length ? _upgradeSizeIndex + 1 : 0;
+
+			SetUpgradeSizeText();
+			
+			_services.MessageBrokerService.Publish(new UpgradeSizeChangedEvent { UpgradeSize = _upgradeSizeBrackets[_upgradeSizeIndex]});
+		}
+
 		private void OnCardsClicked()
 		{
 			_services.UiService.OpenUi<CardsPanelPresenter>();
@@ -145,13 +161,9 @@ namespace Presenters
 			}
 		}
 
-		private AchievementViewPresenter AchievementInstantiator()
+		private void SetUpgradeSizeText()
 		{
-			var newRef = Instantiate(_achievementRef, _achievementRef.transform.parent);
-				
-			newRef.gameObject.SetActive(false);
-				
-			return newRef;
+			_upgradeSizeText.text = _upgradeSizeIndex == _upgradeSizeBrackets.Length - 1 ? "Max" : _upgradeSizeBrackets[_upgradeSizeIndex].ToString();
 		}
 	}
 }

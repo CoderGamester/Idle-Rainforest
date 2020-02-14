@@ -1,4 +1,5 @@
 using Commands;
+using GameLovers.LoaderExtension;
 using GameLovers.Services;
 using Ids;
 using Infos;
@@ -13,11 +14,15 @@ namespace ViewPresenters
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CardViewPresenter : MonoBehaviour
+	public class CardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
 	{
 		[SerializeField] private TextMeshProUGUI _cardNameText;
+		[SerializeField] private TextMeshProUGUI _levelText;
+		[SerializeField] private TextMeshProUGUI _requirementText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
+		[SerializeField] private Slider _requirementSlider;
 		[SerializeField] private Button _upgradeButton;
+		[SerializeField] private Image _image;
 		
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
@@ -41,28 +46,39 @@ namespace ViewPresenters
 			UpdateView(info);
 		}
 
-		private void OnUpgradeClicked()
+		/// <inheritdoc />
+		public void OnSpawn()
 		{
-			var info = _dataProvider.CardDataProvider.GetInfo(_card);
-			
-			if (_dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost && info.Data.Amount >= info.AmountRequired)
-			{
-				_services.CommandService.ExecuteCommand(new UpgradeCardCommand { Card = _card});
-				
-				// Update with new values
-				UpdateView(_dataProvider.CardDataProvider.GetInfo(_card));
-			}
+			gameObject.SetActive(true);
+			transform.SetAsLastSibling();
 		}
 
-		private void UpdateView(CardInfo info)
+		/// <inheritdoc />
+		public void OnDespawn()
 		{
-			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "max";
+			gameObject.SetActive(false);
+		}
+
+		private void OnUpgradeClicked()
+		{
+			_services.CommandService.ExecuteCommand(new UpgradeCardCommand { Card = _card});
+		}
+
+		private async void UpdateView(CardInfo info)
+		{
+			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "Max";
 			
-			_cardNameText.text = $"{info.GameId} - lvl {levelText} - {info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
-			_upgradeCostText.text = $"Upgrade {info.UpgradeCost.ToString()} HC";
-			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired;
-			
-			_upgradeButton.gameObject.SetActive(info.Data.Level < info.MaxLevel);
+			_levelText.text = $"Level {levelText}";
+			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
+			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
+			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
+			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png", false);
+
+			if (info.Data.Amount == 0)
+			{
+				_requirementSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+			}
 		}
 	}
 }
