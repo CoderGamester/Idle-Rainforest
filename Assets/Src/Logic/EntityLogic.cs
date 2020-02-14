@@ -85,7 +85,7 @@ namespace Logic
 
 		private void CreateTreeData(UniqueId uniqueId, Vector3 position)
 		{
-			_dataProvider.LevelData.Buildings.Add(new LevelBuildingData
+			_dataProvider.LevelData.Buildings.Add(new LevelTreeData
 			{
 				Id = uniqueId,
 				Position = position,

@@ -17,12 +17,17 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		IUniqueIdListReader<LevelBuildingData> Data { get; }
+		IUniqueIdListReader<LevelTreeData> Data { get; }
 		
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		LevelTreeInfo GetLevelBuildingInfo(UniqueId id);
+		LevelTreeInfo GetLevelTreeInfo(UniqueId id);
+		
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		LevelTreeUpgradeInfo GetLevelTreeUpgradeInfo(UniqueId id, uint maxUpgradeAmount);
 	}
 
 	/// <inheritdoc />
@@ -36,7 +41,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		void Upgrade(UniqueId id);
+		void Upgrade(UniqueId id, uint maxUpgradeAmount);
 
 		/// <summary>
 		/// TODO:
@@ -48,39 +53,33 @@ namespace Logic
 	public class BuildingLogic : IBuildingLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
-		private readonly IUniqueIdList<LevelBuildingData> _data;
+		private readonly IUniqueIdList<LevelTreeData> _data;
 
 		/// <inheritdoc />
-		public IUniqueIdListReader<LevelBuildingData> Data => _data;
+		public IUniqueIdListReader<LevelTreeData> Data => _data;
 		
 		private BuildingLogic() {}
 
-		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<LevelBuildingData> data)
+		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<LevelTreeData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
 		}
 
 		/// <inheritdoc />
-		public LevelTreeInfo GetLevelBuildingInfo(UniqueId id)
+		public LevelTreeInfo GetLevelTreeInfo(UniqueId id)
 		{
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) gameId);
-			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Key;
 			var buildingCards = _gameLogic.CardDataProvider.GetTreeCards(config.Tree);
-			var nextBracket = GetNextLevelBracket(data, config);
-			var upgradeCost = data.Level == 0 ? config.BuildCost : config.UpgradeCostBase + config.UpgradeCostIncrease * data.Level;
 
 			return new LevelTreeInfo
 			{
 				GameId = gameId,
 				Data = data,
-				NextBracketLevel = Mathf.Min(nextBracket.Key, maxLevel),
-				BracketSize = nextBracket.Value,
 				ProductionAmount = ProductionAmount(data, config),
 				ProductionTime = config.ProductionTimeBase,
-				UpgradeCost = upgradeCost,
 				AutomateCost = config.AutomationCurrencyRequired,
 				AutomateCardRequirement = config.AutomationCardRequired,
 				AutomationState = GetBuildingState(data, config, buildingCards),
@@ -89,9 +88,57 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
+		public LevelTreeUpgradeInfo GetLevelTreeUpgradeInfo(UniqueId id, uint maxUpgradeAmount)
+		{
+			var data = _data.Get(id);
+			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
+			var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) gameId);
+			var maxLevel = config.UpgradeBrackets[config.UpgradeBrackets.Count - 1].Key;
+			var nextBracket = GetNextLevelBracket(data, config);
+			var upgradeCost = config.BuildCost;
+			var upgradeAmount = 1;
+
+			if (data.Level > 0)
+			{
+				var upgradeTo = data.Level + maxUpgradeAmount > nextBracket.Key ? nextBracket.Key - data.Level : (int)maxUpgradeAmount;
+				
+				upgradeAmount = 0;
+				upgradeTo = upgradeTo <= 0 ? (int) maxUpgradeAmount : upgradeTo;
+				upgradeCost = FactorialCost(config, data.Level, upgradeTo, ref upgradeAmount);
+			}
+			
+			return new LevelTreeUpgradeInfo
+			{
+				GameId = gameId,
+				Data = data,
+				NextBracketLevel = Mathf.Min(nextBracket.Key, maxLevel),
+				BracketSize = nextBracket.Value,
+				UpgradeCost = upgradeCost,
+				UpgradeAmount = upgradeAmount
+			};
+		}
+
+		private int FactorialCost(LevelTreeConfig config, int level, int amount, ref int upgradeAmount)
+		{
+			var cost = 0;
+			var totalCost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			
+			while (amount > 0 && totalCost + cost <= _gameLogic.CurrencyDataProvider.MainCurrencyAmount)
+			{
+				upgradeAmount++;
+				level++;
+				amount--;
+				totalCost += cost;
+				cost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			}
+			
+			return totalCost;
+		}
+
+		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
-			var info = GetLevelBuildingInfo(id);
+			var info = GetLevelTreeInfo(id);
 
 			if (info.AutomationState == AutomationState.Automated)
 			{
@@ -111,11 +158,11 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public void Upgrade(UniqueId id)
+		public void Upgrade(UniqueId id, uint maxUpgradeAmount)
 		{
-			var info = GetLevelBuildingInfo(id);
+			var info = GetLevelTreeUpgradeInfo(id, maxUpgradeAmount);
 
-			info.Data.Level++;
+			info.Data.Level += info.UpgradeAmount;
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.UpgradeCost);
 			_data.Set(info.Data);
@@ -136,7 +183,7 @@ namespace Logic
 		/// <inheritdoc />
 		public void Automate(UniqueId id)
 		{
-			var info = GetLevelBuildingInfo(id);
+			var info = GetLevelTreeInfo(id);
 
 			if (info.AutomationState != AutomationState.ReadyToAutomate)
 			{
@@ -151,7 +198,7 @@ namespace Logic
 			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
 		}
 
-		private AutomationState GetBuildingState(LevelBuildingData data, LevelTreeConfig config, List<CardInfo> buildingCards)
+		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config, List<CardInfo> buildingCards)
 		{
 			var state = AutomationState.ReadyToAutomate;
 			
@@ -175,7 +222,7 @@ namespace Logic
 			return state;
 		}
 
-		private IntPairData GetNextLevelBracket(LevelBuildingData data, LevelTreeConfig config)
+		private IntPairData GetNextLevelBracket(LevelTreeData data, LevelTreeConfig config)
 		{
 			var nextBracket = new IntPairData(int.MaxValue, 0);
 
@@ -193,7 +240,7 @@ namespace Logic
 			return nextBracket;
 		}
 
-		private int ProductionAmount(LevelBuildingData data, LevelTreeConfig config)
+		private int ProductionAmount(LevelTreeData data, LevelTreeConfig config)
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
 			var cards = _gameLogic.CardLogic.GetTreeCards(config.Tree);

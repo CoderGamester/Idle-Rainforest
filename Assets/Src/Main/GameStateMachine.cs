@@ -100,7 +100,7 @@ namespace Main
 				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
 				{
 					BuildingType = list[i].Tree,
-					Position = i * 5f * Vector3.up - Vector3.up * 8 + Vector3.right * right
+					Position = i * 5f * Vector3.up - Vector3.up * 7 + Vector3.right * right
 				});
 			}
 

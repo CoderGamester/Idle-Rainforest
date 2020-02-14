@@ -4,7 +4,7 @@ using Ids;
 namespace Data
 {
 	[Serializable]
-	public struct LevelBuildingData
+	public struct LevelTreeData
 	{
 		public UniqueId Id;
 		public int Level;

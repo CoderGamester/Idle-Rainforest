@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using Commands;
-using Configs;
 using Data;
 using Events;
-using GameLovers.AddressableIdsScriptGenerator;
 using GameLovers.ConfigsContainer;
 using GameLovers.LoaderExtension;
 using GameLovers.Services;
@@ -16,8 +14,6 @@ using Presenters;
 using Services;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace MonoComponent
@@ -37,6 +33,7 @@ namespace MonoComponent
 		[SerializeField] private TextMeshProUGUI _effectText;
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private Slider _levelSlider;
+		[SerializeField] private Slider _upgradeSlider;
 		[SerializeField] private Button _collectButton;
 		[SerializeField] private Button _automateButton;
 		[SerializeField] private Button _upgradeButton;
@@ -47,6 +44,7 @@ namespace MonoComponent
 		private IGameDataProvider _dataProvider;
 		private IGameServices _services;
 		private Coroutine _coroutine;
+		private uint _upgradeSize = 1;
 
 		private void Awake()
 		{
@@ -60,6 +58,7 @@ namespace MonoComponent
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
 			_services.MessageBrokerService.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomatedEvent);
+			_services.MessageBrokerService.Subscribe<UpgradeSizeChangedEvent>(OnUpgradeSizeChangedEvent);
 		}
 
 		private void OnDestroy()
@@ -70,7 +69,7 @@ namespace MonoComponent
 
 		private async void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
 
 			foreach (var card in info.Cards)
 			{
@@ -85,7 +84,11 @@ namespace MonoComponent
 
 		private void OnUpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand
+			{
+				BuildingId = _entityMonoComponent.UniqueId, 
+				UpgradeSize = _upgradeSize
+			});
 			
 			UpdateView();
 		}
@@ -99,41 +102,55 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
 			
-			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
+			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
-			var fillSize = info.Data.Level % info.BracketSize;
+			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			var fillSize = info.Data.Level % upgradeInfo.BracketSize;
 
 			_buildingNameText.text = $"{info.GameId}";
 			_collectValueText.text = info.ProductionAmount.ToString();
-			_upgradeCostText.text = info.UpgradeCost == 0 ? "Free" : info.UpgradeCost.ToString();
-			_levelText.text = $"{info.Data.Level.ToString()}/{info.NextBracketLevel.ToString()}";
-			_levelSlider.value = info.Data.Level >= info.NextBracketLevel ? 1 : (float) fillSize/ info.BracketSize;
+			_levelText.text = $"{info.Data.Level.ToString()}/{upgradeInfo.NextBracketLevel.ToString()}";
+			_levelSlider.value = info.Data.Level >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
-			if (fillSize == 0)
+			if (fillSize == 0 && info.Data.Level < upgradeInfo.NextBracketLevel)
 			{
 				_levelSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
 			}
 			
 			_runningState.SetActive(info.Data.Level > 0);
 			
-			UpdateState(info);
+			UpdateState(info, upgradeInfo);
 			RestartCircleCoroutine(info);
 		}
 
-		private void UpdateState(LevelTreeInfo info)
+		private void UpdateState(LevelTreeInfo info, LevelTreeUpgradeInfo upgradeInfo)
 		{
 			var colors = _automateButton.colors;
+			var fillSize = upgradeInfo.UpgradeLevel % upgradeInfo.BracketSize;
 			
-			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= info.UpgradeCost;
+			_upgradeCostText.text = upgradeInfo.UpgradeCost == 0 ? "Free" : upgradeInfo.UpgradeCost.ToString();
+			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeInfo.UpgradeCost;
 			_collectButton.interactable = info.AutomationState != AutomationState.Automated;
 			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
+			_upgradeSlider.value = upgradeInfo.UpgradeLevel >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
+			if (fillSize == 0 && upgradeInfo.UpgradeLevel < upgradeInfo.NextBracketLevel)
+			{
+				_upgradeSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+			}
 			_automateButton.gameObject.SetActive(info.AutomationState != AutomationState.Automated);
 			_animal.gameObject.SetActive(info.AutomationState == AutomationState.Automated);
+		}
+
+		private void OnUpgradeSizeChangedEvent(UpgradeSizeChangedEvent eventData)
+		{
+			_upgradeSize = eventData.UpgradeSize;
+			
+			UpdateView();
 		}
 
 		private void OnBuildingAutomatedEvent(BuildingAutomatedEvent obj)
@@ -143,7 +160,10 @@ namespace MonoComponent
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			UpdateState(_dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId));
+			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			
+			UpdateState(info, upgradeInfo);
 		}
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
@@ -213,7 +233,7 @@ namespace MonoComponent
 
 				if (info.AutomationState == AutomationState.Automated)
 				{
-					info = _dataProvider.BuildingDataProvider.GetLevelBuildingInfo(_entityMonoComponent.UniqueId);
+					info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
 					yield return null;
 				}
 			} 
