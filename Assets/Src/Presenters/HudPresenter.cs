@@ -52,12 +52,12 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<AchievementCollectedEvent>(OnAchievementCollected);
 			_services.MessageBrokerService.Subscribe<RewardGivingEvent>(OnRewardGivingEvent);
-			_services.MessageBrokerService.Subscribe<BuildingCollectedEvent>(OnBuildingCollected);
+			_services.MessageBrokerService.Subscribe<TreeCollectedEvent>(OnBuildingCollected);
 			_upgradeSizeButton.onClick.AddListener(OnUpgradeSizeClicked);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
 		}
 
-		private void OnBuildingCollected(BuildingCollectedEvent eventData)
+		private void OnBuildingCollected(TreeCollectedEvent eventData)
 		{
 			_services.VfxService.PlayUiVfx(_mainCurrencyText.transform.position);
 		}

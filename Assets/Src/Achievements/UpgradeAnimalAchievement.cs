@@ -9,9 +9,9 @@ namespace Achievements
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class UpgradeCardAchievement : Achievement
+	public class UpgradeAnimalAchievement : Achievement
 	{
-		public UpgradeCardAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+		public UpgradeAnimalAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
 			base(messageBroker, achievementResolver, setter)
 		{
 		}

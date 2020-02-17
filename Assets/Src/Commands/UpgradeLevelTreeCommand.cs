@@ -4,15 +4,15 @@ using Logic;
 namespace Commands
 {
 	/// <inheritdoc cref="IGameCommand" />
-	public struct UpgradeLevelBuildingCommand : IGameCommand
+	public struct UpgradeLevelTreeCommand : IGameCommand
 	{
-		public UniqueId BuildingId;
+		public UniqueId TreeId;
 		public uint UpgradeSize;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Upgrade(BuildingId, UpgradeSize);
+			gameLogic.BuildingLogic.Upgrade(TreeId, UpgradeSize);
 		}
 	}
 }

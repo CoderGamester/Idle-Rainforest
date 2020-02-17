@@ -49,7 +49,7 @@ namespace Presenters
 
 		private void OnAutomateClicked()
 		{
-			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = Data });
+			_services.CommandService.ExecuteCommand(new AutomateTreeCommand { TreeId = Data });
 			_services.UiService.CloseUi<AutomatePopUpPresenter>();
 		}
 	}

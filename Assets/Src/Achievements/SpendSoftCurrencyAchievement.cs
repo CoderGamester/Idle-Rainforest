@@ -2,16 +2,15 @@ using System;
 using Data;
 using Events;
 using GameLovers.Services;
-using Services;
 
 namespace Achievements
 {
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CollectSoftCurrencyAchievement : Achievement
+	public class SpendSoftCurrencyAchievement : Achievement
 	{
-		public CollectSoftCurrencyAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+		public SpendSoftCurrencyAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
 			base(messageBroker, achievementResolver, setter)
 		{
 		}
@@ -24,7 +23,7 @@ namespace Achievements
 
 		private void OnSoftCurrencyValueChanged(SoftCurrencyValueChangedEvent eventData)
 		{
-			if (eventData.Amount < 0)
+			if (eventData.Amount > 0)
 			{
 				return;
 			}

@@ -41,7 +41,7 @@ namespace Logic
 			
 			if (reward.GameId.IsInGroup(GameIdGroup.Animal))
 			{
-				_gameLogic.CardLogic.AddCard(reward);
+				_gameLogic.CardLogic.AddCard(reward.GameId, reward.Value);
 				return;
 			}
 					

@@ -4,14 +4,14 @@ using Logic;
 namespace Commands
 {
 	/// <inheritdoc cref="IGameCommand" />
-	public struct CollectBuildingCommand : IGameCommand
+	public struct CollectTreeCommand : IGameCommand
 	{
-		public UniqueId BuildingId;
+		public UniqueId TreeId;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Collect(BuildingId);
+			gameLogic.BuildingLogic.Collect(TreeId);
 		}
 	}
 }

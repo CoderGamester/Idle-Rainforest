@@ -167,10 +167,10 @@ namespace Logic
 						new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
 					case GameId.UpgradeAnimal:
-						new UpgradeCardAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						new UpgradeAnimalAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
 					case GameId.UpgradeLevelTree:
-						new UpgradeLevelBuildingAchievement(_gameLogic.MessageBrokerService, resolver, setter);
+						new UpgradeLevelTreeAchievement(_gameLogic.MessageBrokerService, resolver, setter);
 						break;
 					case GameId.AutomateTree:
 						new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, setter);

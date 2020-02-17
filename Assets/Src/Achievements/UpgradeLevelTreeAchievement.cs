@@ -10,9 +10,9 @@ namespace Achievements
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class AutomateAchievement : Achievement
+	public class UpgradeLevelTreeAchievement : Achievement
 	{
-		public unsafe AutomateAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+		public UpgradeLevelTreeAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
 			base(messageBroker, achievementResolver, setter)
 		{
 		}
@@ -20,10 +20,10 @@ namespace Achievements
 		/// <inheritdoc />
 		protected override void SubscribeMessages()
 		{
-			MessageBroker.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomated);
+			MessageBroker.Subscribe<LevelTreeUpgradedEvent>(OnLevelBuildingUpgraded);
 		}
 
-		private void OnBuildingAutomated(BuildingAutomatedEvent eventData)
+		private void OnLevelBuildingUpgraded(LevelTreeUpgradedEvent eventData)
 		{
 			var data = Data;
 

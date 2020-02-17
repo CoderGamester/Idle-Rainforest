@@ -84,9 +84,9 @@ namespace MonoComponent
 
 		private void OnUpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand
+			_services.CommandService.ExecuteCommand(new UpgradeLevelTreeCommand
 			{
-				BuildingId = _entityMonoComponent.UniqueId, 
+				TreeId = _entityMonoComponent.UniqueId, 
 				UpgradeSize = _upgradeSize
 			});
 			
@@ -100,7 +100,7 @@ namespace MonoComponent
 		
 		private void OnCollectClicked()
 		{
-			_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+			_services.CommandService.ExecuteCommand(new CollectTreeCommand { TreeId = _entityMonoComponent.UniqueId });
 			
 			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
 		}

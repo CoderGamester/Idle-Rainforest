@@ -5,6 +5,6 @@ namespace Events
 {
 	public struct BuildingAutomatedEvent : IMessage
 	{
-		public GameId Building;
+		public GameId Tree;
 	}
 }

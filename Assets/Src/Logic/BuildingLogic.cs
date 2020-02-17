@@ -118,23 +118,6 @@ namespace Logic
 			};
 		}
 
-		private int FactorialCost(LevelTreeConfig config, int level, int amount, ref int upgradeAmount)
-		{
-			var cost = 0;
-			var totalCost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
-			
-			while (amount > 0 && totalCost + cost <= _gameLogic.CurrencyDataProvider.MainCurrencyAmount)
-			{
-				upgradeAmount++;
-				level++;
-				amount--;
-				totalCost += cost;
-				cost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
-			}
-			
-			return totalCost;
-		}
-
 		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
@@ -152,7 +135,7 @@ namespace Logic
 			
 			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingCollectedEvent { Building = info.GameId });
+			_gameLogic.MessageBrokerService.Publish(new TreeCollectedEvent { Tree = info.GameId });
 			_gameLogic.CurrencyLogic.AddMainCurrency(info.ProductionAmount);
 			_data.Set(info.Data);
 		}
@@ -175,9 +158,11 @@ namespace Logic
 				{
 					_gameLogic.RewardLogic.GiveReward(config.UpgradeRewards[i]);
 				}
+				
+				_gameLogic.MessageBrokerService.Publish(new TreeRankedUpEvent { Tree = info.GameId, Level = info.Data.Level});
 			}
 			
-			_gameLogic.MessageBrokerService.Publish(new LevelBuildingUpgradedEvent { Building = info.GameId, NewLevel = info.Data.Level});
+			_gameLogic.MessageBrokerService.Publish(new LevelTreeUpgradedEvent { Tree = info.GameId, NewLevel = info.Data.Level});
 		}
 
 		/// <inheritdoc />
@@ -195,7 +180,7 @@ namespace Logic
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
 			_data.Set(info.Data);
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
+			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Tree = info.GameId });
 		}
 
 		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config, List<CardInfo> buildingCards)
@@ -252,6 +237,23 @@ namespace Logic
 			}
 
 			return totalAmount;
+		}
+
+		private int FactorialCost(LevelTreeConfig config, int level, int amount, ref int upgradeAmount)
+		{
+			var cost = 0;
+			var totalCost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			
+			while (amount > 0 && totalCost + cost <= _gameLogic.CurrencyDataProvider.MainCurrencyAmount)
+			{
+				upgradeAmount++;
+				level++;
+				amount--;
+				totalCost += cost;
+				cost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			}
+			
+			return totalCost;
 		}
 	}
 }
