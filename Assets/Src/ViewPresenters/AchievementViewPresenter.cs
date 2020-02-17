@@ -68,7 +68,7 @@ namespace ViewPresenters
 
 		private void UpdateView(AchievementData data)
 		{
-			_descriptionText.text = data.IsCompleted ? "COLLECT" : $"{data.AchievementType}\n{data.CurrentValue.ToString()}/{data.Goal.Value.ToString()}";
+			_descriptionText.text = data.IsCompleted ? "COLLECT" : $"{data.AchievementType}\n{data.CurrentValue.ToString()}/{data.Goal.ToString()}";
 			_collectButton.interactable = data.IsCompleted;
 		}
 

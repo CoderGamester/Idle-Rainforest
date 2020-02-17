@@ -57,7 +57,7 @@ namespace MonoComponent
 			_automateButton.onClick.AddListener(OnAutomateClicked);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
-			_services.MessageBrokerService.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomatedEvent);
+			_services.MessageBrokerService.Subscribe<TreeAutomatedEvent>(OnBuildingAutomatedEvent);
 			_services.MessageBrokerService.Subscribe<UpgradeSizeChangedEvent>(OnUpgradeSizeChangedEvent);
 		}
 
@@ -153,7 +153,7 @@ namespace MonoComponent
 			UpdateView();
 		}
 
-		private void OnBuildingAutomatedEvent(BuildingAutomatedEvent obj)
+		private void OnBuildingAutomatedEvent(TreeAutomatedEvent obj)
 		{
 			UpdateView();
 		}

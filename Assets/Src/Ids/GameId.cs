@@ -7,7 +7,6 @@ namespace Ids
 	public enum GameId
 	{
 		Random,
-		Time,
 		MainCurrency,
 		SoftCurrency,
 		HardCurrency,
@@ -16,12 +15,7 @@ namespace Ids
 		NormalTree,
 		Squirrel,
 		Blackbird,
-		Fruitbat,
-		CollectMainCurrency,
-		CollectSoftCurrency,
-		UpgradeAnimal,
-		UpgradeLevelTree,
-		AutomateTree
+		Fruitbat
 	}
 
 	public enum GameIdGroup
@@ -29,8 +23,7 @@ namespace Ids
 		GameDesign,
 		Currency,
 		Tree,
-		Animal,
-		Achievement
+		Animal
 	}
 
 	public static class GameIdLookup
@@ -90,12 +83,6 @@ namespace Ids
 					}.AsReadOnly()
 				},
 				{
-					GameId.Time, new List<GameIdGroup>
-					{
-						GameIdGroup.GameDesign
-					}.AsReadOnly()
-				},
-				{
 					GameId.MainCurrency, new List<GameIdGroup>
 					{
 						GameIdGroup.Currency
@@ -149,36 +136,6 @@ namespace Ids
 						GameIdGroup.Animal
 					}.AsReadOnly()
 				},
-				{
-					GameId.CollectMainCurrency, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.CollectSoftCurrency, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.UpgradeAnimal, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.UpgradeLevelTree, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.AutomateTree, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
 			};
 
 		private static readonly Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> _ids =
@@ -187,8 +144,7 @@ namespace Ids
 				{
 					GameIdGroup.GameDesign, new List<GameId>
 					{
-						GameId.Random,
-						GameId.Time
+						GameId.Random
 					}.AsReadOnly()
 				},
 				{
@@ -213,16 +169,6 @@ namespace Ids
 						GameId.Squirrel,
 						GameId.Blackbird,
 						GameId.Fruitbat
-					}.AsReadOnly()
-				},
-				{
-					GameIdGroup.Achievement, new List<GameId>
-					{
-						GameId.CollectMainCurrency,
-						GameId.CollectSoftCurrency,
-						GameId.UpgradeAnimal,
-						GameId.UpgradeLevelTree,
-						GameId.AutomateTree
 					}.AsReadOnly()
 				},
 			};

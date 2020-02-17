@@ -85,16 +85,16 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
-		// TODO: DataProvider contains all IdLists and remove public achievement list
-		// TODO: Do the TODOS in GameStateMachine
-		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
 		// TODO: Localization
 		// TODO: Boxes for rewards
-		// TODO: Show Achievements Completed UI and reset data when completing all achievements
+		// TODO: Do the TODOS in GameStateMachine
+		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
 		// TODO: StartEventCommand that resets all the data and recreates all the world
-		// TODO: AutoCollectSystem optimize
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
+		// TODO: AutoCollectSystem optimize
+		// TODO: DataProvider contains all IdLists and remove public achievement list
 		// TODO: Systems Architecture. Use Unity DOTS???
+		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
 		// TODO: 5 < 8 -> RandomInt(5,8)

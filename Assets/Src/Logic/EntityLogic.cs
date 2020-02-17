@@ -1,4 +1,5 @@
 using System;
+using Achievements;
 using Data;
 using Events;
 using Ids;
@@ -30,7 +31,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		UniqueId CreateAchievement(GameId achievementType, IntData goal, IntData reward);
+		UniqueId CreateAchievement(AchievementType achievementType, int goal, IntData reward);
 	}
 	
 	/// <inheritdoc />
@@ -64,11 +65,10 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public UniqueId CreateAchievement(GameId achievementType, IntData goal, IntData reward)
+		public UniqueId CreateAchievement(AchievementType achievementType, int goal, IntData reward)
 		{
 			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
 			
-			CreateGameIdData(uniqueId, achievementType);
 			CreateAchievementData(uniqueId, achievementType, goal, reward);
 
 			return uniqueId;
@@ -95,7 +95,7 @@ namespace Logic
 			});
 		}
 
-		private void CreateAchievementData(UniqueId uniqueId, GameId achievementType, IntData goal, IntData reward)
+		private void CreateAchievementData(UniqueId uniqueId, AchievementType achievementType, int goal, IntData reward)
 		{
 			_dataProvider.LevelData.Achievements.Add(new AchievementData
 			{

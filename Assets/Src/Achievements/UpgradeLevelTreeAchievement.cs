@@ -26,11 +26,6 @@ namespace Achievements
 		private void OnLevelBuildingUpgraded(LevelTreeUpgradedEvent eventData)
 		{
 			var data = Data;
-
-			if (data.Goal.GameId != GameId.Random && eventData.Tree != data.Goal.GameId)
-			{
-				return;
-			}
 			
 			data.CurrentValue++;
 

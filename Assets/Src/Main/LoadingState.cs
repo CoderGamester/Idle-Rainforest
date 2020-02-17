@@ -78,12 +78,15 @@ namespace Main
 		{
 			var levelTrees = await AssetLoaderService.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address);
 			var cards = await AssetLoaderService.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address);
+			var levelAchievements = await AssetLoaderService.LoadAssetAsync<LevelAchievementConfigs>(AddressableId.Configs_LevelAchievementConfigs.GetConfig().Address);
 			
 			_gameConfigs.AddConfigs(tree => (int) tree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
+			_gameConfigs.AddConfigs(achievement => achievement.Level, levelAchievements.Configs);
 			
 			AssetLoaderService.UnloadAsset(levelTrees);
 			AssetLoaderService.UnloadAsset(cards);
+			AssetLoaderService.UnloadAsset(levelAchievements);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);
 		}

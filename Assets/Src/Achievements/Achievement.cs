@@ -56,7 +56,7 @@ namespace Achievements
 
 		protected void SetData(AchievementData data)
 		{
-			data.CurrentValue = data.CurrentValue > data.Goal.Value ? data.Goal.Value : data.CurrentValue;
+			data.CurrentValue = data.CurrentValue > data.Goal ? data.Goal : data.CurrentValue;
 			
 			_setter(data);
 

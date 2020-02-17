@@ -25,11 +25,6 @@ namespace Achievements
 		private void OnCardUpgraded(CardUpgradedEvent eventData)
 		{
 			var data = Data;
-
-			if (data.Goal.GameId != GameId.Random && eventData.Card != data.Goal.GameId)
-			{
-				return;
-			}
 			
 			data.CurrentValue++;
 

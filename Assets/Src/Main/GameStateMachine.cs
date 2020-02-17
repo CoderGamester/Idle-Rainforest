@@ -85,8 +85,6 @@ namespace Main
 
 		private void InitGameData()
 		{
-			const int initTotalAchievements = 10;
-			
 			if (_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Count > 0)
 			{
 				return;
@@ -102,11 +100,6 @@ namespace Main
 					BuildingType = list[i].Tree,
 					Position = i * 5f * Vector3.up - Vector3.up * 7 + Vector3.right * right
 				});
-			}
-
-			for (var i = 0; i < initTotalAchievements; i++)
-			{
-				_gameLogic.AchievementLogic.GenerateRandomAchievement();
 			}
 		}
 

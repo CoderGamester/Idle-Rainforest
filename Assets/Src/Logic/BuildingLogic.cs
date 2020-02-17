@@ -180,7 +180,7 @@ namespace Logic
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
 			_data.Set(info.Data);
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Tree = info.GameId });
+			_gameLogic.MessageBrokerService.Publish(new TreeAutomatedEvent { Tree = info.GameId });
 		}
 
 		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config, List<CardInfo> buildingCards)

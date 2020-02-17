@@ -20,17 +20,12 @@ namespace Achievements
 		/// <inheritdoc />
 		protected override void SubscribeMessages()
 		{
-			MessageBroker.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomated);
+			MessageBroker.Subscribe<TreeAutomatedEvent>(OnBuildingAutomated);
 		}
 
-		private void OnBuildingAutomated(BuildingAutomatedEvent eventData)
+		private void OnBuildingAutomated(TreeAutomatedEvent eventData)
 		{
 			var data = Data;
-
-			if (data.Goal.GameId != GameId.Random && eventData.Tree != data.Goal.GameId)
-			{
-				return;
-			}
 			
 			data.CurrentValue++;
 

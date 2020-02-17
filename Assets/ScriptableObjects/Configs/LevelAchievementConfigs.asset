@@ -12,4 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe5bcb3201b46aa94eeacd1ac5c9a2a, type: 3}
   m_Name: LevelAchievementConfigs
   m_EditorClassIdentifier: 
-  _configs: []
+  _configs:
+  - Level: 1
+    CompleteRequirement: 10
+    Achievements:
+    - Type: 1
+      RequirementAmount: 1000
+      RewardAmount: 5
+    - Type: 0
+      RequirementAmount: 2000
+      RewardAmount: 5
+    - Type: 9
+      RequirementAmount: 3
+      RewardAmount: 5
+    - Type: 7
+      RequirementAmount: 200
+      RewardAmount: 5
+    - Type: 8
+      RequirementAmount: 25
+      RewardAmount: 5
+    - Type: 4
+      RequirementAmount: 30
+      RewardAmount: 5
+    - Type: 5
+      RequirementAmount: 3
+      RewardAmount: 5
+    - Type: 1
+      RequirementAmount: 10000
+      RewardAmount: 5
+    - Type: 0
+      RequirementAmount: 50000
+      RewardAmount: 5
+    - Type: 4
+      RequirementAmount: 50
+      RewardAmount: 5
+    - Type: 3
+      RequirementAmount: 50
+      RewardAmount: 5

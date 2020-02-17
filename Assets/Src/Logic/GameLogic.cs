@@ -145,6 +145,8 @@ namespace Logic
 		public GameLogic(IMessageBrokerService messageBroker, IDataProviderInternalLogic dataProviderInternalLogic,
 			ITimeService timeService)
 		{
+			AchievementLogic achievementLogic;
+			
 			MessageBrokerService = messageBroker;
 			TimeService = timeService;
 			DataProviderInternalLogic = dataProviderInternalLogic;
@@ -161,7 +163,9 @@ namespace Logic
 				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
 			CardLogic = new CardLogic(this, 
 				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
-			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
+			AchievementLogic = achievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
+			
+			achievementLogic.Init();
 		}
 	}
 }

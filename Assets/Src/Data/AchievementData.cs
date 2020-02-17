@@ -1,4 +1,5 @@
 using System;
+using Achievements;
 using Ids;
 
 namespace Data
@@ -7,12 +8,12 @@ namespace Data
 	public struct AchievementData
 	{
 		public UniqueId Id;
-		public GameId AchievementType;
+		public AchievementType AchievementType;
 		public int CurrentValue;
-		public IntData Goal;
+		public int Goal;
 		public IntData Reward;
 		public bool IsCollected;
 
-		public bool IsCompleted => CurrentValue == Goal.Value;
+		public bool IsCompleted => CurrentValue >= Goal;
 	}
 }

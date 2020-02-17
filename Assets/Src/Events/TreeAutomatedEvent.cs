@@ -3,7 +3,7 @@ using Ids;
 
 namespace Events
 {
-	public struct BuildingAutomatedEvent : IMessage
+	public struct TreeAutomatedEvent : IMessage
 	{
 		public GameId Tree;
 	}
