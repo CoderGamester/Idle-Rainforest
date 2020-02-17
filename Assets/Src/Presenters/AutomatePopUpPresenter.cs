@@ -1,5 +1,5 @@
 using Commands;
-using GameLovers.LoaderExtension;
+using GameLovers.AssetLoader;
 using GameLovers.Services;
 using GameLovers.UiService;
 using Ids;
@@ -40,7 +40,7 @@ namespace Presenters
 		{
 			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(Data);
 
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png");
 			_automateCostText.text = $"{info.AutomateCost.ToString()} MC";
 			_requirementText.text = $"Requires {info.AutomateCardRequirement.GameId} at level {info.AutomateCardRequirement.Value} to automate";
 

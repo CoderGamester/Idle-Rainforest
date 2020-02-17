@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Events;
-using GameLovers.AddressableIdsScriptGenerator;
-using GameLovers.LoaderExtension;
+using GameLovers.AssetLoader;
 using Ids;
 using MonoComponent;
 using UnityEngine;
@@ -69,7 +67,7 @@ namespace Logic
 		/// <inheritdoc />
 		public async Task<GameObject> LoadGameObject(UniqueId id, AddressableId addressable, Vector3 position)
 		{
-			var task = LoaderUtil.LoadAssetAsync<GameObject>(addressable.GetConfig().Address, false);
+			var task = AssetLoaderService.LoadAssetAsync<GameObject>(addressable.GetConfig().Address);
 
 			await task;
 

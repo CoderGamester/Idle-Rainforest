@@ -1,5 +1,5 @@
 using Commands;
-using GameLovers.LoaderExtension;
+using GameLovers.AssetLoader;
 using GameLovers.Services;
 using Ids;
 using Infos;
@@ -69,11 +69,12 @@ namespace ViewPresenters
 			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "Max";
 			
 			_levelText.text = $"Level {levelText}";
+			_cardNameText.text = info.Data.Id.ToString();
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png");
 
 			if (info.Data.Amount == 0)
 			{

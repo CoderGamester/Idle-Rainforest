@@ -1,9 +1,8 @@
 {
   "dependencies": {
-    "com.gamelovers.addressableidsscriptgenerator": "https://github.com/CoderGamester/com.gamelovers.addressableidsscriptgenerator.git",
+    "com.gamelovers.assetloader": "https://github.com/CoderGamester/com.gamelovers.assetloader.git",
     "com.gamelovers.configscontainer": "https://github.com/CoderGamester/com.gamelovers.configscontainer.git",
     "com.gamelovers.googlesheetimporter": "https://github.com/CoderGamester/com.gamelovers.googlesheetimporter.git",
-    "com.gamelovers.loadextension": "https://github.com/CoderGamester/com.gamelovers.loadextension.git",
     "com.gamelovers.newtonsoftjson": "https://github.com/CoderGamester/com.gamelovers.newtonsoftjson.git",
     "com.gamelovers.removeemptyfolders": "https://github.com/CoderGamester/com.gamelovers.removeemptyfolders.git",
     "com.gamelovers.services": "https://github.com/CoderGamester/com.gamelovers.services.git",
@@ -11,7 +10,7 @@
     "com.gamelovers.uiservice": "https://github.com/CoderGamester/com.gamelovers.uiservice.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.addressables": "1.6.0",
+    "com.unity.addressables": "1.6.2",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.device-simulator": "2.0.0-preview",
     "com.unity.ext.nunit": "1.0.0",
@@ -55,9 +54,9 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
-    "com.gamelovers.addressableidsscriptgenerator": {
+    "com.gamelovers.assetloader": {
       "revision": "HEAD",
-      "hash": "53c8ca13c9772756335f2f757fbbde536dcc1e5e"
+      "hash": "d2b1cbc3b43be58b580cd5455a5ab8f1ddd4c001"
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
@@ -66,10 +65,6 @@
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
       "hash": "bbee11ea86512ddde60aff863dafeca0e0821042"
-    },
-    "com.gamelovers.loadextension": {
-      "revision": "HEAD",
-      "hash": "84d25c8e23af49a93195c2ef05729f94f8f3fb0b"
     },
     "com.gamelovers.newtonsoftjson": {
       "revision": "HEAD",
@@ -89,7 +84,7 @@
     },
     "com.gamelovers.uiservice": {
       "revision": "HEAD",
-      "hash": "cda3fe1df0123889b1b59b6bb914ce78ea3e6fc6"
+      "hash": "2eb3cbb3474e3a61d2d3a0406492f1e4230f6fa2"
     }
   }
 }

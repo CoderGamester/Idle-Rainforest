@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Commands;
 using Data;
 using Events;
+using GameLovers.AssetLoader;
 using GameLovers.ConfigsContainer;
-using GameLovers.LoaderExtension;
 using GameLovers.Services;
 using Ids;
 using Infos;
@@ -78,8 +78,8 @@ namespace MonoComponent
 
 			UpdateView();
 			 
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png", false);
-			_animal.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png");
+			_animal.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png");
 		}
 
 		private void OnUpgradeClicked()

@@ -2,7 +2,8 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GameLovers.AddressableIdsScriptGenerator;
+using GameLovers.AssetLoader;
+using UnityEngine.AddressableAssets;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
@@ -48,9 +49,9 @@ namespace Ids
 		public static IList<AddressableConfig> Configs => _addressableConfigs;
 		public static IList<string> Labels => _addressableLabels;
 
-		public static AddressableConfig GetConfig(this AddressableId addressable)
+		public static AddressableConfig GetConfig(this AddressableId id)
 		{
-			return _addressableConfigs[(int) addressable];
+			return _addressableConfigs[(int) id];
 		}
 
 		public static IList<AddressableConfig> GetConfigs(this AddressableLabel label)
