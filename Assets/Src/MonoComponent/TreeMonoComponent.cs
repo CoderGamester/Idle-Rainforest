@@ -7,6 +7,7 @@ using Events;
 using GameLovers.AssetLoader;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -26,7 +27,7 @@ namespace MonoComponent
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private GameObject _runningState;
 		[SerializeField] private GameObject _effectState;
-		[SerializeField] private TextMeshProUGUI _buildingNameText;
+		[SerializeField] private TextMeshProUGUI _nameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
@@ -111,7 +112,7 @@ namespace MonoComponent
 			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
 			var fillSize = info.Data.Level % upgradeInfo.BracketSize;
 
-			_buildingNameText.text = $"{info.GameId}";
+			_nameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.GameId}");
 			_collectValueText.text = info.ProductionAmount.ToString();
 			_levelText.text = $"{info.Data.Level.ToString()}/{upgradeInfo.NextBracketLevel.ToString()}";
 			_levelSlider.value = info.Data.Level >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
@@ -128,7 +129,7 @@ namespace MonoComponent
 			var colors = _automateButton.colors;
 			var fillSize = upgradeInfo.UpgradeLevel % upgradeInfo.BracketSize;
 			
-			_upgradeCostText.text = upgradeInfo.UpgradeCost == 0 ? "Free" : upgradeInfo.UpgradeCost.ToString();
+			_upgradeCostText.text = upgradeInfo.UpgradeCost == 0 ? ScriptLocalization.General.Free : upgradeInfo.UpgradeCost.ToString();
 			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeInfo.UpgradeCost;
 			_collectButton.interactable = info.AutomationState != AutomationState.Automated;
 			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
@@ -210,7 +211,7 @@ namespace MonoComponent
 
 		private IEnumerator CircleCoroutine(LevelTreeInfo info)
 		{
-			_collectionText.text = info.AutomationState == AutomationState.Automated ? "Automated" : "";
+			_collectionText.text = info.AutomationState == AutomationState.Automated ? ScriptLocalization.General.Automated : "";
 			_collectButton.interactable = false;
 
 			do
@@ -233,7 +234,7 @@ namespace MonoComponent
 			while (info.AutomationState == AutomationState.Automated);
 
 			_fillingImage.fillAmount = 1f;
-			_collectionText.text = "Collect";
+			_collectionText.text = ScriptLocalization.General.Collect;
 			_collectButton.interactable = true;
 			_coroutine = null;
 		}

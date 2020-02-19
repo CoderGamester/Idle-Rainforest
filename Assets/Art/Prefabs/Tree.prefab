@@ -2163,7 +2163,7 @@ MonoBehaviour:
   _entityMonoComponent: {fileID: -2000310258285587237}
   _runningState: {fileID: 5868186072637725851}
   _effectState: {fileID: 2386446170139530799}
-  _buildingNameText: {fileID: 8043599754106951685}
+  _nameText: {fileID: 8043599754106951685}
   _collectValueText: {fileID: 2461581660979271238}
   _collectionText: {fileID: 2401991556814516421}
   _upgradeCostText: {fileID: 3595902225363088373}

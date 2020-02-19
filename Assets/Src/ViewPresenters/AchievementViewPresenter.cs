@@ -3,6 +3,7 @@ using Commands;
 using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
+using I2.Loc;
 using Ids;
 using Logic;
 using Services;
@@ -70,7 +71,9 @@ namespace ViewPresenters
 
 		private void UpdateView(AchievementData data)
 		{
-			_nameText.text = data.IsCompleted ? "COLLECT" : $"{data.AchievementType}";
+			_nameText.text = data.IsCompleted
+				? ScriptLocalization.General.Collect.ToUpper()
+				: LocalizationManager.GetTranslation($"{nameof(ScriptLocalization.Achievements)}/{data.AchievementType}");
 			_sliderText.text = $"{data.CurrentValue.ToString()}/{data.Goal.ToString()}";
 			_slider.value = (float) data.CurrentValue / data.Goal;
 			_collectButton.interactable = data.IsCompleted;

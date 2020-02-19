@@ -2,6 +2,7 @@ using System;
 using Events;
 using GameLovers.Services;
 using GameLovers.UiService;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -163,7 +164,9 @@ namespace Presenters
 
 		private void SetUpgradeSizeText()
 		{
-			_upgradeSizeText.text = _upgradeSizeIndex == _upgradeSizeBrackets.Length - 1 ? "Max" : _upgradeSizeBrackets[_upgradeSizeIndex].ToString();
+			_upgradeSizeText.text = _upgradeSizeIndex == _upgradeSizeBrackets.Length - 1 ? 
+				ScriptLocalization.General.Max : 
+				_upgradeSizeBrackets[_upgradeSizeIndex].ToString();
 		}
 	}
 }

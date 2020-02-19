@@ -1,6 +1,7 @@
 using Commands;
 using GameLovers.AssetLoader;
 using GameLovers.Services;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -66,10 +67,10 @@ namespace ViewPresenters
 
 		private async void UpdateView(CardInfo info)
 		{
-			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "Max";
-			
-			_levelText.text = $"Level {levelText}";
-			_cardNameText.text = info.Data.Id.ToString();
+			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : ScriptLocalization.General.Max;
+
+			_levelText.text = string.Format(ScriptLocalization.General.LevelParam, levelText);
+			_cardNameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.Data.Id}");
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
