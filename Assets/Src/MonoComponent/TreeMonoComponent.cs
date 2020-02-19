@@ -169,7 +169,7 @@ namespace MonoComponent
 			{
 				_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
 			
-				_services.UiService.CloseUi<CardsPanelPresenter>();
+				_services.UiService.CloseUi<AnimalCardsPanelPresenter>();
 				UpdateView();
 			}
 

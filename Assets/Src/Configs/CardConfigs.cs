@@ -10,7 +10,6 @@ namespace Configs
 	public struct CardConfig
 	{
 		public GameId Id;
-		public GameId Tree;
 		public List<int> UpgradeCost;
 		public List<int> UpgradeCardsRequired;
 		public List<int> LevelBonus;

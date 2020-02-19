@@ -76,16 +76,22 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			var levelTrees = await AssetLoaderService.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address);
 			var cards = await AssetLoaderService.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address);
+			var animals = await AssetLoaderService.LoadAssetAsync<AnimalConfigs>(AddressableId.Configs_AnimalConfigs.GetConfig().Address);
+			var trees = await AssetLoaderService.LoadAssetAsync<TreeConfigs>(AddressableId.Configs_TreeConfigs.GetConfig().Address);
+			var levelTrees = await AssetLoaderService.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address);
 			var levelAchievements = await AssetLoaderService.LoadAssetAsync<LevelAchievementConfigs>(AddressableId.Configs_LevelAchievementConfigs.GetConfig().Address);
 			
-			_gameConfigs.AddConfigs(tree => (int) tree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
+			_gameConfigs.AddConfigs(animal => (int) animal.Id, animals.Configs);
+			_gameConfigs.AddConfigs(tree => (int) tree.Id, trees.Configs);
+			_gameConfigs.AddConfigs(levelTree => (int) levelTree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(achievement => achievement.Level, levelAchievements.Configs);
 			
-			AssetLoaderService.UnloadAsset(levelTrees);
 			AssetLoaderService.UnloadAsset(cards);
+			AssetLoaderService.UnloadAsset(animals);
+			AssetLoaderService.UnloadAsset(trees);
+			AssetLoaderService.UnloadAsset(levelTrees);
 			AssetLoaderService.UnloadAsset(levelAchievements);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);

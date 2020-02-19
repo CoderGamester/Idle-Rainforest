@@ -38,6 +38,13 @@ MonoBehaviour:
       - Cards
       Flags: 00
       Languages_Touch: []
+    - Term: General/Trees
+      TermType: 0
+      Description: 
+      Languages:
+      - Trees
+      Flags: 00
+      Languages_Touch: []
     - Term: General/Collect
       TermType: 0
       Description: 
@@ -225,7 +232,7 @@ MonoBehaviour:
     Google_WebServiceURL: https://script.google.com/macros/s/AKfycbyCFKO4lsA9GwLKVJnYlPssP1356t_AmGrN9H_a_bShEw4XrVw/exec
     Google_SpreadsheetKey: 1Q_QiRCi6WRPoplV6ggQ3RRGqFxfrH7H14WicXtAh8WY
     Google_SpreadsheetName: I2Loc Good Feeling Localization
-    Google_LastUpdatedVersion: 1582120867062
+    Google_LastUpdatedVersion: 1582121640065
     Google_Password: gamester
     GoogleUpdateFrequency: 3
     GoogleInEditorCheckFrequency: 2

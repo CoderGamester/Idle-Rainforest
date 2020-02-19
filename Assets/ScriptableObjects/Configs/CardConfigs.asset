@@ -13,18 +13,27 @@ MonoBehaviour:
   m_Name: CardConfigs
   m_EditorClassIdentifier: 
   _configs:
+  - Id: 4
+    UpgradeCost: 0a0000001400000032000000
+    UpgradeCardsRequired: 050000000a00000019000000
+    LevelBonus: 02000000050000000a000000
+  - Id: 5
+    UpgradeCost: 0a0000001400000032000000
+    UpgradeCardsRequired: 050000000a00000019000000
+    LevelBonus: 02000000050000000a000000
+  - Id: 6
+    UpgradeCost: 0a0000001400000032000000
+    UpgradeCardsRequired: 050000000a00000019000000
+    LevelBonus: 02000000050000000a000000
   - Id: 7
-    Tree: 4
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000
   - Id: 8
-    Tree: 5
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000
   - Id: 9
-    Tree: 6
     UpgradeCost: 0a0000001400000032000000
     UpgradeCardsRequired: 050000000a00000019000000
     LevelBonus: 02000000050000000a000000

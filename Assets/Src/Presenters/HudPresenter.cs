@@ -30,6 +30,7 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _upgradeSizeText;
 		[SerializeField] private Slider _achievementProgressBar;
 		[SerializeField] private Button _cardsButton;
+		[SerializeField] private Button _treesButton;
 		[SerializeField] private Button _upgradeSizeButton;
 		[SerializeField] private AchievementViewPresenter _achievementRef;
 
@@ -56,6 +57,7 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<TreeCollectedEvent>(OnBuildingCollected);
 			_upgradeSizeButton.onClick.AddListener(OnUpgradeSizeClicked);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
+			_treesButton.onClick.AddListener(OnTreesClicked);
 		}
 
 		private void OnBuildingCollected(TreeCollectedEvent eventData)
@@ -137,7 +139,12 @@ namespace Presenters
 
 		private void OnCardsClicked()
 		{
-			_services.UiService.OpenUi<CardsPanelPresenter>();
+			_services.UiService.OpenUi<AnimalCardsPanelPresenter>();
+		}
+
+		private void OnTreesClicked()
+		{
+			_services.UiService.OpenUi<TreeCardsPanelPresenter>();
 		}
 
 		private void SetAchievementsView()

@@ -23,6 +23,7 @@ namespace Ids
 		GameDesign,
 		Currency,
 		Tree,
+		Card,
 		Animal
 	}
 
@@ -103,37 +104,43 @@ namespace Ids
 				{
 					GameId.AppleTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.ChristmasTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.NormalTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Squirrel, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Blackbird, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Fruitbat, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 			};
@@ -161,6 +168,17 @@ namespace Ids
 						GameId.AppleTree,
 						GameId.ChristmasTree,
 						GameId.NormalTree
+					}.AsReadOnly()
+				},
+				{
+					GameIdGroup.Card, new List<GameId>
+					{
+						GameId.AppleTree,
+						GameId.ChristmasTree,
+						GameId.NormalTree,
+						GameId.Squirrel,
+						GameId.Blackbird,
+						GameId.Fruitbat
 					}.AsReadOnly()
 				},
 				{

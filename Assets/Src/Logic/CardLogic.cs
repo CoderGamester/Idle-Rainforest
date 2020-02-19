@@ -27,6 +27,16 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
+		List<CardInfo> GetAnimalCards();
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		List<CardInfo> GetTreeCards();
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
 		List<CardInfo> GetTreeCards(GameId building);
 
 		/// <summary>
@@ -82,7 +92,6 @@ namespace Logic
 			{
 				GameId = card,
 				Data = data,
-				Tree = config.Tree,
 				MaxLevel = config.UpgradeCost.Count + 1,
 				AmountRequired = config.UpgradeCardsRequired[index],
 				UpgradeCost = config.UpgradeCost[index],
@@ -91,23 +100,63 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
+		public List<CardInfo> GetAnimalCards()
+		{
+			var list = new List<CardInfo>();
+			var cards = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
+
+			for (var i = 0; i < cards.Count; i++)
+			{
+				if (cards[i].Id.IsInGroup(GameIdGroup.Animal))
+				{
+					list.Add(GetInfo(cards[i].Id));
+				}
+			}
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
+
+			return list;
+		}
+
+		/// <inheritdoc />
+		public List<CardInfo> GetTreeCards()
+		{
+			var list = new List<CardInfo>();
+			var cards = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
+
+			for (var i = 0; i < cards.Count; i++)
+			{
+				if (cards[i].Id.IsInGroup(GameIdGroup.Tree))
+				{
+					list.Add(GetInfo(cards[i].Id));
+				}
+			}
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
+
+			return list;
+		}
+
+		/// <inheritdoc />
 		public List<CardInfo> GetTreeCards(GameId tree)
 		{
 			if (!tree.IsInGroup(GameIdGroup.Tree))
 			{
-				throw new ArgumentException($"The id {tree} is not part of the {GameIdGroup.Tree} group");
+				throw new LogicException($"The id {tree} is not part of the {GameIdGroup.Tree} group");
 			}
 			
 			var list = new List<CardInfo>();
-			var cardConfigs = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
+			var animals = _gameLogic.ConfigsProvider.GetConfigsList<AnimalConfig>();
 
-			for (var i = 0; i < cardConfigs.Count; i++)
+			for (var i = 0; i < animals.Count; i++)
 			{
-				if (cardConfigs[i].Tree == tree)
+				if (animals[i].Tree == tree)
 				{
-					list.Add(GetInfo(cardConfigs[i].Id));
+					list.Add(GetInfo(animals[i].Id));
 				}
 			}
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
 
 			return list;
 		}

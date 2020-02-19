@@ -12,20 +12,20 @@ namespace Presenters
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CardsPanelPresenter : UiPresenter
+	public class AnimalCardsPanelPresenter : UiPresenter
 	{
 		[SerializeField] private Button _closeButton;
-		[SerializeField] private CardViewPresenter _cardRef;
+		[SerializeField] private AnimalCardViewPresenter _cardRef;
 		
 		private IGameDataProvider _dataProvider;
-		private IObjectPool<CardViewPresenter> _pool;
+		private IObjectPool<AnimalCardViewPresenter> _pool;
 
 		private void Awake()
 		{
 			const int poolSize = 10;
 
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
-			_pool = new ObjectPool<CardViewPresenter>(poolSize, CardInstantiator);
+			_pool = new GameObjectPool<AnimalCardViewPresenter>(poolSize, _cardRef);
 			
 			_cardRef.gameObject.SetActive(false);
 			_closeButton.onClick.AddListener(Close);
@@ -34,22 +34,13 @@ namespace Presenters
 		/// <inheritdoc />
 		protected override void OnOpened()
 		{
-			var cards = _dataProvider.CardDataProvider.GetAllCards();
+			var cards = _dataProvider.CardDataProvider.GetAnimalCards();
 			
 			_pool.DespawnAll();
 			foreach (var cardInfo in cards)
 			{
 				_pool.Spawn().SetData(cardInfo);
 			}
-		}
-
-		private CardViewPresenter CardInstantiator()
-		{
-			var newRef = Instantiate(_cardRef, _cardRef.transform.parent);
-				
-			newRef.gameObject.SetActive(false);
-				
-			return newRef;
 		}
 	}
 }

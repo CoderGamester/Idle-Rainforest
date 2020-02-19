@@ -43,6 +43,7 @@ namespace I2.Loc
 			public static string LevelParam 		{ get{ return LocalizationManager.GetTranslation ("General/LevelParam"); } }
 			public static string Loading 		{ get{ return LocalizationManager.GetTranslation ("General/Loading"); } }
 			public static string Max 		{ get{ return LocalizationManager.GetTranslation ("General/Max"); } }
+			public static string Trees 		{ get{ return LocalizationManager.GetTranslation ("General/Trees"); } }
 		}
 	}
 
@@ -87,6 +88,7 @@ namespace I2.Loc
 		    public const string LevelParam = "General/LevelParam";
 		    public const string Loading = "General/Loading";
 		    public const string Max = "General/Max";
+		    public const string Trees = "General/Trees";
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace ViewPresenters
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
+	public class AnimalCardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
 	{
 		[SerializeField] private TextMeshProUGUI _cardNameText;
 		[SerializeField] private TextMeshProUGUI _levelText;
