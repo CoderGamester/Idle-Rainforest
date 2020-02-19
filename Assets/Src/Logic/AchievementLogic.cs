@@ -40,8 +40,8 @@ namespace Logic
 		void CollectAchievement(UniqueId id);
 	}
 	
-	/// <inheritdoc />
-	public class AchievementLogic : IAchievementLogic
+	/// <inheritdoc cref="IAchievementLogic"/>
+	public class AchievementLogic : IAchievementLogic, IGameLogicInitializer
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IUniqueIdList<AchievementData> _data;
@@ -61,9 +61,7 @@ namespace Logic
 			_data = new UniqueIdList<AchievementData>(x => x.Id, levelData.Achievements);
 		}
 
-		/// <summary>
-		/// Initializes the AchievementLogic to create the achievements and set their states in the game
-		/// </summary>
+		/// <inheritdoc />
 		public void Init()
 		{
 			var list = _data.GetList();

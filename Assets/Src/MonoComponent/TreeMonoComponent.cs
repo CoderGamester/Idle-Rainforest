@@ -116,11 +116,7 @@ namespace MonoComponent
 			_levelText.text = $"{info.Data.Level.ToString()}/{upgradeInfo.NextBracketLevel.ToString()}";
 			_levelSlider.value = info.Data.Level >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
-			if (fillSize == 0 && info.Data.Level < upgradeInfo.NextBracketLevel)
-			{
-				_levelSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
-			
+			_levelSlider.fillRect.gameObject.SetActive(fillSize > 0 || info.Data.Level >= upgradeInfo.NextBracketLevel);
 			_runningState.SetActive(info.Data.Level > 0);
 			
 			UpdateState(info, upgradeInfo);
@@ -138,10 +134,7 @@ namespace MonoComponent
 			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
 			_upgradeSlider.value = upgradeInfo.UpgradeLevel >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
-			if (fillSize == 0 && upgradeInfo.UpgradeLevel < upgradeInfo.NextBracketLevel)
-			{
-				_upgradeSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
+			_upgradeSlider.fillRect.gameObject.SetActive(fillSize > 0 || upgradeInfo.UpgradeLevel >= upgradeInfo.NextBracketLevel);
 			_automateButton.gameObject.SetActive(info.AutomationState != AutomationState.Automated);
 			_animal.gameObject.SetActive(info.AutomationState == AutomationState.Automated);
 		}

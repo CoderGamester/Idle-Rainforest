@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
@@ -7,13 +8,24 @@ using Services;
 namespace Logic
 {
 	/// <summary>
+	/// This interface marks the Game Logic as one that needs to initialize it's internal state
+	/// </summary>
+	public interface IGameLogicInitializer
+	{
+		/// <summary>
+		/// Initializes the Game Logic state to it's default initial values
+		/// </summary>
+		void Init();
+	}
+	
+	/// <summary>
 	/// Provides access to all game's data.
 	/// This interface provides the data with view only permissions
 	/// </summary>
 	public interface IGameDataProvider
 	{
 		/// <summary>
-		/// TODO:
+		/// Requests the information if the current game session is the first time the player is playing the game or not
 		/// </summary>
 		bool IsFirstSession { get; }
 		
@@ -76,7 +88,7 @@ namespace Logic
 	/// <remarks>
 	/// This interface is only available internally to other logics
 	/// </remarks>
-	public interface IGameInternalLogic : IGameLogic
+	public interface IGameInternalLogic : IGameLogic, IGameLogicInitializer
 	{
 		/// <inheritdoc cref="IDataProviderLogic"/>
 		IDataProviderInternalLogic DataProviderInternalLogic { get; }
@@ -145,8 +157,6 @@ namespace Logic
 		public GameLogic(IMessageBrokerService messageBroker, IDataProviderInternalLogic dataProviderInternalLogic,
 			ITimeService timeService)
 		{
-			AchievementLogic achievementLogic;
-			
 			MessageBrokerService = messageBroker;
 			TimeService = timeService;
 			DataProviderInternalLogic = dataProviderInternalLogic;
@@ -163,9 +173,13 @@ namespace Logic
 				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
 			CardLogic = new CardLogic(this, 
 				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
-			AchievementLogic = achievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
-			
-			achievementLogic.Init();
+			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
+		}
+
+		/// <inheritdoc />
+		public void Init()
+		{
+			(AchievementLogic as IGameLogicInitializer).Init();
 		}
 	}
 }

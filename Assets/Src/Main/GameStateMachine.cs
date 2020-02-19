@@ -77,14 +77,17 @@ namespace Main
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(finalLoading);
 			initialLoading.OnExit(EventPanelLoad);
 			
-			finalLoading.OnEnter(InitGameData);
+			finalLoading.OnEnter(InitializeGame);
 			finalLoading.WaitingFor(_loadingState.FinalLoading).Target(game);
 			
-			game.OnEnter(InitializeGame);
+			game.OnEnter(StartGame);
 		}
 
-		private void InitGameData()
+		private void InitializeGame()
 		{
+			_gameLogic.Init();
+			
+			// TODO: Remove code below
 			if (_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Count > 0)
 			{
 				return;
@@ -124,7 +127,7 @@ namespace Main
 			}
 		}
 
-		private void InitializeGame()
+		private void StartGame()
 		{
 			// TODO: Review code below
 			

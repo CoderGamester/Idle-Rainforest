@@ -86,15 +86,15 @@ namespace Main
 		}
 
 		// TODO: Localization
-		// TODO: Boxes for rewards
-		// TODO: Do the TODOS in GameStateMachine
+		// TODO: New Tree menu to upgrade trees
 		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
-		// TODO: StartEventCommand that resets all the data and recreates all the world
+		// TODO: Boxes for rewards
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
-		// TODO: AutoCollectSystem optimize
 		// TODO: DataProvider contains all IdLists and remove public achievement list
+		// TODO: AutoCollectSystem optimize
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Show Achievements Completed UI and reset data when completing all achievements
+		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
 		// TODO: 5 < 8 -> RandomInt(5,8)

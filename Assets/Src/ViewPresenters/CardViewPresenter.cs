@@ -76,10 +76,7 @@ namespace ViewPresenters
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png");
 
-			if (info.Data.Amount == 0)
-			{
-				_requirementSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
+			_requirementSlider.fillRect.gameObject.SetActive(info.Data.Amount > 0);
 		}
 	}
 }

@@ -29,9 +29,8 @@ namespace Achievements
 			}
 			
 			var data = Data;
-
 			
-			data.CurrentValue += eventData.Amount;
+			data.CurrentValue += Math.Abs(eventData.Amount);
 
 			SetData(data);
 		}

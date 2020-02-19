@@ -17,8 +17,10 @@ namespace ViewPresenters
 	/// </summary>
 	public class AchievementViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
 	{
-		[SerializeField] private TextMeshProUGUI _descriptionText;
+		[SerializeField] private TextMeshProUGUI _nameText;
+		[SerializeField] private TextMeshProUGUI _sliderText;
 		[SerializeField] private Button _collectButton;
+		[SerializeField] private Slider _slider;
 
 		private UniqueId _achievementId = UniqueId.Invalid;
 		private IGameDataProvider _dataProvider;
@@ -68,8 +70,12 @@ namespace ViewPresenters
 
 		private void UpdateView(AchievementData data)
 		{
-			_descriptionText.text = data.IsCompleted ? "COLLECT" : $"{data.AchievementType}\n{data.CurrentValue.ToString()}/{data.Goal.ToString()}";
+			_nameText.text = data.IsCompleted ? "COLLECT" : $"{data.AchievementType}";
+			_sliderText.text = $"{data.CurrentValue.ToString()}/{data.Goal.ToString()}";
+			_slider.value = (float) data.CurrentValue / data.Goal;
 			_collectButton.interactable = data.IsCompleted;
+			
+			_slider.fillRect.gameObject.SetActive(data.CurrentValue > 0);
 		}
 
 		private void OnCompleteClicked()
