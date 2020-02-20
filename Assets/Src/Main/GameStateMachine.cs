@@ -115,7 +115,7 @@ namespace Main
 			
 			if (info.ShowEventPopUp)
 			{
-				_gameLogic.DataProviderInternalLogic.LevelData.Buildings.Clear();
+				_gameLogic.DataProviderInternalLogic.LevelData.Trees.Clear();
 				_gameLogic.DataProviderInternalLogic.LevelData.Achievements.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.Cards.Clear();
@@ -131,7 +131,7 @@ namespace Main
 		{
 			// TODO: Review code below
 			
-			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
+			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Trees);
 			
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
 			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);

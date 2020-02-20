@@ -85,10 +85,10 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
-		// TODO: New Tree menu to upgrade trees
 		// TODO: Change LevelTrees Data structure
 		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
 		
+		// TODO: Improve the visuals for the Trees and for the Animals ViewPresenters
 		// TODO: DataProvider contains all IdLists and remove public achievement list
 		// TODO: AutoCollectSystem optimize
 		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough

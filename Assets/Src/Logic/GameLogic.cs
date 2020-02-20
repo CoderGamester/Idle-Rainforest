@@ -44,8 +44,8 @@ namespace Logic
 		ICurrencyDataProvider CurrencyDataProvider { get; }
 		/// <inheritdoc cref="IEventDataProvider"/>
 		IEventDataProvider EventDataProvider { get; }
-		/// <inheritdoc cref="IBuildingDataProvider"/>
-		IBuildingDataProvider BuildingDataProvider { get; }
+		/// <inheritdoc cref="ILevelTreeDataProvider"/>
+		ILevelTreeDataProvider LevelTreeDataProvider { get; }
 		/// <inheritdoc cref="ICardDataProvider"/>
 		ICardDataProvider CardDataProvider { get; }
 		/// <inheritdoc cref="IAchievementDataProvider"/>
@@ -76,8 +76,8 @@ namespace Logic
 		ICurrencyLogic CurrencyLogic { get; }
 		/// <inheritdoc cref="IEventLogic"/>
 		IEventLogic EventLogic { get; }
-		/// <inheritdoc cref="IBuildingLogic"/>
-		IBuildingLogic BuildingLogic { get; }
+		/// <inheritdoc cref="ILevelTreeLogic"/>
+		ILevelTreeLogic LevelTreeLogic { get; }
 		/// <inheritdoc cref="ICardLogic"/>
 		ICardLogic CardLogic { get; }
 		/// <inheritdoc cref="IAchievementLogic"/>
@@ -124,7 +124,7 @@ namespace Logic
 		public IEventDataProvider EventDataProvider => EventLogic;
 
 		/// <inheritdoc />
-		public IBuildingDataProvider BuildingDataProvider => BuildingLogic;
+		public ILevelTreeDataProvider LevelTreeDataProvider => LevelTreeLogic;
 		/// <inheritdoc />
 		public ICardDataProvider CardDataProvider => CardLogic;
 		/// <inheritdoc />
@@ -143,7 +143,7 @@ namespace Logic
 		/// <inheritdoc />
 		public IEventLogic EventLogic { get; }
 		/// <inheritdoc />
-		public IBuildingLogic BuildingLogic { get; }
+		public ILevelTreeLogic LevelTreeLogic { get; }
 		/// <inheritdoc />
 		public ICardLogic CardLogic { get; }
 		/// <inheritdoc />
@@ -169,8 +169,8 @@ namespace Logic
 			EventLogic = new EventLogic(this);
 			GameIdLogic = new GameIdLogic(this, 
 				new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));
-			BuildingLogic = new BuildingLogic(this, 
-				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Buildings));
+			LevelTreeLogic = new LevelTreeLogic(this, 
+				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Trees));
 			CardLogic = new CardLogic(this, 
 				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
 			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);

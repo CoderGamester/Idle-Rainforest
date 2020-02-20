@@ -125,7 +125,7 @@ namespace Main
 			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
 			var taskList = new List<Task<GameObject>>();
 			
-			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Buildings)
+			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Trees)
 			{
 				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Tree, buildingData.Position));
 			}

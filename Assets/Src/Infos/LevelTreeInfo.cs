@@ -21,7 +21,6 @@ namespace Infos
 		public int AutomateCost;
 		public IntData AutomateCardRequirement;
 		public AutomationState AutomationState;
-		public List<CardInfo> Cards;
 
 		public DateTime ProductionEndTime => Data.ProductionStartTime.AddSeconds(ProductionTime);
 	}

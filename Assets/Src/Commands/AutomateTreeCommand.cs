@@ -11,7 +11,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Automate(TreeId);
+			gameLogic.LevelTreeLogic.Automate(TreeId);
 		}
 	}
 }

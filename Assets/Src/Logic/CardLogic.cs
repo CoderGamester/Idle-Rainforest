@@ -37,7 +37,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<CardInfo> GetTreeCards(GameId building);
+		List<CardInfo> GetAnimalCards(GameId building);
 
 		/// <summary>
 		/// TODO:
@@ -100,25 +100,6 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public List<CardInfo> GetAnimalCards()
-		{
-			var list = new List<CardInfo>();
-			var cards = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
-
-			for (var i = 0; i < cards.Count; i++)
-			{
-				if (cards[i].Id.IsInGroup(GameIdGroup.Animal))
-				{
-					list.Add(GetInfo(cards[i].Id));
-				}
-			}
-			
-			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
-
-			return list;
-		}
-
-		/// <inheritdoc />
 		public List<CardInfo> GetTreeCards()
 		{
 			var list = new List<CardInfo>();
@@ -138,7 +119,26 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public List<CardInfo> GetTreeCards(GameId tree)
+		public List<CardInfo> GetAnimalCards()
+		{
+			var list = new List<CardInfo>();
+			var cards = _gameLogic.ConfigsProvider.GetConfigsList<CardConfig>();
+
+			for (var i = 0; i < cards.Count; i++)
+			{
+				if (cards[i].Id.IsInGroup(GameIdGroup.Animal))
+				{
+					list.Add(GetInfo(cards[i].Id));
+				}
+			}
+			
+			list.Sort((elem1, elem2) => ((int)elem1.GameId).CompareTo((int)elem2.GameId));
+
+			return list;
+		}
+
+		/// <inheritdoc />
+		public List<CardInfo> GetAnimalCards(GameId tree)
 		{
 			if (!tree.IsInGroup(GameIdGroup.Tree))
 			{

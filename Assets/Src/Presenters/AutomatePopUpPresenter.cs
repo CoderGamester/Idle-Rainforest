@@ -40,7 +40,7 @@ namespace Presenters
 		/// <inheritdoc />
 		protected override async void OnOpened()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(Data);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(Data);
 
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png");
 			_automateCostText.text = $"{info.AutomateCost.ToString()} MC";

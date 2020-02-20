@@ -12,7 +12,7 @@ namespace Commands
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.BuildingLogic.Upgrade(TreeId, UpgradeSize);
+			gameLogic.LevelTreeLogic.Upgrade(TreeId, UpgradeSize);
 		}
 	}
 }

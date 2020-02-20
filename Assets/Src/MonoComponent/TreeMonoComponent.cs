@@ -70,9 +70,10 @@ namespace MonoComponent
 
 		private async void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var animalCards = _dataProvider.CardDataProvider.GetAnimalCards(info.GameId);
 
-			foreach (var card in info.Cards)
+			foreach (var card in animalCards)
 			{
 				_dataProvider.CardDataProvider.Data.Observe(card.GameId, ListUpdateType.Added, OnCardAdded);
 			}
@@ -103,13 +104,13 @@ namespace MonoComponent
 		{
 			_services.CommandService.ExecuteCommand(new CollectTreeCommand { TreeId = _entityMonoComponent.UniqueId });
 			
-			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
+			RestartCircleCoroutine(_dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
-			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.LevelTreeDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
 			var fillSize = info.Data.Level % upgradeInfo.BracketSize;
 
 			_nameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.GameId}");
@@ -154,8 +155,8 @@ namespace MonoComponent
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
-			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.LevelTreeDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
 			
 			UpdateState(info, upgradeInfo);
 		}
@@ -227,7 +228,7 @@ namespace MonoComponent
 
 				if (info.AutomationState == AutomationState.Automated)
 				{
-					info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+					info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
 					yield return null;
 				}
 			} 
