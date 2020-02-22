@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: TreeConfigs
   m_EditorClassIdentifier: 
   _configs:
-  - Id: 4
+  - Id: 6
     ProductionAmountBase: 1
     ProductionAmountIncrease: 1
     ProductionTimeBase: 1
     UpgradeCostBase: 1
     UpgradeCostIncrease: 1
-  - Id: 5
+  - Id: 7
     ProductionAmountBase: 2
     ProductionAmountIncrease: 2
     ProductionTimeBase: 1.5
     UpgradeCostBase: 2
     UpgradeCostIncrease: 2
-  - Id: 6
+  - Id: 8
     ProductionAmountBase: 3
     ProductionAmountIncrease: 3
     ProductionTimeBase: 2

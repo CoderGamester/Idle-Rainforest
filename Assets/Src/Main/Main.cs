@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Systems;
-using Data;
+﻿using Data;
 using Events;
 using GameLovers.Services;
 using Logic;
 using Newtonsoft.Json;
 using Services;
 using UnityEngine;
-using UnityEngine.InputSystem.UI;
 
 namespace Main
 {
@@ -17,9 +13,6 @@ namespace Main
 	/// </summary>
 	public class Main : MonoBehaviour
 	{
-		public Camera MainCamera;
-		public InputSystemUIInputModule InputSystem;
-		
 		private GameStateMachine _stateMachine;
 		private GameLogic _gameLogic;
 		private GameServices _gameServices;
@@ -33,7 +26,7 @@ namespace Main
 			LoadData(dataProvider, timeService);
 			
 			_gameLogic = new GameLogic(messageBroker, dataProvider, timeService);
-			_gameServices = new GameServices(this, messageBroker, timeService, _gameLogic);
+			_gameServices = new GameServices(messageBroker, timeService, _gameLogic);
 			
 			MainInstaller.Bind<IGameDataProvider>(_gameLogic);
 			MainInstaller.Bind<IGameServices>(_gameServices);
@@ -85,23 +78,20 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
-		// TODO: Change LevelTrees Data structure
-		// TODO: Have CreateBuilding only when the building is created not in the beginning of the game
-		
 		// TODO: Improve the visuals for the Trees and for the Animals ViewPresenters
+		// TODO: 5 < 8 -> RandomInt(5,8)
+		// TODO: 5.1 < 8.1 -> RandomFloat(5,8)
+		// TODO: Improve CSVParser to Deserialize IntData, FloatData, IntPair & FloatPair
+		// TODO: Improve CSVParser to Deserialize list of IntData, FloatData, IntPair & FloatPair
+		
 		// TODO: DataProvider contains all IdLists and remove public achievement list
 		// TODO: AutoCollectSystem optimize
-		// TODO: GameObjectLogic is confusing. Adding reference UniqueId -> GameObject should be enough
 		// TODO: Systems Architecture. Use Unity DOTS???
 		// TODO: Boxes for rewards
 		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
-		// TODO: 5 < 8 -> RandomInt(5,8)
-		// TODO: 5.1 < 8.1 -> RandomFloat(5,8)
-		// TODO: Improve CSVParser to Deserialize IntData, FloatData, IntPair & FloatPair
-		// TODO: Improve CSVParser to Deserialize list of IntData, FloatData, IntPair & FloatPair
 		// TODO: Enum serialize as string
 		// TODO: Async Await working
 		// TODO: Missing RuntimeTests & EditorTests

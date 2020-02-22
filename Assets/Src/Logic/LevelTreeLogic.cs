@@ -18,6 +18,11 @@ namespace Logic
 		/// TODO:
 		/// </summary>
 		IUniqueIdListReader<LevelTreeData> Data { get; }
+
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		LevelTreeData GetLevelTreeData(int position);
 		
 		/// <summary>
 		/// TODO:
@@ -49,8 +54,8 @@ namespace Logic
 		void Automate(UniqueId id);
 	}
 	
-	/// <inheritdoc />
-	public class LevelTreeLogic : ILevelTreeLogic
+	/// <inheritdoc cref="ILevelTreeLogic" />
+	public class LevelTreeLogic : ILevelTreeLogic, IGameLogicInitializer
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IUniqueIdList<LevelTreeData> _data;
@@ -64,6 +69,37 @@ namespace Logic
 		{
 			_gameLogic = gameLogic;
 			_data = data;
+		}
+
+		/// <inheritdoc />
+		public void Init()
+		{
+			var list = _data.GetList();
+			var configs = _gameLogic.ConfigsProvider.GetConfigsList<LevelTreeConfig>();
+			
+			if (list.Count == 0)
+			{
+				for (var i = 0; i < configs.Count; i++)
+				{
+					_gameLogic.EntityLogic.CreateTree(configs[i].Tree, i + 1);
+				}
+			}
+		}
+
+		/// <inheritdoc />
+		public LevelTreeData GetLevelTreeData(int position)
+		{
+			var list = _data.GetList();
+
+			for (var i = 0; i < list.Count; i++)
+			{
+				if (list[i].Position == position)
+				{
+					return list[i];
+				}
+			}
+			
+			throw new LogicException($"There is no Level Tree in the {position.ToString()} position");
 		}
 
 		/// <inheritdoc />

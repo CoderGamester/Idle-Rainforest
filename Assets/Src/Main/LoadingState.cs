@@ -9,6 +9,9 @@ using Ids;
 using Logic;
 using Presenters;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 namespace Main
 {
@@ -123,16 +126,13 @@ namespace Main
 		private async Task LoadGameWorld(float loadingCap)
 		{
 			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
-			var taskList = new List<Task<GameObject>>();
-			
-			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Trees)
-			{
-				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Tree, buildingData.Position));
-			}
+			var operation = Addressables.LoadSceneAsync(AddressableId.Levels_Forest.GetConfig().Address, LoadSceneMode.Additive);
 
-			foreach (var task in AssetLoaderService.Interleaved(taskList))
+			await operation.Task;
+
+			if (operation.Status != AsyncOperationStatus.Succeeded)
 			{
-				await await task;
+				throw operation.OperationException;
 			}
 			
 			loadingScreen.SetLoadingPercentage(loadingCap);

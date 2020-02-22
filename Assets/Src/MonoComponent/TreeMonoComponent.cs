@@ -15,6 +15,8 @@ using Presenters;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 namespace MonoComponent
@@ -25,6 +27,7 @@ namespace MonoComponent
 	public class TreeMonoComponent : MonoBehaviour
 	{
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
+		[SerializeField] private int _position;
 		[SerializeField] private GameObject _runningState;
 		[SerializeField] private GameObject _effectState;
 		[SerializeField] private TextMeshProUGUI _nameText;
@@ -51,6 +54,7 @@ namespace MonoComponent
 		{
 			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
 			_services = MainInstaller.Resolve<IGameServices>();
+			_entityMonoComponent.UniqueId = _dataProvider.LevelTreeDataProvider.GetLevelTreeData(_position).Id;
 			
 			_effectState.SetActive(false);
 			_upgradeButton.onClick.AddListener(OnUpgradeClicked);
@@ -179,17 +183,19 @@ namespace MonoComponent
 
 		private async void UpgradeEffect(bool thisUpgrade)
 		{
+			var inputSystem = _dataProvider.WorldObjectDataProvider.GetWorldObject<InputSystemUIInputModule>();
+			
 			_runningState.SetActive(false);
 			_effectState.SetActive(thisUpgrade);
 			_upgradeButton.gameObject.SetActive(false);
-			_services.WorldReferenceService.DisableInput();
+			inputSystem.enabled = false;
 
 			await Task.Delay(TimeSpan.FromSeconds(2));
 			
 			_runningState.SetActive(true);
 			_effectState.SetActive(false);
 			_upgradeButton.gameObject.SetActive(true);
-			_services.WorldReferenceService.EnableInput();
+			inputSystem.enabled = true;
 		}
 
 		private void OnCardAdded(CardData card)

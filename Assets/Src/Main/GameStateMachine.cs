@@ -77,33 +77,10 @@ namespace Main
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(finalLoading);
 			initialLoading.OnExit(EventPanelLoad);
 			
-			finalLoading.OnEnter(InitializeGame);
+			finalLoading.OnEnter(_gameLogic.Init);
 			finalLoading.WaitingFor(_loadingState.FinalLoading).Target(game);
 			
 			game.OnEnter(StartGame);
-		}
-
-		private void InitializeGame()
-		{
-			_gameLogic.Init();
-			
-			// TODO: Remove code below
-			if (_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Count > 0)
-			{
-				return;
-			}
-			
-			var list = _gameLogic.ConfigsProvider.GetConfigsList<LevelTreeConfig>();
-			
-			for (var i = 0; i < list.Count; i++)
-			{
-				var right = i % 2 == 0 ? -2 : 2;
-				_services.CommandService.ExecuteCommand(new CreateBuildingCommand
-				{
-					BuildingType = list[i].Tree,
-					Position = i * 5f * Vector3.up - Vector3.up * 7 + Vector3.right * right
-				});
-			}
 		}
 
 		private async void EventPanelLoad()

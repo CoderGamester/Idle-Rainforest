@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: AnimalConfigs
   m_EditorClassIdentifier: 
   _configs:
-  - Id: 7
-    Tree: 4
-  - Id: 8
-    Tree: 5
   - Id: 9
     Tree: 6
+  - Id: 10
+    Tree: 7
+  - Id: 11
+    Tree: 8
