@@ -607,7 +607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.5, y: 0.000061035156}
+  m_AnchoredPosition: {x: -2.5, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7155481094427526295
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2096,7 +2096,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2163,7 +2163,7 @@ MonoBehaviour:
   _entityMonoComponent: {fileID: -2000310258285587237}
   _runningState: {fileID: 5868186072637725851}
   _effectState: {fileID: 2386446170139530799}
-  _buildingNameText: {fileID: 8043599754106951685}
+  _nameText: {fileID: 8043599754106951685}
   _collectValueText: {fileID: 2461581660979271238}
   _collectionText: {fileID: 2401991556814516421}
   _upgradeCostText: {fileID: 3595902225363088373}
@@ -2763,7 +2763,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.636
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

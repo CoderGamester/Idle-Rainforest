@@ -8,7 +8,7 @@ using Ids;
 namespace SheetImporters
 {
 	/// <inheritdoc />
-	public class LevelImporter : GoogleSheetConfigsImporter<LevelTreeConfig, LevelTreeConfigs>
+	public class LevelTreeImporter : GoogleSheetConfigsImporter<LevelTreeConfig, LevelTreeConfigs>
 	{
 		/// <inheritdoc />
 		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=880604694";

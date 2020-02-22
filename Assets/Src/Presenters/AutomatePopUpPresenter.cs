@@ -1,7 +1,9 @@
+using System;
 using Commands;
-using GameLovers.LoaderExtension;
+using GameLovers.AssetLoader;
 using GameLovers.Services;
 using GameLovers.UiService;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -38,18 +40,18 @@ namespace Presenters
 		/// <inheritdoc />
 		protected override async void OnOpened()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(Data);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(Data);
 
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png");
 			_automateCostText.text = $"{info.AutomateCost.ToString()} MC";
-			_requirementText.text = $"Requires {info.AutomateCardRequirement.GameId} at level {info.AutomateCardRequirement.Value} to automate";
+			_requirementText.text = string.Format(ScriptLocalization.General.AutomateRequireParam, info.AutomateCardRequirement.GameId, info.AutomateCardRequirement.Value.ToString());
 
 			_automateButton.interactable = info.AutomationState == AutomationState.ReadyToAutomate;
 		}
 
 		private void OnAutomateClicked()
 		{
-			_services.CommandService.ExecuteCommand(new AutomateBuildingCommand { BuildingId = Data });
+			_services.CommandService.ExecuteCommand(new AutomateTreeCommand { TreeId = Data });
 			_services.UiService.CloseUi<AutomatePopUpPresenter>();
 		}
 	}

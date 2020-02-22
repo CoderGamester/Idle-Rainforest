@@ -77,16 +77,17 @@ namespace Main
 			initialLoading.WaitingFor(_loadingState.InitialLoading).Target(finalLoading);
 			initialLoading.OnExit(EventPanelLoad);
 			
-			finalLoading.OnEnter(InitGameData);
+			finalLoading.OnEnter(InitializeGame);
 			finalLoading.WaitingFor(_loadingState.FinalLoading).Target(game);
 			
-			game.OnEnter(InitializeGame);
+			game.OnEnter(StartGame);
 		}
 
-		private void InitGameData()
+		private void InitializeGame()
 		{
-			const int initTotalAchievements = 10;
+			_gameLogic.Init();
 			
+			// TODO: Remove code below
 			if (_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Count > 0)
 			{
 				return;
@@ -103,11 +104,6 @@ namespace Main
 					Position = i * 5f * Vector3.up - Vector3.up * 7 + Vector3.right * right
 				});
 			}
-
-			for (var i = 0; i < initTotalAchievements; i++)
-			{
-				_gameLogic.AchievementLogic.GenerateRandomAchievement();
-			}
 		}
 
 		private async void EventPanelLoad()
@@ -119,7 +115,7 @@ namespace Main
 			
 			if (info.ShowEventPopUp)
 			{
-				_gameLogic.DataProviderInternalLogic.LevelData.Buildings.Clear();
+				_gameLogic.DataProviderInternalLogic.LevelData.Trees.Clear();
 				_gameLogic.DataProviderInternalLogic.LevelData.Achievements.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.GameIds.Clear();
 				_gameLogic.DataProviderInternalLogic.PlayerData.Cards.Clear();
@@ -131,11 +127,11 @@ namespace Main
 			}
 		}
 
-		private void InitializeGame()
+		private void StartGame()
 		{
 			// TODO: Review code below
 			
-			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Buildings);
+			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Trees);
 			
 			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
 			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);

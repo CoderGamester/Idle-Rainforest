@@ -2,6 +2,7 @@ using System;
 using Events;
 using GameLovers.Services;
 using GameLovers.UiService;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -29,6 +30,7 @@ namespace Presenters
 		[SerializeField] private TextMeshProUGUI _upgradeSizeText;
 		[SerializeField] private Slider _achievementProgressBar;
 		[SerializeField] private Button _cardsButton;
+		[SerializeField] private Button _treesButton;
 		[SerializeField] private Button _upgradeSizeButton;
 		[SerializeField] private AchievementViewPresenter _achievementRef;
 
@@ -52,12 +54,13 @@ namespace Presenters
 			_services.MessageBrokerService.Subscribe<HardCurrencyValueChangedEvent>(OnHardCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<AchievementCollectedEvent>(OnAchievementCollected);
 			_services.MessageBrokerService.Subscribe<RewardGivingEvent>(OnRewardGivingEvent);
-			_services.MessageBrokerService.Subscribe<BuildingCollectedEvent>(OnBuildingCollected);
+			_services.MessageBrokerService.Subscribe<TreeCollectedEvent>(OnBuildingCollected);
 			_upgradeSizeButton.onClick.AddListener(OnUpgradeSizeClicked);
 			_cardsButton.onClick.AddListener(OnCardsClicked);
+			_treesButton.onClick.AddListener(OnTreesClicked);
 		}
 
-		private void OnBuildingCollected(BuildingCollectedEvent eventData)
+		private void OnBuildingCollected(TreeCollectedEvent eventData)
 		{
 			_services.VfxService.PlayUiVfx(_mainCurrencyText.transform.position);
 		}
@@ -136,7 +139,12 @@ namespace Presenters
 
 		private void OnCardsClicked()
 		{
-			_services.UiService.OpenUi<CardsPanelPresenter>();
+			_services.UiService.OpenUi<AnimalCardsPanelPresenter>();
+		}
+
+		private void OnTreesClicked()
+		{
+			_services.UiService.OpenUi<TreeCardsPanelPresenter>();
 		}
 
 		private void SetAchievementsView()
@@ -163,7 +171,9 @@ namespace Presenters
 
 		private void SetUpgradeSizeText()
 		{
-			_upgradeSizeText.text = _upgradeSizeIndex == _upgradeSizeBrackets.Length - 1 ? "Max" : _upgradeSizeBrackets[_upgradeSizeIndex].ToString();
+			_upgradeSizeText.text = _upgradeSizeIndex == _upgradeSizeBrackets.Length - 1 ? 
+				ScriptLocalization.General.Max : 
+				_upgradeSizeBrackets[_upgradeSizeIndex].ToString();
 		}
 	}
 }

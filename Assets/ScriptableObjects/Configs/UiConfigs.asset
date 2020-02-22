@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: UiConfigs
   m_EditorClassIdentifier: 
   _configs:
+  - AddressableAddress: Prefabs/Ui/Animal Cards Panel.prefab
+    Layer: 2
+    UiType: Presenters.AnimalCardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Automate PopUp.prefab
     Layer: 3
     UiType: Presenters.AutomatePopUpPresenter, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  - AddressableAddress: Prefabs/Ui/Cards Panel.prefab
-    Layer: 2
-    UiType: Presenters.CardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   - AddressableAddress: Prefabs/Ui/Event Panel.prefab
     Layer: 2
     UiType: Presenters.EventPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -33,14 +33,20 @@ MonoBehaviour:
     Layer: 3
     UiType: Presenters.LoadingScreenPresenter, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - AddressableAddress: Prefabs/Ui/Tree Cards Panel.prefab
+    Layer: 2
+    UiType: Presenters.TreeCardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   _sets:
   - SetId: 0
     UiConfigsType:
     - Presenters.HudPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    - Presenters.CardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
     - Presenters.AutomatePopUpPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    - Presenters.AnimalCardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    - Presenters.TreeCardsPanelPresenter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - SetId: 1
     UiConfigsType:

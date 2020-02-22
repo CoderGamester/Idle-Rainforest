@@ -30,7 +30,6 @@ namespace Achievements
 			}
 			
 			var data = Data;
-
 			
 			data.CurrentValue += eventData.Amount;
 

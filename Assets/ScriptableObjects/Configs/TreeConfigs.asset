@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35523ecfc7c44d19a57f78ee348dc5a8, type: 3}
+  m_Name: TreeConfigs
+  m_EditorClassIdentifier: 
+  _configs:
+  - Id: 4
+    ProductionAmountBase: 1
+    ProductionAmountIncrease: 1
+    ProductionTimeBase: 1
+    UpgradeCostBase: 1
+    UpgradeCostIncrease: 1
+  - Id: 5
+    ProductionAmountBase: 2
+    ProductionAmountIncrease: 2
+    ProductionTimeBase: 1.5
+    UpgradeCostBase: 2
+    UpgradeCostIncrease: 2
+  - Id: 6
+    ProductionAmountBase: 3
+    ProductionAmountIncrease: 3
+    ProductionTimeBase: 2
+    UpgradeCostBase: 3
+    UpgradeCostIncrease: 3

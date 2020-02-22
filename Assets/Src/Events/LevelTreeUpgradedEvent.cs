@@ -3,9 +3,9 @@ using Ids;
 
 namespace Events
 {
-	public struct LevelBuildingUpgradedEvent : IMessage
+	public struct LevelTreeUpgradedEvent : IMessage
 	{
-		public GameId Building;
+		public GameId Tree;
 		public int NewLevel;
 	}
 }

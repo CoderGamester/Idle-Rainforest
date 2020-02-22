@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Commands;
 using Data;
 using Events;
+using GameLovers.AssetLoader;
 using GameLovers.ConfigsContainer;
-using GameLovers.LoaderExtension;
 using GameLovers.Services;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -26,7 +27,7 @@ namespace MonoComponent
 		[SerializeField] private EntityMonoComponent _entityMonoComponent;
 		[SerializeField] private GameObject _runningState;
 		[SerializeField] private GameObject _effectState;
-		[SerializeField] private TextMeshProUGUI _buildingNameText;
+		[SerializeField] private TextMeshProUGUI _nameText;
 		[SerializeField] private TextMeshProUGUI _collectValueText;
 		[SerializeField] private TextMeshProUGUI _collectionText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
@@ -57,7 +58,7 @@ namespace MonoComponent
 			_automateButton.onClick.AddListener(OnAutomateClicked);
 			_services.MessageBrokerService.Subscribe<MainCurrencyValueChangedEvent>(OnMainCurrencyValueChanged);
 			_services.MessageBrokerService.Subscribe<CardUpgradedEvent>(OnCardUpgradedEvent);
-			_services.MessageBrokerService.Subscribe<BuildingAutomatedEvent>(OnBuildingAutomatedEvent);
+			_services.MessageBrokerService.Subscribe<TreeAutomatedEvent>(OnBuildingAutomatedEvent);
 			_services.MessageBrokerService.Subscribe<UpgradeSizeChangedEvent>(OnUpgradeSizeChangedEvent);
 		}
 
@@ -69,24 +70,25 @@ namespace MonoComponent
 
 		private async void Start()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var animalCards = _dataProvider.CardDataProvider.GetAnimalCards(info.GameId);
 
-			foreach (var card in info.Cards)
+			foreach (var card in animalCards)
 			{
 				_dataProvider.CardDataProvider.Data.Observe(card.GameId, ListUpdateType.Added, OnCardAdded);
 			}
 
 			UpdateView();
 			 
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png", false);
-			_animal.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png");
+			_animal.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.GameId}.png");
 		}
 
 		private void OnUpgradeClicked()
 		{
-			_services.CommandService.ExecuteCommand(new UpgradeLevelBuildingCommand
+			_services.CommandService.ExecuteCommand(new UpgradeLevelTreeCommand
 			{
-				BuildingId = _entityMonoComponent.UniqueId, 
+				TreeId = _entityMonoComponent.UniqueId, 
 				UpgradeSize = _upgradeSize
 			});
 			
@@ -100,27 +102,23 @@ namespace MonoComponent
 		
 		private void OnCollectClicked()
 		{
-			_services.CommandService.ExecuteCommand(new CollectBuildingCommand { BuildingId = _entityMonoComponent.UniqueId });
+			_services.CommandService.ExecuteCommand(new CollectTreeCommand { TreeId = _entityMonoComponent.UniqueId });
 			
-			RestartCircleCoroutine(_dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
+			RestartCircleCoroutine(_dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId));
 		}
 
 		private void UpdateView()
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
-			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.LevelTreeDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
 			var fillSize = info.Data.Level % upgradeInfo.BracketSize;
 
-			_buildingNameText.text = $"{info.GameId}";
+			_nameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.GameId}");
 			_collectValueText.text = info.ProductionAmount.ToString();
 			_levelText.text = $"{info.Data.Level.ToString()}/{upgradeInfo.NextBracketLevel.ToString()}";
 			_levelSlider.value = info.Data.Level >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
-			if (fillSize == 0 && info.Data.Level < upgradeInfo.NextBracketLevel)
-			{
-				_levelSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
-			
+			_levelSlider.fillRect.gameObject.SetActive(fillSize > 0 || info.Data.Level >= upgradeInfo.NextBracketLevel);
 			_runningState.SetActive(info.Data.Level > 0);
 			
 			UpdateState(info, upgradeInfo);
@@ -132,16 +130,13 @@ namespace MonoComponent
 			var colors = _automateButton.colors;
 			var fillSize = upgradeInfo.UpgradeLevel % upgradeInfo.BracketSize;
 			
-			_upgradeCostText.text = upgradeInfo.UpgradeCost == 0 ? "Free" : upgradeInfo.UpgradeCost.ToString();
+			_upgradeCostText.text = upgradeInfo.UpgradeCost == 0 ? ScriptLocalization.General.Free : upgradeInfo.UpgradeCost.ToString();
 			_upgradeButton.interactable = _dataProvider.CurrencyDataProvider.MainCurrencyAmount >= upgradeInfo.UpgradeCost;
 			_collectButton.interactable = info.AutomationState != AutomationState.Automated;
 			_automateButton.image.color = info.AutomationState == AutomationState.ReadyToAutomate ? colors.normalColor : colors.disabledColor;
 			_upgradeSlider.value = upgradeInfo.UpgradeLevel >= upgradeInfo.NextBracketLevel ? 1 : (float) fillSize/ upgradeInfo.BracketSize;
 			
-			if (fillSize == 0 && upgradeInfo.UpgradeLevel < upgradeInfo.NextBracketLevel)
-			{
-				_upgradeSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
+			_upgradeSlider.fillRect.gameObject.SetActive(fillSize > 0 || upgradeInfo.UpgradeLevel >= upgradeInfo.NextBracketLevel);
 			_automateButton.gameObject.SetActive(info.AutomationState != AutomationState.Automated);
 			_animal.gameObject.SetActive(info.AutomationState == AutomationState.Automated);
 		}
@@ -153,15 +148,15 @@ namespace MonoComponent
 			UpdateView();
 		}
 
-		private void OnBuildingAutomatedEvent(BuildingAutomatedEvent obj)
+		private void OnBuildingAutomatedEvent(TreeAutomatedEvent obj)
 		{
 			UpdateView();
 		}
 
 		private void OnMainCurrencyValueChanged(MainCurrencyValueChangedEvent eventData)
 		{
-			var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
-			var upgradeInfo = _dataProvider.BuildingDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+			var upgradeInfo = _dataProvider.LevelTreeDataProvider.GetLevelTreeUpgradeInfo(_entityMonoComponent.UniqueId, _upgradeSize);
 			
 			UpdateState(info, upgradeInfo);
 		}
@@ -175,7 +170,7 @@ namespace MonoComponent
 			{
 				_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
 			
-				_services.UiService.CloseUi<CardsPanelPresenter>();
+				_services.UiService.CloseUi<AnimalCardsPanelPresenter>();
 				UpdateView();
 			}
 
@@ -217,7 +212,7 @@ namespace MonoComponent
 
 		private IEnumerator CircleCoroutine(LevelTreeInfo info)
 		{
-			_collectionText.text = info.AutomationState == AutomationState.Automated ? "Automated" : "";
+			_collectionText.text = info.AutomationState == AutomationState.Automated ? ScriptLocalization.General.Automated : "";
 			_collectButton.interactable = false;
 
 			do
@@ -233,14 +228,14 @@ namespace MonoComponent
 
 				if (info.AutomationState == AutomationState.Automated)
 				{
-					info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
+					info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
 					yield return null;
 				}
 			} 
 			while (info.AutomationState == AutomationState.Automated);
 
 			_fillingImage.fillAmount = 1f;
-			_collectionText.text = "Collect";
+			_collectionText.text = ScriptLocalization.General.Collect;
 			_collectButton.interactable = true;
 			_coroutine = null;
 		}

@@ -10,7 +10,7 @@ namespace Data
 	[Serializable]
 	public class LevelData
 	{
-		public readonly List<LevelTreeData> Buildings = new List<LevelTreeData>();
+		public readonly List<LevelTreeData> Trees = new List<LevelTreeData>();
 		public readonly List<AchievementData> Achievements = new List<AchievementData>();
 	}
 }

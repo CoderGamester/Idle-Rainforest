@@ -1,5 +1,4 @@
 using DG.Tweening;
-using GameLovers.AddressableIdsScriptGenerator;
 using Ids;
 using Logic;
 using UnityEngine;

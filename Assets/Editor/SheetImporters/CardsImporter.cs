@@ -8,6 +8,5 @@ namespace SheetImporters
 	{
 		/// <inheritdoc />
 		public override string GoogleSheetUrl => "https://docs.google.com/spreadsheets/d/1CFp3P0262Bn_EfYSTTLwzbeT5KsyzgJx5GJfRKbNEm4/edit#gid=932952916";
-
 	}
 }

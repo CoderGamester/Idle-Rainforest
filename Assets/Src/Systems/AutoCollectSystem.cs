@@ -32,7 +32,7 @@ namespace Systems
 		{
 			for (var i = 0; i < _data.Count; i++)
 			{
-				var info = _dataProvider.BuildingDataProvider.GetLevelTreeInfo(_data[i].Id);
+				var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_data[i].Id);
 				
 				if (info.AutomationState == AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
 				{

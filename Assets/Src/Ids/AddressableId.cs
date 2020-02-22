@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GameLovers.AddressableIdsScriptGenerator;
+using GameLovers.AssetLoader;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
@@ -17,15 +17,19 @@ namespace Ids
 		Sprites_Trees_AppleTree,
 		Sprites_Trees_ChristmasTree,
 		Sprites_Trees_NormalTree,
+		Configs_AnimalConfigs,
 		Configs_CardConfigs,
+		Configs_LevelAchievementConfigs,
 		Configs_LevelTreeConfigs,
+		Configs_TreeConfigs,
 		Configs_UiConfigs,
 		Prefabs_Tree,
+		Prefabs_Ui_Animal_Cards_Panel,
 		Prefabs_Ui_Automate_PopUp,
-		Prefabs_Ui_Cards_Panel,
 		Prefabs_Ui_Event_Panel,
 		Prefabs_Ui_Hud,
 		Prefabs_Ui_Loading_Screen,
+		Prefabs_Ui_Tree_Cards_Panel,
 		Prefabs_Vfx_Ui_Vfx
 	}
 
@@ -79,16 +83,20 @@ namespace Ids
 			new AddressableConfig(3, "Sprites/Trees/AppleTree.png", "Assets/Art/Sprites/Trees/AppleTree.png", typeof(UnityEngine.Texture2D), new [] {""}),
 			new AddressableConfig(4, "Sprites/Trees/ChristmasTree.png", "Assets/Art/Sprites/Trees/ChristmasTree.png", typeof(UnityEngine.Texture2D), new [] {""}),
 			new AddressableConfig(5, "Sprites/Trees/NormalTree.png", "Assets/Art/Sprites/Trees/NormalTree.png", typeof(UnityEngine.Texture2D), new [] {""}),
-			new AddressableConfig(6, "Configs/CardConfigs.asset", "Assets/ScriptableObjects/Configs/CardConfigs.asset", typeof(Configs.CardConfigs), new [] {""}),
-			new AddressableConfig(7, "Configs/LevelTreeConfigs.asset", "Assets/ScriptableObjects/Configs/LevelTreeConfigs.asset", typeof(Configs.LevelTreeConfigs), new [] {""}),
-			new AddressableConfig(8, "Configs/UiConfigs.asset", "Assets/ScriptableObjects/Configs/UiConfigs.asset", typeof(GameLovers.UiService.UiConfigs), new [] {""}),
-			new AddressableConfig(9, "Prefabs/Tree.prefab", "Assets/Art/Prefabs/Tree.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(10, "Prefabs/Ui/Automate PopUp.prefab", "Assets/Art/Prefabs/Ui/Automate PopUp.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(11, "Prefabs/Ui/Cards Panel.prefab", "Assets/Art/Prefabs/Ui/Cards Panel.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(12, "Prefabs/Ui/Event Panel.prefab", "Assets/Art/Prefabs/Ui/Event Panel.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(13, "Prefabs/Ui/Hud.prefab", "Assets/Art/Prefabs/Ui/Hud.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(14, "Prefabs/Ui/Loading Screen.prefab", "Assets/Art/Prefabs/Ui/Loading Screen.prefab", typeof(UnityEngine.GameObject), new [] {""}),
-			new AddressableConfig(15, "Prefabs/Vfx/Ui/Vfx.prefab", "Assets/Art/Prefabs/Vfx/Ui/Vfx.prefab", typeof(UnityEngine.GameObject), new [] {""})
+			new AddressableConfig(6, "Configs/AnimalConfigs.asset", "Assets/ScriptableObjects/Configs/AnimalConfigs.asset", typeof(Configs.AnimalConfigs), new [] {""}),
+			new AddressableConfig(7, "Configs/CardConfigs.asset", "Assets/ScriptableObjects/Configs/CardConfigs.asset", typeof(Configs.CardConfigs), new [] {""}),
+			new AddressableConfig(8, "Configs/LevelAchievementConfigs.asset", "Assets/ScriptableObjects/Configs/LevelAchievementConfigs.asset", typeof(Configs.LevelAchievementConfigs), new [] {""}),
+			new AddressableConfig(9, "Configs/LevelTreeConfigs.asset", "Assets/ScriptableObjects/Configs/LevelTreeConfigs.asset", typeof(Configs.LevelTreeConfigs), new [] {""}),
+			new AddressableConfig(10, "Configs/TreeConfigs.asset", "Assets/ScriptableObjects/Configs/TreeConfigs.asset", typeof(Configs.TreeConfigs), new [] {""}),
+			new AddressableConfig(11, "Configs/UiConfigs.asset", "Assets/ScriptableObjects/Configs/UiConfigs.asset", typeof(GameLovers.UiService.UiConfigs), new [] {""}),
+			new AddressableConfig(12, "Prefabs/Tree.prefab", "Assets/Art/Prefabs/Tree.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(13, "Prefabs/Ui/Animal Cards Panel.prefab", "Assets/Art/Prefabs/Ui/Animal Cards Panel.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(14, "Prefabs/Ui/Automate PopUp.prefab", "Assets/Art/Prefabs/Ui/Automate PopUp.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(15, "Prefabs/Ui/Event Panel.prefab", "Assets/Art/Prefabs/Ui/Event Panel.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(16, "Prefabs/Ui/Hud.prefab", "Assets/Art/Prefabs/Ui/Hud.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(17, "Prefabs/Ui/Loading Screen.prefab", "Assets/Art/Prefabs/Ui/Loading Screen.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(18, "Prefabs/Ui/Tree Cards Panel.prefab", "Assets/Art/Prefabs/Ui/Tree Cards Panel.prefab", typeof(UnityEngine.GameObject), new [] {""}),
+			new AddressableConfig(19, "Prefabs/Vfx/Ui/Vfx.prefab", "Assets/Art/Prefabs/Vfx/Ui/Vfx.prefab", typeof(UnityEngine.GameObject), new [] {""})
 		}.AsReadOnly();
 	}
 }

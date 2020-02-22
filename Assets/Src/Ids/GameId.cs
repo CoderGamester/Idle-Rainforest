@@ -7,7 +7,6 @@ namespace Ids
 	public enum GameId
 	{
 		Random,
-		Time,
 		MainCurrency,
 		SoftCurrency,
 		HardCurrency,
@@ -16,12 +15,7 @@ namespace Ids
 		NormalTree,
 		Squirrel,
 		Blackbird,
-		Fruitbat,
-		CollectMainCurrency,
-		CollectSoftCurrency,
-		UpgradeAnimal,
-		UpgradeLevelTree,
-		AutomateTree
+		Fruitbat
 	}
 
 	public enum GameIdGroup
@@ -29,8 +23,8 @@ namespace Ids
 		GameDesign,
 		Currency,
 		Tree,
-		Animal,
-		Achievement
+		Card,
+		Animal
 	}
 
 	public static class GameIdLookup
@@ -90,12 +84,6 @@ namespace Ids
 					}.AsReadOnly()
 				},
 				{
-					GameId.Time, new List<GameIdGroup>
-					{
-						GameIdGroup.GameDesign
-					}.AsReadOnly()
-				},
-				{
 					GameId.MainCurrency, new List<GameIdGroup>
 					{
 						GameIdGroup.Currency
@@ -116,67 +104,43 @@ namespace Ids
 				{
 					GameId.AppleTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.ChristmasTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.NormalTree, new List<GameIdGroup>
 					{
-						GameIdGroup.Tree
+						GameIdGroup.Tree,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Squirrel, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Blackbird, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 				{
 					GameId.Fruitbat, new List<GameIdGroup>
 					{
-						GameIdGroup.Animal
-					}.AsReadOnly()
-				},
-				{
-					GameId.CollectMainCurrency, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.CollectSoftCurrency, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.UpgradeAnimal, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.UpgradeLevelTree, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
-					}.AsReadOnly()
-				},
-				{
-					GameId.AutomateTree, new List<GameIdGroup>
-					{
-						GameIdGroup.Achievement
+						GameIdGroup.Animal,
+						GameIdGroup.Card
 					}.AsReadOnly()
 				},
 			};
@@ -187,8 +151,7 @@ namespace Ids
 				{
 					GameIdGroup.GameDesign, new List<GameId>
 					{
-						GameId.Random,
-						GameId.Time
+						GameId.Random
 					}.AsReadOnly()
 				},
 				{
@@ -208,21 +171,22 @@ namespace Ids
 					}.AsReadOnly()
 				},
 				{
-					GameIdGroup.Animal, new List<GameId>
+					GameIdGroup.Card, new List<GameId>
 					{
+						GameId.AppleTree,
+						GameId.ChristmasTree,
+						GameId.NormalTree,
 						GameId.Squirrel,
 						GameId.Blackbird,
 						GameId.Fruitbat
 					}.AsReadOnly()
 				},
 				{
-					GameIdGroup.Achievement, new List<GameId>
+					GameIdGroup.Animal, new List<GameId>
 					{
-						GameId.CollectMainCurrency,
-						GameId.CollectSoftCurrency,
-						GameId.UpgradeAnimal,
-						GameId.UpgradeLevelTree,
-						GameId.AutomateTree
+						GameId.Squirrel,
+						GameId.Blackbird,
+						GameId.Fruitbat
 					}.AsReadOnly()
 				},
 			};

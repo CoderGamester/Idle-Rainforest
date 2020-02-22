@@ -1,18 +1,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Commands;
 using Configs;
-using GameLovers.AddressableIdsScriptGenerator;
+using GameLovers.AssetLoader;
 using GameLovers.ConfigsContainer;
-using GameLovers.LoaderExtension;
 using GameLovers.Statechart;
 using GameLovers.UiService;
 using Ids;
 using Logic;
 using Presenters;
-using Services;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Main
 {
@@ -64,9 +60,11 @@ namespace Main
 
 		private async Task LoadUiConfigsConfigs()
 		{
-			var configs = await LoaderUtil.LoadAssetAsync<UiConfigs>(AddressableId.Configs_UiConfigs.GetConfig().Address, true);
+			var configs = await AssetLoaderService.LoadAssetAsync<UiConfigs>(AddressableId.Configs_UiConfigs.GetConfig().Address);
 			
 			_uiService.Init(configs);
+			
+			AssetLoaderService.UnloadAsset(configs);
 		}
 
 		private async Task LoadOpenLoadingScreen()
@@ -78,11 +76,23 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
-			var levelTrees = await LoaderUtil.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address, true);
-			var cards = await LoaderUtil.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address, true);
+			var cards = await AssetLoaderService.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address);
+			var animals = await AssetLoaderService.LoadAssetAsync<AnimalConfigs>(AddressableId.Configs_AnimalConfigs.GetConfig().Address);
+			var trees = await AssetLoaderService.LoadAssetAsync<TreeConfigs>(AddressableId.Configs_TreeConfigs.GetConfig().Address);
+			var levelTrees = await AssetLoaderService.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address);
+			var levelAchievements = await AssetLoaderService.LoadAssetAsync<LevelAchievementConfigs>(AddressableId.Configs_LevelAchievementConfigs.GetConfig().Address);
 			
-			_gameConfigs.AddConfigs(tree => (int) tree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
+			_gameConfigs.AddConfigs(animal => (int) animal.Id, animals.Configs);
+			_gameConfigs.AddConfigs(tree => (int) tree.Id, trees.Configs);
+			_gameConfigs.AddConfigs(levelTree => (int) levelTree.Tree, levelTrees.Configs);
+			_gameConfigs.AddConfigs(achievement => achievement.Level, levelAchievements.Configs);
+			
+			AssetLoaderService.UnloadAsset(cards);
+			AssetLoaderService.UnloadAsset(animals);
+			AssetLoaderService.UnloadAsset(trees);
+			AssetLoaderService.UnloadAsset(levelTrees);
+			AssetLoaderService.UnloadAsset(levelAchievements);
 			
 			_uiService.GetUi<LoadingScreenPresenter>().SetLoadingPercentage(loadingCap);
 		}
@@ -115,12 +125,12 @@ namespace Main
 			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
 			var taskList = new List<Task<GameObject>>();
 			
-			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Buildings)
+			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Trees)
 			{
 				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Tree, buildingData.Position));
 			}
 
-			foreach (var task in LoaderUtil.Interleaved(taskList))
+			foreach (var task in AssetLoaderService.Interleaved(taskList))
 			{
 				await await task;
 			}

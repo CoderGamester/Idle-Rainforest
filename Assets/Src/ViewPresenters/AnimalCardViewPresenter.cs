@@ -1,6 +1,7 @@
 using Commands;
-using GameLovers.LoaderExtension;
+using GameLovers.AssetLoader;
 using GameLovers.Services;
+using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
@@ -14,7 +15,7 @@ namespace ViewPresenters
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class CardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
+	public class AnimalCardViewPresenter : MonoBehaviour, IPoolEntitySpawn, IPoolEntityDespawn
 	{
 		[SerializeField] private TextMeshProUGUI _cardNameText;
 		[SerializeField] private TextMeshProUGUI _levelText;
@@ -66,19 +67,17 @@ namespace ViewPresenters
 
 		private async void UpdateView(CardInfo info)
 		{
-			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : "Max";
-			
-			_levelText.text = $"Level {levelText}";
+			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : ScriptLocalization.General.Max;
+
+			_levelText.text = string.Format(ScriptLocalization.General.LevelParam, levelText);
+			_cardNameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.Data.Id}");
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
-			_image.sprite = await LoaderUtil.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png", false);
+			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png");
 
-			if (info.Data.Amount == 0)
-			{
-				_requirementSlider.fillRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-			}
+			_requirementSlider.fillRect.gameObject.SetActive(info.Data.Amount > 0);
 		}
 	}
 }

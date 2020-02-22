@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Achievements;
+using Configs;
 using Data;
 using Events;
 using Ids;
@@ -32,11 +33,6 @@ namespace Logic
 		/// TODO: REMOVE
 		/// </summary>
 		new IUniqueIdList<AchievementData> Data { get; }
-		
-		/// <summary>
-		/// TODO:
-		/// </summary>
-		UniqueId GenerateRandomAchievement();
 
 		/// <summary>
 		/// TODO:
@@ -44,11 +40,12 @@ namespace Logic
 		void CollectAchievement(UniqueId id);
 	}
 	
-	/// <inheritdoc />
-	public class AchievementLogic : IAchievementLogic
+	/// <inheritdoc cref="IAchievementLogic"/>
+	public class AchievementLogic : IAchievementLogic, IGameLogicInitializer
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IUniqueIdList<AchievementData> _data;
+		private readonly IList<Achievement> _runningAchievements = new List<Achievement>();
 
 		/// <inheritdoc />
 		public IUniqueIdListReader<AchievementData> Data => _data;
@@ -62,8 +59,32 @@ namespace Logic
 		{
 			_gameLogic = gameLogic;
 			_data = new UniqueIdList<AchievementData>(x => x.Id, levelData.Achievements);
+		}
 
-			CreateAchievements();
+		/// <inheritdoc />
+		public void Init()
+		{
+			var list = _data.GetList();
+			var animals = GameIdGroup.Animal.GetIds();
+
+			if (list.Count == 0)
+			{
+				var config = _gameLogic.ConfigsProvider.GetConfig<LevelAchievementConfig>(1);
+
+				foreach (var achievement in config.Achievements)
+				{
+					var reward = new IntData(animals[Random.Range(0, animals.Count)], achievement.RewardAmount);
+					
+					_gameLogic.EntityLogic.CreateAchievement(achievement.Type, achievement.RequirementAmount, reward);
+				}
+			}
+			
+			for (var i = 0; i < list.Count; i++)
+			{
+				var indexClosure = i;
+				
+				_runningAchievements.Add(AchievementFactory(list[i].AchievementType, () => list[indexClosure]));
+			}
 		}
 
 		/// <inheritdoc />
@@ -90,48 +111,6 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public UniqueId GenerateRandomAchievement()
-		{
-			var achievements = GameIdGroup.Achievement.GetIds();
-			var animals = GameIdGroup.Animal.GetIds();
-			var type = achievements[Random.Range(0, achievements.Count)];
-			var goal = new IntData();
-			var reward = new IntData
-			{
-				GameId = animals[Random.Range(0, animals.Count)],
-				Value = Random.Range(3, 6)
-			};
-
-			switch (type)
-			{
-				case GameId.CollectMainCurrency:
-					goal.GameId = GameId.MainCurrency;
-					goal.Value = Random.Range(1000, 2001);
-					break;
-				case GameId.CollectSoftCurrency:
-					goal.GameId = GameId.SoftCurrency;
-					goal.Value = Random.Range(1000, 2001);
-					break;
-				case GameId.UpgradeAnimal:
-					goal.GameId = GameId.Random;
-					goal.Value = Random.Range(2, 5);
-					break;
-				case GameId.UpgradeLevelTree:
-					goal.GameId = GameId.Random;
-					goal.Value = Random.Range(2, 5);
-					break;
-				case GameId.AutomateTree:
-					goal.GameId = GameId.Random;
-					goal.Value = Random.Range(1, 3);
-					break;
-				default:
-					throw new LogicException($"The given id {type} is no of {nameof(GameIdGroup.Achievement)} group type");
-			}
-
-			return _gameLogic.EntityLogic.CreateAchievement(type, goal, reward);
-		}
-
-		/// <inheritdoc />
 		public void CollectAchievement(UniqueId id)
 		{
 			var data = _data.Get(id);
@@ -148,37 +127,32 @@ namespace Logic
 			_gameLogic.MessageBrokerService.Publish(new AchievementCollectedEvent { Id = id });
 		}
 
-		private void CreateAchievements()
+		private Achievement AchievementFactory(AchievementType achievementType, Func<AchievementData> resolver)
 		{
-			var list = _data.GetList();
-			
-			for (var i = 0; i < list.Count; i++)
+			switch (achievementType)
 			{
-				var index = i;
-				Func<AchievementData> resolver = () => list[index];
-				Action<AchievementData> setter = _data.Set;
-				
-				switch (list[i].AchievementType)
-				{
-					case GameId.CollectMainCurrency:
-						new CollectMainCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
-						break;
-					case GameId.CollectSoftCurrency:
-						new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, setter);
-						break;
-					case GameId.UpgradeAnimal:
-						new UpgradeCardAchievement(_gameLogic.MessageBrokerService, resolver, setter);
-						break;
-					case GameId.UpgradeLevelTree:
-						new UpgradeLevelBuildingAchievement(_gameLogic.MessageBrokerService, resolver, setter);
-						break;
-					case GameId.AutomateTree:
-						new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, setter);
-						break;
-					default:
-						throw new LogicException($"The given id {list[i].AchievementType} is not " +
-						                                      $"of {nameof(GameIdGroup.Achievement)} group type");
-				}
+				case AchievementType.SpendMainCurrency:
+					return new SpendMainCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.CollectMainCurrency:
+					return new CollectMainCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.SpendSoftCurrency:
+					return new SpendSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.CollectSoftCurrency:
+					return new CollectSoftCurrencyAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.CollectCards:
+					return new CollectCardsAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.UpgradeAnimal:
+					return new UpgradeAnimalAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.UpgradeTree:
+					throw new LogicException($"Not implemented yet");
+				case AchievementType.UpgradeLevelTree:
+					return new UpgradeLevelTreeAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.RankUpTree:
+					return new RankUpTreeAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				case AchievementType.AutomateTree:
+					return new AutomateAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
+				default:
+					throw new LogicException($"Missing achievementType {achievementType}");
 			}
 		}
 	}

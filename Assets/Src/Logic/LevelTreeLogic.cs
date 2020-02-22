@@ -12,7 +12,7 @@ namespace Logic
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public interface IBuildingDataProvider
+	public interface ILevelTreeDataProvider
 	{
 		/// <summary>
 		/// TODO:
@@ -31,7 +31,7 @@ namespace Logic
 	}
 
 	/// <inheritdoc />
-	public interface IBuildingLogic : IBuildingDataProvider
+	public interface ILevelTreeLogic : ILevelTreeDataProvider
 	{
 		/// <summary>
 		/// TODO:
@@ -50,7 +50,7 @@ namespace Logic
 	}
 	
 	/// <inheritdoc />
-	public class BuildingLogic : IBuildingLogic
+	public class LevelTreeLogic : ILevelTreeLogic
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IUniqueIdList<LevelTreeData> _data;
@@ -58,9 +58,9 @@ namespace Logic
 		/// <inheritdoc />
 		public IUniqueIdListReader<LevelTreeData> Data => _data;
 		
-		private BuildingLogic() {}
+		private LevelTreeLogic() {}
 
-		public BuildingLogic(IGameInternalLogic gameLogic, IUniqueIdList<LevelTreeData> data)
+		public LevelTreeLogic(IGameInternalLogic gameLogic, IUniqueIdList<LevelTreeData> data)
 		{
 			_gameLogic = gameLogic;
 			_data = data;
@@ -72,7 +72,6 @@ namespace Logic
 			var data = _data.Get(id);
 			var gameId = _gameLogic.GameIdLogic.Data.Get(id).GameId;
 			var config = _gameLogic.ConfigsProvider.GetConfig<LevelTreeConfig>((int) gameId);
-			var buildingCards = _gameLogic.CardDataProvider.GetTreeCards(config.Tree);
 
 			return new LevelTreeInfo
 			{
@@ -82,8 +81,7 @@ namespace Logic
 				ProductionTime = config.ProductionTimeBase,
 				AutomateCost = config.AutomationCurrencyRequired,
 				AutomateCardRequirement = config.AutomationCardRequired,
-				AutomationState = GetBuildingState(data, config, buildingCards),
-				Cards = buildingCards
+				AutomationState = GetBuildingState(data, config),
 			};
 		}
 
@@ -118,23 +116,6 @@ namespace Logic
 			};
 		}
 
-		private int FactorialCost(LevelTreeConfig config, int level, int amount, ref int upgradeAmount)
-		{
-			var cost = 0;
-			var totalCost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
-			
-			while (amount > 0 && totalCost + cost <= _gameLogic.CurrencyDataProvider.MainCurrencyAmount)
-			{
-				upgradeAmount++;
-				level++;
-				amount--;
-				totalCost += cost;
-				cost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
-			}
-			
-			return totalCost;
-		}
-
 		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
@@ -152,7 +133,7 @@ namespace Logic
 			
 			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingCollectedEvent { Building = info.GameId });
+			_gameLogic.MessageBrokerService.Publish(new TreeCollectedEvent { Tree = info.GameId });
 			_gameLogic.CurrencyLogic.AddMainCurrency(info.ProductionAmount);
 			_data.Set(info.Data);
 		}
@@ -175,9 +156,11 @@ namespace Logic
 				{
 					_gameLogic.RewardLogic.GiveReward(config.UpgradeRewards[i]);
 				}
+				
+				_gameLogic.MessageBrokerService.Publish(new TreeRankedUpEvent { Tree = info.GameId, Level = info.Data.Level});
 			}
 			
-			_gameLogic.MessageBrokerService.Publish(new LevelBuildingUpgradedEvent { Building = info.GameId, NewLevel = info.Data.Level});
+			_gameLogic.MessageBrokerService.Publish(new LevelTreeUpgradedEvent { Tree = info.GameId, NewLevel = info.Data.Level});
 		}
 
 		/// <inheritdoc />
@@ -195,10 +178,10 @@ namespace Logic
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
 			_data.Set(info.Data);
 			
-			_gameLogic.MessageBrokerService.Publish(new BuildingAutomatedEvent { Building = info.GameId });
+			_gameLogic.MessageBrokerService.Publish(new TreeAutomatedEvent { Tree = info.GameId });
 		}
 
-		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config, List<CardInfo> buildingCards)
+		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config)
 		{
 			var state = AutomationState.ReadyToAutomate;
 			
@@ -212,7 +195,7 @@ namespace Logic
 			}
 			else
 			{
-				var cardInfo = buildingCards.Find(card => card.GameId == config.AutomationCardRequired.GameId);
+				var cardInfo = _gameLogic.CardLogic.GetInfo(config.Tree);
 
 				state = cardInfo.Data.Level < config.AutomationCardRequired.Value
 					? AutomationState.MissingRequirements
@@ -243,15 +226,33 @@ namespace Logic
 		private int ProductionAmount(LevelTreeData data, LevelTreeConfig config)
 		{
 			var amount = config.ProductionAmountBase + config.ProductionAmountIncrease * data.Level;
-			var cards = _gameLogic.CardLogic.GetTreeCards(config.Tree);
-			var totalAmount = amount;
+			var animalCards = _gameLogic.CardLogic.GetAnimalCards(config.Tree);
+			var treeCard = _gameLogic.CardLogic.GetInfo(config.Tree);
+			var totalAmount = amount + amount * treeCard.ProductionBonus;
 
-			foreach (var card in cards)
+			foreach (var card in animalCards)
 			{
 				totalAmount += amount * card.ProductionBonus;
 			}
 
 			return totalAmount;
+		}
+
+		private int FactorialCost(LevelTreeConfig config, int level, int amount, ref int upgradeAmount)
+		{
+			var cost = 0;
+			var totalCost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			
+			while (amount > 0 && totalCost + cost <= _gameLogic.CurrencyDataProvider.MainCurrencyAmount)
+			{
+				upgradeAmount++;
+				level++;
+				amount--;
+				totalCost += cost;
+				cost = config.UpgradeCostBase + config.UpgradeCostIncrease * level;
+			}
+			
+			return totalCost;
 		}
 	}
 }
