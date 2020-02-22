@@ -17,139 +17,6 @@ MonoBehaviour:
     UserAgreesToHaveItInsideThePluginsFolder: 0
     GoogleLiveSyncIsUptoDate: 1
     mTerms:
-    - Term: Achievements/AutomateTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Automate Trees
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/CollectCards
-      TermType: 0
-      Description: 
-      Languages:
-      - Collect Cards
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/CollectMainCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Collect Seeds
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/CollectSoftCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Collect Fruits
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/RankUpTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Rank Up Trees
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/SpendMainCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Spend Seeds
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/SpendSoftCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Spend Fruits
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/UpgradeAnimal
-      TermType: 0
-      Description: 
-      Languages:
-      - Upgrade Animals
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/UpgradeLevelTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Upgrade the Forest
-      Flags: 00
-      Languages_Touch: []
-    - Term: Achievements/UpgradeTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Upgrade Trees
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/AppleTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Apple Tree
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/Blackbird
-      TermType: 0
-      Description: 
-      Languages:
-      - Blackbird
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/ChristmasTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Christmas Tree
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/Fruitbat
-      TermType: 0
-      Description: 
-      Languages:
-      - Fruitbat
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/HardCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Acorn
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/MainCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Seed
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/NormalTree
-      TermType: 0
-      Description: 
-      Languages:
-      - Normal Tree
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/SoftCurrency
-      TermType: 0
-      Description: 
-      Languages:
-      - Fruit
-      Flags: 00
-      Languages_Touch: []
-    - Term: GameIds/Squirrel
-      TermType: 0
-      Description: 
-      Languages:
-      - Squirrel
-      Flags: 00
-      Languages_Touch: []
     - Term: General/Animals
       TermType: 0
       Description: 
@@ -227,6 +94,146 @@ MonoBehaviour:
       - Trees
       Flags: 00
       Languages_Touch: []
+    - Term: General/Bonus
+      TermType: 0
+      Description: 
+      Languages:
+      - 'Bonus: x'
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/AppleTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Apple Tree
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/Blackbird
+      TermType: 0
+      Description: 
+      Languages:
+      - Blackbird
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/ChristmasTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Christmas Tree
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/Fruitbat
+      TermType: 0
+      Description: 
+      Languages:
+      - Fruitbat
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/HardCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Acorn
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/MainCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Seed
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/NormalTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Normal Tree
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/SoftCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Fruit
+      Flags: 00
+      Languages_Touch: []
+    - Term: GameIds/Squirrel
+      TermType: 0
+      Description: 
+      Languages:
+      - Squirrel
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/AutomateTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Automate Trees
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/CollectCards
+      TermType: 0
+      Description: 
+      Languages:
+      - Collect Cards
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/CollectMainCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Collect Seeds
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/CollectSoftCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Collect Fruits
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/RankUpTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Rank Up Trees
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/SpendMainCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Spend Seeds
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/SpendSoftCurrency
+      TermType: 0
+      Description: 
+      Languages:
+      - Spend Fruits
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/UpgradeAnimal
+      TermType: 0
+      Description: 
+      Languages:
+      - Upgrade Animals
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/UpgradeLevelTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Upgrade the Forest
+      Flags: 00
+      Languages_Touch: []
+    - Term: Achievements/UpgradeTree
+      TermType: 0
+      Description: 
+      Languages:
+      - Upgrade Trees
+      Flags: 00
+      Languages_Touch: []
     CaseInsensitiveTerms: 0
     OnMissingTranslation: 1
     mTerm_AppName: 
@@ -239,7 +246,7 @@ MonoBehaviour:
     Google_WebServiceURL: https://script.google.com/macros/s/AKfycbyCFKO4lsA9GwLKVJnYlPssP1356t_AmGrN9H_a_bShEw4XrVw/exec
     Google_SpreadsheetKey: 1Q_QiRCi6WRPoplV6ggQ3RRGqFxfrH7H14WicXtAh8WY
     Google_SpreadsheetName: I2Loc Good Feeling Localization
-    Google_LastUpdatedVersion: 1582121640065
+    Google_LastUpdatedVersion: 1582414662412
     Google_Password: gamester
     GoogleUpdateFrequency: 3
     GoogleInEditorCheckFrequency: 2

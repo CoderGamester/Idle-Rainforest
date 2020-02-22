@@ -78,7 +78,6 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 
-		// TODO: Improve the visuals for the Trees and for the Animals ViewPresenters
 		// TODO: 5 < 8 -> RandomInt(5,8)
 		// TODO: 5.1 < 8.1 -> RandomFloat(5,8)
 		// TODO: Improve CSVParser to Deserialize IntData, FloatData, IntPair & FloatPair
@@ -92,6 +91,7 @@ namespace Main
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
+		// TODO: Load Scene Async
 		// TODO: Enum serialize as string
 		// TODO: Async Await working
 		// TODO: Missing RuntimeTests & EditorTests

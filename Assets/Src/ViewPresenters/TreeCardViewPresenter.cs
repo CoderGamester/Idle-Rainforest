@@ -21,6 +21,7 @@ namespace ViewPresenters
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private TextMeshProUGUI _requirementText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
+		[SerializeField] private TextMeshProUGUI _descriptionText;
 		[SerializeField] private Slider _requirementSlider;
 		[SerializeField] private Button _upgradeButton;
 		[SerializeField] private Image _image;
@@ -68,11 +69,15 @@ namespace ViewPresenters
 		private async void UpdateView(CardInfo info)
 		{
 			var levelText = info.Data.Level < info.MaxLevel ? info.Data.Level.ToString() : ScriptLocalization.General.Max;
+			var uniqueId = _dataProvider.GameIdDataProvider.GetData(_card).Id;
+			var treeInfo = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(uniqueId);
+			var production = treeInfo.ProductionAmount / treeInfo.ProductionTime;
 
 			_levelText.text = string.Format(ScriptLocalization.General.LevelParam, levelText);
 			_cardNameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.Data.Id}");
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			_descriptionText.text = $"{production.ToString("F")}/s\n{ScriptLocalization.General.Bonus}{info.ProductionBonus.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png");
