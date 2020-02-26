@@ -69,25 +69,25 @@ namespace Presenters
 		{
 			var endPosition = Vector3.zero;
 
-			if (eventData.Reward.GameId == GameId.MainCurrency)
+			if (eventData.Reward.Key == GameId.MainCurrency)
 			{
 				endPosition = _mainCurrencyText.transform.position;
 			}
-			else if (eventData.Reward.GameId == GameId.SoftCurrency)
+			else if (eventData.Reward.Key == GameId.SoftCurrency)
 			{
 				endPosition = _softCurrencyText.transform.position;
 			}
-			else if (eventData.Reward.GameId == GameId.HardCurrency)
+			else if (eventData.Reward.Key == GameId.HardCurrency)
 			{
 				endPosition = _hardCurrencyText.transform.position;
 			}
-			else if(eventData.Reward.GameId.IsInGroup(GameIdGroup.Animal))
+			else if(eventData.Reward.Key.IsInGroup(GameIdGroup.Animal))
 			{
 				endPosition = _cardsButton.transform.position;
 			}
 			else
 			{
-				throw new InvalidOperationException($"Wrong reward type being processed {eventData.Reward.GameId}");
+				throw new InvalidOperationException($"Wrong reward type being processed {eventData.Reward.Key}");
 			}
 			
 			_services.VfxService.PlayUiVfx(endPosition);

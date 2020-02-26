@@ -22,12 +22,12 @@ MonoBehaviour:
     UpgradeCostIncrease: 1
     AutomationCurrencyRequired: 5
     AutomationCardRequired:
-      GameId: 9
+      Key: 9
       Value: 1
     UpgradeRewards:
-    - GameId: 5
+    - Key: 5
       Value: 3
-    - GameId: 10
+    - Key: 10
       Value: 2
     UpgradeBrackets:
     - Key: 50
@@ -43,12 +43,12 @@ MonoBehaviour:
     UpgradeCostIncrease: 2
     AutomationCurrencyRequired: 10
     AutomationCardRequired:
-      GameId: 10
+      Key: 10
       Value: 2
     UpgradeRewards:
-    - GameId: 5
+    - Key: 5
       Value: 3
-    - GameId: 11
+    - Key: 11
       Value: 2
     UpgradeBrackets:
     - Key: 50
@@ -64,12 +64,12 @@ MonoBehaviour:
     UpgradeCostIncrease: 3
     AutomationCurrencyRequired: 20
     AutomationCardRequired:
-      GameId: 11
+      Key: 11
       Value: 3
     UpgradeRewards:
-    - GameId: 5
+    - Key: 5
       Value: 3
-    - GameId: 9
+    - Key: 9
       Value: 2
     UpgradeBrackets:
     - Key: 50

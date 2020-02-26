@@ -77,22 +77,16 @@ namespace Main
 			dataProviderLogic.AppData.LoginTime = time;
 			dataProviderLogic.AppData.LoginCount++;
 		}
-
-		// TODO: 5 < 8 -> RandomInt(5,8)
-		// TODO: 5.1 < 8.1 -> RandomFloat(5,8)
-		// TODO: Improve CSVParser to Deserialize IntData, FloatData, IntPair & FloatPair
-		// TODO: Improve CSVParser to Deserialize list of IntData, FloatData, IntPair & FloatPair
 		
+		// TODO: Enum serialize as string
 		// TODO: DataProvider contains all IdLists and remove public achievement list
 		// TODO: AutoCollectSystem optimize
 		// TODO: Systems Architecture. Use Unity DOTS???
-		// TODO: Boxes for rewards
+		
 		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: StartEventCommand that resets all the data and recreates all the world
 		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
-		// TODO: Load Scene Async
-		// TODO: Enum serialize as string
 		// TODO: Async Await working
 		// TODO: Missing RuntimeTests & EditorTests
 	}
