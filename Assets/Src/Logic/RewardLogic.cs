@@ -39,13 +39,13 @@ namespace Logic
 		{
 			_gameLogic.MessageBrokerService.Publish(new RewardGivingEvent { Reward = reward });
 			
-			if (reward.GameId.IsInGroup(GameIdGroup.Animal))
+			if (reward.Key.IsInGroup(GameIdGroup.Animal))
 			{
-				_gameLogic.CardLogic.AddCard(reward.GameId, reward.Value);
+				_gameLogic.CardLogic.AddCard(reward.Key, reward.Value);
 				return;
 			}
 					
-			switch (reward.GameId)
+			switch (reward.Key)
 			{
 				case GameId.MainCurrency:
 					_gameLogic.CurrencyLogic.AddMainCurrency(reward.Value);
@@ -57,7 +57,7 @@ namespace Logic
 					_gameLogic.CurrencyLogic.AddHardCurrency(reward.Value);
 					break;
 				default:
-					throw new LogicException($"The reward {reward.GameId} is not valid");
+					throw new LogicException($"The reward {reward.Key} is not valid");
 			}
 		}
 	}

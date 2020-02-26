@@ -34,9 +34,11 @@ namespace I2.Loc
 
 		public static class General
 		{
+			public static string Animals 		{ get{ return LocalizationManager.GetTranslation ("General/Animals"); } }
 			public static string Automate 		{ get{ return LocalizationManager.GetTranslation ("General/Automate"); } }
 			public static string AutomateRequireParam 		{ get{ return LocalizationManager.GetTranslation ("General/AutomateRequireParam"); } }
 			public static string Automated 		{ get{ return LocalizationManager.GetTranslation ("General/Automated"); } }
+			public static string Bonus 		{ get{ return LocalizationManager.GetTranslation ("General/Bonus"); } }
 			public static string Cards 		{ get{ return LocalizationManager.GetTranslation ("General/Cards"); } }
 			public static string Collect 		{ get{ return LocalizationManager.GetTranslation ("General/Collect"); } }
 			public static string Free 		{ get{ return LocalizationManager.GetTranslation ("General/Free"); } }
@@ -79,9 +81,11 @@ namespace I2.Loc
 
 		public static class General
 		{
+		    public const string Animals = "General/Animals";
 		    public const string Automate = "General/Automate";
 		    public const string AutomateRequireParam = "General/AutomateRequireParam";
 		    public const string Automated = "General/Automated";
+		    public const string Bonus = "General/Bonus";
 		    public const string Cards = "General/Cards";
 		    public const string Collect = "General/Collect";
 		    public const string Free = "General/Free";

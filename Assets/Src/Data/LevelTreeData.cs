@@ -10,6 +10,6 @@ namespace Data
 		public int Level;
 		public DateTime ProductionStartTime;
 		public bool IsAutomated;
-		public Vector3Serializable Position;
+		public int Position;
 	}
 }

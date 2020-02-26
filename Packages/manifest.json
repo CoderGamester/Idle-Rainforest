@@ -56,15 +56,15 @@
   "lock": {
     "com.gamelovers.assetloader": {
       "revision": "HEAD",
-      "hash": "d2b1cbc3b43be58b580cd5455a5ab8f1ddd4c001"
+      "hash": "809ee30c45d2df61e10dca123886ce3108dea343"
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
-      "hash": "f4f340ef5aee5c3f6396297492e06bf35d8fe829"
+      "hash": "99102484e4d341725b8809262bc08bcc167bc523"
     },
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
-      "hash": "bbee11ea86512ddde60aff863dafeca0e0821042"
+      "hash": "932f1a4ac171ee724642f1d0a00e44d317cee71d"
     },
     "com.gamelovers.newtonsoftjson": {
       "revision": "HEAD",
@@ -76,7 +76,7 @@
     },
     "com.gamelovers.services": {
       "revision": "HEAD",
-      "hash": "95cc9b02a9a3bf0ee0f57f05ddf58ce4f50ec6fa"
+      "hash": "c4295f09661419aa902d59ee856594c64c8802d7"
     },
     "com.gamelovers.statechart": {
       "revision": "HEAD",

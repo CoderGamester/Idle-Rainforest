@@ -23,10 +23,15 @@ namespace Logic
 	public interface IEntityLogic : IEntityDataProvider
 	{
 		/// <summary>
+		/// TODO:
+		/// </summary>
+		UniqueId CreateWorldReference(GameId gameId);
+		
+		/// <summary>
 		/// Creates a new Tree of the given <paramref name="gameId"/> type on the  given <paramref name="position"/>
 		/// and returns the <see cref="UniqueId"/> representing the newly created entity
 		/// </summary>
-		UniqueId CreateTree(GameId gameId, Vector3 position);
+		UniqueId CreateTree(GameId gameId, int position);
 
 		/// <summary>
 		/// TODO:
@@ -49,11 +54,26 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
-		public UniqueId CreateTree(GameId gameId, Vector3 position)
+		public UniqueId CreateWorldReference(GameId gameId)
+		{
+			if (!gameId.IsInGroup(GameIdGroup.WorldReference))
+			{
+				throw new LogicException($"The game id {gameId} does not belong to the group {GameIdGroup.WorldReference}");
+			}
+			
+			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
+			
+			CreateGameIdData(uniqueId, gameId);
+
+			return uniqueId;
+		}
+
+		/// <inheritdoc />
+		public UniqueId CreateTree(GameId gameId, int position)
 		{
 			if (!gameId.IsInGroup(GameIdGroup.Tree))
 			{
-				throw new LogicException($"The game id {gameId} is not a building type game id");
+				throw new LogicException($"The game id {gameId} does not belong to the group {GameIdGroup.Tree}");
 			}
 			
 			var uniqueId = _dataProvider.AppData.UniqueIdCounter++;
@@ -83,7 +103,7 @@ namespace Logic
 			});
 		}
 
-		private void CreateTreeData(UniqueId uniqueId, Vector3 position)
+		private void CreateTreeData(UniqueId uniqueId, int position)
 		{
 			_dataProvider.LevelData.Trees.Add(new LevelTreeData
 			{

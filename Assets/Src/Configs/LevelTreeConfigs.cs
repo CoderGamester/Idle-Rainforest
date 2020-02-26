@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using Data;
+using GameLovers;
 using GameLovers.ConfigsContainer;
 using GameLovers.GoogleSheetImporter;
 using Ids;
@@ -22,9 +23,9 @@ namespace Configs
 		public int UpgradeCostBase;
 		public int UpgradeCostIncrease;
 		public int AutomationCurrencyRequired;
-		[ParseIgnore] public IntData AutomationCardRequired;
-		[ParseIgnore] public List<IntData> UpgradeRewards;
-		[ParseIgnore] public List<IntPairData> UpgradeBrackets;
+		public IntData AutomationCardRequired;
+		public List<IntData> UpgradeRewards;
+		public List<IntPairData> UpgradeBrackets;
 	}
 	
 	/// <summary>

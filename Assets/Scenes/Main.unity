@@ -150,8 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efafae38a46c346438abb861bc1c3e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainCamera: {fileID: 963194227}
-  InputSystem: {fileID: 1926335663}
 --- !u!4 &385018600
 Transform:
   m_ObjectHideFlags: 0
@@ -240,7 +238,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.5e-44, y: 2.962e-42, z: 2.7e-44, w: 2.964e-42}
+  m_BoundingSphereOverride: {x: 9.44e-43, y: -2.627648e+10, z: 9.44e-43, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -270,6 +268,8 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194229}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194231}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -358,6 +358,32 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 23
   m_MaxRayIntersections: 0
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f9f9d5b0424c1f8474db7638bd1e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbc13a412614000a4b742262d65be81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityMonoComponent: {fileID: 963194230}
+  _gameId: 0
 --- !u!1 &1926335662
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,6 +395,8 @@ GameObject:
   - component: {fileID: 1926335665}
   - component: {fileID: 1926335664}
   - component: {fileID: 1926335663}
+  - component: {fileID: 1926335667}
+  - component: {fileID: 1926335666}
   m_Layer: 0
   m_Name: InputSystem
   m_TagString: Untagged
@@ -443,3 +471,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1926335666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926335662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fbc13a412614000a4b742262d65be81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityMonoComponent: {fileID: 1926335667}
+  _gameId: 1
+--- !u!114 &1926335667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926335662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f9f9d5b0424c1f8474db7638bd1e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

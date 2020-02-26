@@ -9,6 +9,9 @@ using Ids;
 using Logic;
 using Presenters;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 namespace Main
 {
@@ -76,18 +79,21 @@ namespace Main
 
 		private async Task LoadConfigs(float loadingCap)
 		{
+			var gameConfigs = await AssetLoaderService.LoadAssetAsync<GameConfigs>(AddressableId.Configs_GameConfigs.GetConfig().Address);
 			var cards = await AssetLoaderService.LoadAssetAsync<CardConfigs>(AddressableId.Configs_CardConfigs.GetConfig().Address);
 			var animals = await AssetLoaderService.LoadAssetAsync<AnimalConfigs>(AddressableId.Configs_AnimalConfigs.GetConfig().Address);
 			var trees = await AssetLoaderService.LoadAssetAsync<TreeConfigs>(AddressableId.Configs_TreeConfigs.GetConfig().Address);
 			var levelTrees = await AssetLoaderService.LoadAssetAsync<LevelTreeConfigs>(AddressableId.Configs_LevelTreeConfigs.GetConfig().Address);
 			var levelAchievements = await AssetLoaderService.LoadAssetAsync<LevelAchievementConfigs>(AddressableId.Configs_LevelAchievementConfigs.GetConfig().Address);
 			
+			_gameConfigs.AddSingletonConfig(gameConfigs.Config);
 			_gameConfigs.AddConfigs(card => (int) card.Id, cards.Configs);
 			_gameConfigs.AddConfigs(animal => (int) animal.Id, animals.Configs);
 			_gameConfigs.AddConfigs(tree => (int) tree.Id, trees.Configs);
 			_gameConfigs.AddConfigs(levelTree => (int) levelTree.Tree, levelTrees.Configs);
 			_gameConfigs.AddConfigs(achievement => achievement.Level, levelAchievements.Configs);
 			
+			AssetLoaderService.UnloadAsset(gameConfigs);
 			AssetLoaderService.UnloadAsset(cards);
 			AssetLoaderService.UnloadAsset(animals);
 			AssetLoaderService.UnloadAsset(trees);
@@ -123,17 +129,8 @@ namespace Main
 		private async Task LoadGameWorld(float loadingCap)
 		{
 			var loadingScreen = _uiService.GetUi<LoadingScreenPresenter>();
-			var taskList = new List<Task<GameObject>>();
-			
-			foreach (var buildingData in _gameLogic.DataProviderInternalLogic.LevelData.Trees)
-			{
-				taskList.Add(_gameLogic.GameObjectLogic.LoadGameObject(buildingData.Id, AddressableId.Prefabs_Tree, buildingData.Position));
-			}
 
-			foreach (var task in AssetLoaderService.Interleaved(taskList))
-			{
-				await await task;
-			}
+			await AssetLoaderService.LoadSceneAsync(AddressableId.Levels_Forest.GetConfig().Address, LoadSceneMode.Additive);
 			
 			loadingScreen.SetLoadingPercentage(loadingCap);
 		}

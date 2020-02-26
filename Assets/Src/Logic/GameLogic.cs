@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Data;
+using GameLovers;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
 using Ids;
@@ -36,8 +36,8 @@ namespace Logic
 		IRewardDataProvider RewardDataProvider { get; }
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
-		/// <inheritdoc cref="IGameObjectDataProvider"/>
-		IGameObjectDataProvider GameObjectDataProvider { get; }
+		/// <inheritdoc cref="IWorldObjectDataProvider"/>
+		IWorldObjectDataProvider WorldObjectDataProvider { get; }
 		/// <inheritdoc cref="IGameIdDataProvider"/>
 		IGameIdDataProvider GameIdDataProvider { get; }
 		/// <inheritdoc cref="ICurrencyDataProvider"/>
@@ -68,8 +68,8 @@ namespace Logic
 		IDataProviderLogic DataProviderLogic { get; }
 		/// <inheritdoc cref="IEntityLogic"/>
 		IEntityLogic EntityLogic { get; }
-		/// <inheritdoc cref="IGameObjectLogic"/>
-		IGameObjectLogic GameObjectLogic { get; }
+		/// <inheritdoc cref="IWorldObjectLogic"/>
+		IWorldObjectLogic WorldObjectLogic { get; }
 		/// <inheritdoc cref="IGameIdLogic"/>
 		IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc cref="ICurrencyLogic"/>
@@ -84,7 +84,7 @@ namespace Logic
 		IAchievementLogic AchievementLogic { get; }
 	}
 
-	/// <inheritdoc />
+	/// <inheritdoc cref="IGameLogic" />
 	/// <remarks>
 	/// This interface is only available internally to other logics
 	/// </remarks>
@@ -115,7 +115,7 @@ namespace Logic
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
-		public IGameObjectDataProvider GameObjectDataProvider => GameObjectLogic;
+		public IWorldObjectDataProvider WorldObjectDataProvider => WorldObjectLogic;
 		/// <inheritdoc />
 		public IGameIdDataProvider GameIdDataProvider => GameIdLogic;
 		/// <inheritdoc />
@@ -135,7 +135,7 @@ namespace Logic
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
 		/// <inheritdoc />
-		public IGameObjectLogic GameObjectLogic { get; }
+		public IWorldObjectLogic WorldObjectLogic { get; }
 		/// <inheritdoc />
 		public IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc />
@@ -164,7 +164,7 @@ namespace Logic
 			ConfigsProvider = new ConfigsProvider();
 			RewardLogic = new RewardLogic(this);
 			EntityLogic = new EntityLogic(this, DataProviderInternalLogic);
-			GameObjectLogic = new GameObjectLogic(this);
+			WorldObjectLogic = new WorldObjectLogic(this);
 			CurrencyLogic = new CurrencyLogic(this, DataProviderInternalLogic.CurrencyData);
 			EventLogic = new EventLogic(this);
 			GameIdLogic = new GameIdLogic(this, 
@@ -179,7 +179,9 @@ namespace Logic
 		/// <inheritdoc />
 		public void Init()
 		{
+			// ReSharper disable PossibleNullReferenceException
 			(AchievementLogic as IGameLogicInitializer).Init();
+			(LevelTreeLogic as IGameLogicInitializer).Init();
 		}
 	}
 }

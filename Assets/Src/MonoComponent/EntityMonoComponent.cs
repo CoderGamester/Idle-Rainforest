@@ -1,15 +1,16 @@
 using Ids;
-using Services;
 using UnityEngine;
 
 namespace MonoComponent
 {
+	/// <summary>
+	/// Simple Mono Component containing the object's <seealso cref="UniqueId"/>
+	/// </summary>
 	public class EntityMonoComponent : MonoBehaviour
 	{
-		[SerializeField] private GameId _gameId;
-
-		private IGameServices _gameServices;
-		
-		public UniqueId UniqueId { get; set; }
+		/// <summary>
+		/// This entity's <seealso cref="UniqueId"/>
+		/// </summary>
+		public UniqueId UniqueId;
 	}
 }

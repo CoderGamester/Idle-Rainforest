@@ -29,7 +29,7 @@ namespace SheetImporters
 			
 			foreach (var entry in data)
 			{
-				var groups = new List<string>(CsvParser.ArrayParse<string>(entry[_groupsTag]));
+				var groups = CsvParser.ArrayParse<string>(entry[_groupsTag]);
 				var id = GetCleanName(entry[_idTag]);
 				
 				idList.Add(id);

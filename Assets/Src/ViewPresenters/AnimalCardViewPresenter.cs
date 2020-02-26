@@ -21,6 +21,7 @@ namespace ViewPresenters
 		[SerializeField] private TextMeshProUGUI _levelText;
 		[SerializeField] private TextMeshProUGUI _requirementText;
 		[SerializeField] private TextMeshProUGUI _upgradeCostText;
+		[SerializeField] private TextMeshProUGUI _descriptionText;
 		[SerializeField] private Slider _requirementSlider;
 		[SerializeField] private Button _upgradeButton;
 		[SerializeField] private Image _image;
@@ -73,6 +74,7 @@ namespace ViewPresenters
 			_cardNameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.Data.Id}");
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
+			_descriptionText.text = $"{ScriptLocalization.General.Bonus}{info.ProductionBonus.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.GameId}.png");

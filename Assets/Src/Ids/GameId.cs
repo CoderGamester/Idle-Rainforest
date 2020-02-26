@@ -6,6 +6,8 @@ namespace Ids
 {
 	public enum GameId
 	{
+		MainCamera,
+		InputSystem,
 		Random,
 		MainCurrency,
 		SoftCurrency,
@@ -20,6 +22,7 @@ namespace Ids
 
 	public enum GameIdGroup
 	{
+		WorldReference,
 		GameDesign,
 		Currency,
 		Tree,
@@ -77,6 +80,18 @@ namespace Ids
 		private static readonly Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> _groups =
 			new Dictionary<GameId, ReadOnlyCollection<GameIdGroup>> (new GameIdComparer())
 			{
+				{
+					GameId.MainCamera, new List<GameIdGroup>
+					{
+						GameIdGroup.WorldReference
+					}.AsReadOnly()
+				},
+				{
+					GameId.InputSystem, new List<GameIdGroup>
+					{
+						GameIdGroup.WorldReference
+					}.AsReadOnly()
+				},
 				{
 					GameId.Random, new List<GameIdGroup>
 					{
@@ -148,6 +163,13 @@ namespace Ids
 		private static readonly Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> _ids =
 			new Dictionary<GameIdGroup, ReadOnlyCollection<GameId>> (new GameIdGroupComparer())
 			{
+				{
+					GameIdGroup.WorldReference, new List<GameId>
+					{
+						GameId.MainCamera,
+						GameId.InputSystem
+					}.AsReadOnly()
+				},
 				{
 					GameIdGroup.GameDesign, new List<GameId>
 					{
