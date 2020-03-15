@@ -47,7 +47,7 @@ namespace Achievements
 
 		/// <summary>
 		/// Subscribes to messages from the <see cref="GameLovers.Services.MessageBrokerService"/>.
-		/// IMPORTANT: Shouldn't do more than subscribing to messages because of this abstract methods behind executed before the derived constructor.
+		/// IMPORTANT: Shouldn't do more than subscribing to messages because this method is executed before the derived constructor.
 		/// </summary>
 		protected abstract void SubscribeMessages();
 		

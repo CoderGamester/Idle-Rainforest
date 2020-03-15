@@ -3,7 +3,6 @@
     "com.gamelovers.assetloader": "https://github.com/CoderGamester/com.gamelovers.assetloader.git",
     "com.gamelovers.configscontainer": "https://github.com/CoderGamester/com.gamelovers.configscontainer.git",
     "com.gamelovers.googlesheetimporter": "https://github.com/CoderGamester/com.gamelovers.googlesheetimporter.git",
-    "com.gamelovers.newtonsoftjson": "https://github.com/CoderGamester/com.gamelovers.newtonsoftjson.git",
     "com.gamelovers.removeemptyfolders": "https://github.com/CoderGamester/com.gamelovers.removeemptyfolders.git",
     "com.gamelovers.services": "https://github.com/CoderGamester/com.gamelovers.services.git",
     "com.gamelovers.statechart": "https://github.com/CoderGamester/com.gamelovers.statechart.git",
@@ -11,15 +10,13 @@
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.addressables": "1.6.2",
-    "com.unity.collab-proxy": "1.2.16",
-    "com.unity.device-simulator": "2.0.0-preview",
-    "com.unity.ext.nunit": "1.0.0",
+    "com.unity.device-simulator": "2.1.0-preview",
+    "com.unity.entities": "0.7.0-preview.19",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.inputsystem": "1.0.0-preview.4",
+    "com.unity.inputsystem": "1.0.0-preview.6",
     "com.unity.mobile.android-logcat": "1.0.0",
-    "com.unity.quicksearch": "1.4.1",
+    "com.unity.nuget.newtonsoft-json": "2.0.0-preview",
     "com.unity.textmeshpro": "2.0.1",
-    "com.unity.timeline": "1.2.10",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -60,15 +57,11 @@
     },
     "com.gamelovers.configscontainer": {
       "revision": "HEAD",
-      "hash": "99102484e4d341725b8809262bc08bcc167bc523"
+      "hash": "ebd66e324d092658cd248bbb882e70f8e4c67b98"
     },
     "com.gamelovers.googlesheetimporter": {
       "revision": "HEAD",
-      "hash": "932f1a4ac171ee724642f1d0a00e44d317cee71d"
-    },
-    "com.gamelovers.newtonsoftjson": {
-      "revision": "HEAD",
-      "hash": "ec12232149a2b1d7b1f6ab0d4d6508495c1f533f"
+      "hash": "8f67f8b22876271931d43f796098de7027ad5bc3"
     },
     "com.gamelovers.removeemptyfolders": {
       "revision": "HEAD",

@@ -37,7 +37,7 @@ namespace Main
 			
 			_gameLogic = gameLogic;
 			_services = services;
-			_loadingState = new LoadingState(configsProvider, uiService, gameLogic);
+			_loadingState = new LoadingState(configsProvider, uiService);
 			_stateMachine = new Statechart(Setup);
 		}
 
@@ -106,11 +106,6 @@ namespace Main
 
 		private void StartGame()
 		{
-			// TODO: Review code below
-			
-			var tickSystem = new AutoCollectSystem(_gameLogic.DataProviderInternalLogic.LevelData.Trees);
-			
-			_services.TickService.SubscribeOnUpdate(deltaTime => tickSystem.Tick());
 			_services.UiService.OpenUiSet((int) UiSetId.MainUi, false);
 		}
 	}

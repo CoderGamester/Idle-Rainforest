@@ -1,49 +1,52 @@
-using System.Collections.Generic;
+using System;
 using Commands;
 using Data;
+using Data.ComponentData;
 using GameLovers.Services;
-using Infos;
-using Logic;
+using Ids;
 using Services;
-using UnityEngine;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Mathematics;
 
 namespace Systems
 {
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class AutoCollectSystem : ITickSystem
+	public class AutoCollectSystem : SystemBase
 	{
-		private readonly IGameServices _services;
-		private readonly IGameDataProvider _dataProvider;
-		private readonly IList<LevelTreeData> _data;
-		
-		private AutoCollectSystem() {}
-		
-		public AutoCollectSystem(IList<LevelTreeData> data)
+		private IGameServices _services;
+
+		protected override void OnStartRunning()
 		{
 			_services = MainInstaller.Resolve<IGameServices>();
-			_dataProvider = MainInstaller.Resolve<IGameDataProvider>();
-			_data = data;
 		}
-		
-		/// <inheritdoc />
-		public void Tick()
-		{
-			for (var i = 0; i < _data.Count; i++)
-			{
-				var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_data[i].Id);
-				
-				if (info.AutomationState == AutomationState.Automated && _services.TimeService.DateTimeUtcNow > info.ProductionEndTime)
-				{
-					var times = Mathf.FloorToInt((float) (_services.TimeService.DateTimeUtcNow - info.Data.ProductionStartTime).TotalSeconds / info.ProductionTime);
-					
-					info.Data.ProductionStartTime = info.Data.ProductionStartTime.AddSeconds(info.ProductionTime * times);
-					
-					_services.CommandService.ExecuteCommand(new AutoCollectCommand { Amount = times * info.ProductionAmount });
-				}
 
-				_data[i] = info.Data;
+		protected override void OnUpdate()
+		{
+			var timeNow = _services.TimeService.DateTimeUtcNow;
+			var queue = new NativeQueue<AutoCollectCommand>();
+
+			Entities.ForEach((ref AutoLevelTreeData data) =>
+				{
+					if (timeNow < data.ProductionEndTime)
+					{
+						return;
+					}
+
+					var timeSpan = timeNow - data.ProductionStartTime;
+					var count = (int) math.floor(timeSpan.TotalSeconds / data.ProductionTime);
+
+					data.ProductionStartTime = data.ProductionStartTime.AddSeconds(data.ProductionTime * count);
+
+					queue.Enqueue(new AutoCollectCommand { Id = data.Id, CollectCount = count });
+				})
+				.ScheduleParallel();
+
+			while (queue.Count > 0)
+			{
+				_services.CommandService.ExecuteCommand(queue.Dequeue());
 			}
 		}
 	}

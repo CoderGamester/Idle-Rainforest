@@ -22,13 +22,11 @@ namespace Main
 	{
 		private readonly ConfigsProvider _gameConfigs;
 		private readonly UiService _uiService;
-		private readonly IGameInternalLogic _gameLogic;
 		
-		public LoadingState(ConfigsProvider gameConfigs, UiService uiService, IGameInternalLogic gamelogic)
+		public LoadingState(ConfigsProvider gameConfigs, UiService uiService)
 		{
 			_gameConfigs = gameConfigs;
 			_uiService = uiService;
-			_gameLogic = gamelogic;
 		}
 
 		/// <summary>

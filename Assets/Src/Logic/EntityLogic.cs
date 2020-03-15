@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Achievements;
 using Data;
+using Data.ComponentData;
 using Events;
 using Ids;
+using Unity.Entities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,11 +20,20 @@ namespace Logic
 	/// </remarks>
 	public interface IEntityDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		Entity GetEntity(UniqueId id);
 	}
 	
 	/// <inheritdoc />
 	public interface IEntityLogic : IEntityDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		Entity CreateAutoCollectTree(AutoLevelTreeData data);
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -44,6 +56,7 @@ namespace Logic
 	{
 		private readonly IGameInternalLogic _gameLogic;
 		private readonly IDataProvider _dataProvider;
+		private readonly IDictionary<UniqueId, Entity> _entityMap = new Dictionary<UniqueId, Entity>();
 		
 		private EntityLogic() {}
 
@@ -51,6 +64,25 @@ namespace Logic
 		{
 			_gameLogic = gameLogic;
 			_dataProvider = dataProvider;
+		}
+
+		/// <inheritdoc />
+		public Entity GetEntity(UniqueId id)
+		{
+			return _entityMap[id];
+		}
+
+		/// <inheritdoc />
+		public Entity CreateAutoCollectTree(AutoLevelTreeData data)
+		{
+			var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+			var entity = entityManager.CreateEntity();
+
+			entityManager.AddComponentData(entity, data);
+			
+			_entityMap.Add(data.Id, entity);
+
+			return entity;
 		}
 
 		/// <inheritdoc />

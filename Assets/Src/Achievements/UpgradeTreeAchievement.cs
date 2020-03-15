@@ -9,9 +9,9 @@ namespace Achievements
 	/// <summary>
 	/// TODO:
 	/// </summary>
-	public class UpgradeAnimalAchievement : Achievement
+	public class UpgradeTreeAchievement : Achievement
 	{
-		public UpgradeAnimalAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
+		public UpgradeTreeAchievement(IMessageBrokerService messageBroker, Func<AchievementData> achievementResolver, Action<AchievementData> setter) :
 			base(messageBroker, achievementResolver, setter)
 		{
 		}
@@ -24,7 +24,7 @@ namespace Achievements
 
 		private void OnCardUpgraded(CardUpgradedEvent eventData)
 		{
-			if (!eventData.Card.IsInGroup(GameIdGroup.Animal))
+			if (!eventData.Card.IsInGroup(GameIdGroup.Tree))
 			{
 				return;
 			}

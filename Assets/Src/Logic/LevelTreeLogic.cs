@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using Configs;
 using Data;
+using Data.ComponentData;
 using Events;
 using GameLovers;
 using Ids;
 using Infos;
+using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Logic
 {
@@ -39,6 +42,11 @@ namespace Logic
 	/// <inheritdoc />
 	public interface ILevelTreeLogic : ILevelTreeDataProvider
 	{
+		/// <summary>
+		/// TODO:
+		/// </summary>
+		void AutoCollect(UniqueId id, int count);
+		
 		/// <summary>
 		/// TODO:
 		/// </summary>
@@ -84,6 +92,18 @@ namespace Logic
 				{
 					_gameLogic.EntityLogic.CreateTree(configs[i].Tree, i + 1);
 				}
+				
+				list = _data.GetList();
+			}
+			
+			for (var i = 0; i < list.Count; i++)
+			{
+				if (!list[i].IsAutomated)
+				{
+					continue;
+				}
+
+				_gameLogic.EntityLogic.CreateAutoCollectTree(ToAutoLevelTreeData( GetLevelTreeInfo(list[i].Id)));
 			}
 		}
 
@@ -154,6 +174,22 @@ namespace Logic
 		}
 
 		/// <inheritdoc />
+		public void AutoCollect(UniqueId id, int count)
+		{
+			var info = GetLevelTreeInfo(id);
+
+			if (info.AutomationState != AutomationState.Automated)
+			{
+				throw new LogicException($"The building {info.GameId} is not automated and cannot be auto collected by the player yet");
+			}
+			
+			info.Data.ProductionStartTime = info.Data.ProductionStartTime.AddSeconds(info.ProductionTime * count);
+			
+			_gameLogic.CurrencyLogic.AddMainCurrency(info.ProductionAmount * count);
+			_data.Set(info.Data);
+		}
+
+		/// <inheritdoc />
 		public void Collect(UniqueId id)
 		{
 			var info = GetLevelTreeInfo(id);
@@ -213,6 +249,7 @@ namespace Logic
 			info.Data.IsAutomated = true;
 			
 			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
+			_gameLogic.EntityLogic.CreateAutoCollectTree(ToAutoLevelTreeData(info));
 			_data.Set(info.Data);
 			
 			_gameLogic.MessageBrokerService.Publish(new TreeAutomatedEvent { Tree = info.GameId });
@@ -290,6 +327,16 @@ namespace Logic
 			}
 			
 			return totalCost;
+		}
+
+		private AutoLevelTreeData ToAutoLevelTreeData(LevelTreeInfo info)
+		{
+			return new AutoLevelTreeData
+			{
+				Id = info.Data.Id,
+				ProductionStartTime = info.Data.ProductionStartTime,
+				ProductionTime = info.ProductionTime
+			};
 		}
 	}
 }

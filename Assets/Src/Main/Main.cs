@@ -78,16 +78,12 @@ namespace Main
 			dataProviderLogic.AppData.LoginCount++;
 		}
 		
-		// TODO: Enum serialize as string
-		// TODO: DataProvider contains all IdLists and remove public achievement list
-		// TODO: AutoCollectSystem optimize
-		// TODO: Systems Architecture. Use Unity DOTS???
+		// TODO: Async Await working
+		// TODO: Remove CurrencyData
 		
 		// TODO: Show Achievements Completed UI and reset data when completing all achievements
 		// TODO: StartEventCommand that resets all the data and recreates all the world
-		// TODO: Asset Loading management. Check sprites loading on the trees/animals
 		
-		// TODO: Async Await working
 		// TODO: Missing RuntimeTests & EditorTests
 	}
 }

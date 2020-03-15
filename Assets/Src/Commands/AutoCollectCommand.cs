@@ -1,3 +1,4 @@
+using Ids;
 using Logic;
 
 namespace Commands
@@ -5,12 +6,13 @@ namespace Commands
 	/// <inheritdoc cref="IGameCommand" />
 	public struct AutoCollectCommand : IGameCommand
 	{
-		public int Amount;
+		public UniqueId Id;
+		public int CollectCount;
 		
 		/// <inheritdoc />
 		public void Execute(IGameLogic gameLogic)
 		{
-			gameLogic.CurrencyLogic.AddMainCurrency(Amount);
+			gameLogic.LevelTreeLogic.AutoCollect(Id, CollectCount);
 		}
 	}
 }

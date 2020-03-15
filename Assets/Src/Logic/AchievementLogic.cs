@@ -30,11 +30,6 @@ namespace Logic
 	public interface IAchievementLogic : IAchievementDataProvider
 	{
 		/// <summary>
-		/// TODO: REMOVE
-		/// </summary>
-		new IUniqueIdList<AchievementData> Data { get; }
-
-		/// <summary>
 		/// TODO:
 		/// </summary>
 		void CollectAchievement(UniqueId id);
@@ -50,15 +45,12 @@ namespace Logic
 		/// <inheritdoc />
 		public IUniqueIdListReader<AchievementData> Data => _data;
 
-		/// <inheritdoc />
-		IUniqueIdList<AchievementData> IAchievementLogic.Data => _data;
-
 		private AchievementLogic() {}
 
-		public AchievementLogic(IGameInternalLogic gameLogic, LevelData levelData)
+		public AchievementLogic(IGameInternalLogic gameLogic, IUniqueIdList<AchievementData> data)
 		{
 			_gameLogic = gameLogic;
-			_data = new UniqueIdList<AchievementData>(x => x.Id, levelData.Achievements);
+			_data = data;
 		}
 
 		/// <inheritdoc />
@@ -144,7 +136,7 @@ namespace Logic
 				case AchievementType.UpgradeAnimal:
 					return new UpgradeAnimalAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
 				case AchievementType.UpgradeTree:
-					throw new LogicException($"Not implemented yet");
+					return new UpgradeTreeAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
 				case AchievementType.UpgradeLevelTree:
 					return new UpgradeLevelTreeAchievement(_gameLogic.MessageBrokerService, resolver, _data.Set);
 				case AchievementType.RankUpTree:

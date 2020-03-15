@@ -1,4 +1,5 @@
 using Data;
+using Data.ComponentData;
 using GameLovers;
 using GameLovers.ConfigsContainer;
 using GameLovers.Services;
@@ -167,13 +168,10 @@ namespace Logic
 			WorldObjectLogic = new WorldObjectLogic(this);
 			CurrencyLogic = new CurrencyLogic(this, DataProviderInternalLogic.CurrencyData);
 			EventLogic = new EventLogic(this);
-			GameIdLogic = new GameIdLogic(this, 
-				new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));
-			LevelTreeLogic = new LevelTreeLogic(this, 
-				new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Trees));
-			CardLogic = new CardLogic(this, 
-				new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
-			AchievementLogic = new AchievementLogic(this, dataProviderInternalLogic.LevelData);
+			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));
+			LevelTreeLogic = new LevelTreeLogic(this, new UniqueIdList<LevelTreeData>(data => data.Id, DataProviderInternalLogic.LevelData.Trees));
+			CardLogic = new CardLogic(this, new IdList<GameId, CardData>(data => data.Id, DataProviderInternalLogic.PlayerData.Cards));
+			AchievementLogic = new AchievementLogic(this, new UniqueIdList<AchievementData>(x => x.Id, dataProviderInternalLogic.LevelData.Achievements));
 		}
 
 		/// <inheritdoc />
