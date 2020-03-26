@@ -184,7 +184,7 @@ namespace MonoComponent
 
 		private async void UpgradeEffect(bool thisUpgrade)
 		{
-			var inputSystem = _dataProvider.WorldObjectDataProvider.GetWorldObject<InputSystemUIInputModule>();
+			var inputSystem = _services.WorldObjectReferenceService.InputSystem;
 			
 			_runningState.SetActive(false);
 			_effectState.SetActive(thisUpgrade);

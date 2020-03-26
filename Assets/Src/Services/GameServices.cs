@@ -1,6 +1,8 @@
 using GameLovers.Services;
 using GameLovers.UiService;
 using Logic;
+using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 namespace Services
 {
@@ -30,6 +32,8 @@ namespace Services
 		ICoroutineService CoroutineService { get; }
 		/// <inheritdoc cref="ICoroutineService"/>
 		IVfxService VfxService { get; }
+		/// <inheritdoc cref="IWorldObjectReferenceService"/>
+		IWorldObjectReferenceService WorldObjectReferenceService { get; }
 	}
 
 	/// <inheritdoc />
@@ -51,11 +55,15 @@ namespace Services
 		public ICoroutineService CoroutineService { get; }
 		/// <inheritdoc />
 		public IVfxService VfxService { get; }
+		/// <inheritdoc />
+		public IWorldObjectReferenceService WorldObjectReferenceService { get; }
 
-		public GameServices(IMessageBrokerService messageBrokerService, ITimeService timeService, IGameLogic gameLogic)
+		public GameServices(IMessageBrokerService messageBrokerService, ITimeService timeService, IGameLogic gameLogic,
+			IWorldObjectReferenceService worldObjectReference)
 		{
 			MessageBrokerService = messageBrokerService;
 			TimeService = timeService;
+			WorldObjectReferenceService = worldObjectReference;
 			
 			CommandService = new CommandService(gameLogic);
 			PoolService = new PoolService();

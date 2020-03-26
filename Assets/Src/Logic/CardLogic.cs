@@ -38,7 +38,7 @@ namespace Logic
 		/// <summary>
 		/// TODO:
 		/// </summary>
-		List<CardInfo> GetAnimalCards(GameId building);
+		List<CardInfo> GetAnimalCards(GameId tree);
 
 		/// <summary>
 		/// TODO:

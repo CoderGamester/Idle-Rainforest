@@ -138,7 +138,7 @@ namespace Logic
 				ProductionTime = config.ProductionTimeBase,
 				AutomateCost = config.AutomationCurrencyRequired,
 				AutomateCardRequirement = config.AutomationCardRequired,
-				AutomationState = GetBuildingState(data, config),
+				AutomationState = GetAutomationState(data, config),
 			};
 		}
 
@@ -255,7 +255,7 @@ namespace Logic
 			_gameLogic.MessageBrokerService.Publish(new TreeAutomatedEvent { Tree = info.GameId });
 		}
 
-		private AutomationState GetBuildingState(LevelTreeData data, LevelTreeConfig config)
+		private AutomationState GetAutomationState(LevelTreeData data, LevelTreeConfig config)
 		{
 			var state = AutomationState.ReadyToAutomate;
 			
@@ -269,7 +269,7 @@ namespace Logic
 			}
 			else
 			{
-				var cardInfo = _gameLogic.CardLogic.GetInfo(config.Tree);
+				var cardInfo = _gameLogic.CardLogic.GetInfo(config.AutomationCardRequired.Key);
 
 				state = cardInfo.Data.Level < config.AutomationCardRequired.Value
 					? AutomationState.MissingRequirements

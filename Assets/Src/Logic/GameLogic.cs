@@ -37,8 +37,6 @@ namespace Logic
 		IRewardDataProvider RewardDataProvider { get; }
 		/// <inheritdoc cref="IEntityDataProvider"/>
 		IEntityDataProvider EntityDataProvider { get; }
-		/// <inheritdoc cref="IWorldObjectDataProvider"/>
-		IWorldObjectDataProvider WorldObjectDataProvider { get; }
 		/// <inheritdoc cref="IGameIdDataProvider"/>
 		IGameIdDataProvider GameIdDataProvider { get; }
 		/// <inheritdoc cref="ICurrencyDataProvider"/>
@@ -69,8 +67,6 @@ namespace Logic
 		IDataProviderLogic DataProviderLogic { get; }
 		/// <inheritdoc cref="IEntityLogic"/>
 		IEntityLogic EntityLogic { get; }
-		/// <inheritdoc cref="IWorldObjectLogic"/>
-		IWorldObjectLogic WorldObjectLogic { get; }
 		/// <inheritdoc cref="IGameIdLogic"/>
 		IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc cref="ICurrencyLogic"/>
@@ -116,8 +112,6 @@ namespace Logic
 		/// <inheritdoc />
 		public IEntityDataProvider EntityDataProvider => EntityLogic;
 		/// <inheritdoc />
-		public IWorldObjectDataProvider WorldObjectDataProvider => WorldObjectLogic;
-		/// <inheritdoc />
 		public IGameIdDataProvider GameIdDataProvider => GameIdLogic;
 		/// <inheritdoc />
 		public ICurrencyDataProvider CurrencyDataProvider => CurrencyLogic;
@@ -135,8 +129,6 @@ namespace Logic
 		public IDataProviderLogic DataProviderLogic => DataProviderInternalLogic;
 		/// <inheritdoc />
 		public IEntityLogic EntityLogic { get; }
-		/// <inheritdoc />
-		public IWorldObjectLogic WorldObjectLogic { get; }
 		/// <inheritdoc />
 		public IGameIdLogic GameIdLogic { get; }
 		/// <inheritdoc />
@@ -165,7 +157,6 @@ namespace Logic
 			ConfigsProvider = new ConfigsProvider();
 			RewardLogic = new RewardLogic(this);
 			EntityLogic = new EntityLogic(this, DataProviderInternalLogic);
-			WorldObjectLogic = new WorldObjectLogic(this);
 			CurrencyLogic = new CurrencyLogic(this, DataProviderInternalLogic.CurrencyData);
 			EventLogic = new EventLogic(this);
 			GameIdLogic = new GameIdLogic(this, new UniqueIdList<GameIdData>(data => data.Id, DataProviderInternalLogic.PlayerData.GameIds));

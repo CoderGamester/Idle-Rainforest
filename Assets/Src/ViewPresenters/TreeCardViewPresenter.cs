@@ -77,7 +77,7 @@ namespace ViewPresenters
 			_cardNameText.text = LocalizationManager.GetTranslation ($"{nameof(ScriptLocalization.GameIds)}/{info.Data.Id}");
 			_upgradeCostText.text = $"{info.UpgradeCost.ToString()} HC";
 			_requirementText.text = $"{info.Data.Amount.ToString()}/{info.AmountRequired.ToString()}";
-			_descriptionText.text = $"{production.ToString("F")}/s\n{ScriptLocalization.General.Bonus}{info.ProductionBonus.ToString()}";
+			_descriptionText.text = $"{production.ToString("D")}/s\n{ScriptLocalization.General.Bonus}{info.ProductionBonus.ToString()}";
 			_upgradeButton.interactable = info.Data.Amount >= info.AmountRequired && _dataProvider.CurrencyDataProvider.HardCurrencyAmount >= info.UpgradeCost;
 			_requirementSlider.value = (float) info.Data.Amount / info.AmountRequired;
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesTrees}/{info.GameId}.png");

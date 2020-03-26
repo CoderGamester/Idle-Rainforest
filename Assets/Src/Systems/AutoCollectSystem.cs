@@ -26,7 +26,7 @@ namespace Systems
 		protected override void OnUpdate()
 		{
 			var timeNow = _services.TimeService.DateTimeUtcNow;
-			var queue = new NativeQueue<AutoCollectCommand>();
+			var queue = new NativeQueue<AutoCollectCommand>(Allocator.Temp);
 
 			Entities.ForEach((ref AutoLevelTreeData data) =>
 				{
@@ -48,6 +48,8 @@ namespace Systems
 			{
 				_services.CommandService.ExecuteCommand(queue.Dequeue());
 			}
+
+			queue.Dispose();
 		}
 	}
 }

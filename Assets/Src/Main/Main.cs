@@ -5,6 +5,7 @@ using Logic;
 using Newtonsoft.Json;
 using Services;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 namespace Main
 {
@@ -13,6 +14,9 @@ namespace Main
 	/// </summary>
 	public class Main : MonoBehaviour
 	{
+		[SerializeField] private InputSystemUIInputModule _inputSystem;
+		[SerializeField] private Camera _mainCamera;
+		
 		private GameStateMachine _stateMachine;
 		private GameLogic _gameLogic;
 		private GameServices _gameServices;
@@ -22,11 +26,12 @@ namespace Main
 			var messageBroker = new MessageBrokerService();
 			var timeService = new TimeService();
 			var dataProvider = new DataProviderLogic();
+			var worldObjectReference = new WorldObjectReferenceService(_inputSystem, _mainCamera);
 			
 			LoadData(dataProvider, timeService);
 			
 			_gameLogic = new GameLogic(messageBroker, dataProvider, timeService);
-			_gameServices = new GameServices(messageBroker, timeService, _gameLogic);
+			_gameServices = new GameServices(messageBroker, timeService, _gameLogic, worldObjectReference);
 			
 			MainInstaller.Bind<IGameDataProvider>(_gameLogic);
 			MainInstaller.Bind<IGameServices>(_gameServices);

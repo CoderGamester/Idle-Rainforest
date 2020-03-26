@@ -44,7 +44,9 @@ namespace Presenters
 
 			_image.sprite = await AssetLoaderService.LoadAssetAsync<Sprite>($"{AddressablePathLookup.SpritesAnimals}/{info.AutomateCardRequirement.Key}.png");
 			_automateCostText.text = $"{info.AutomateCost.ToString()} MC";
-			_requirementText.text = string.Format(ScriptLocalization.General.AutomateRequireParam, info.AutomateCardRequirement.Key, info.AutomateCardRequirement.Value.ToString());
+			_requirementText.text = string.Format(ScriptLocalization.General.AutomateRequireParam, 
+				info.AutomateCardRequirement.Key, 
+				info.AutomateCardRequirement.Value.ToString());
 
 			_automateButton.interactable = info.AutomationState == AutomationState.ReadyToAutomate;
 		}
