@@ -247,8 +247,9 @@ namespace Logic
 			}
 
 			info.Data.IsAutomated = true;
-			
-			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost);
+			info.Data.ProductionStartTime = _gameLogic.TimeService.DateTimeUtcNow;
+
+			_gameLogic.CurrencyLogic.DeductMainCurrency(info.AutomateCost - info.ProductionAmount);
 			_gameLogic.EntityLogic.CreateAutoCollectTree(ToAutoLevelTreeData(info));
 			_data.Set(info.Data);
 			

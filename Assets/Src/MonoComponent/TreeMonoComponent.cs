@@ -168,18 +168,18 @@ namespace MonoComponent
 
 		private void OnCardUpgradedEvent(CardUpgradedEvent eventData)
 		{
-			var cardInfo = _dataProvider.CardDataProvider.GetInfo(eventData.Card);
-			var treeData = _dataProvider.GameIdDataProvider.Data.Get(_entityMonoComponent.UniqueId);
+			var info = _dataProvider.LevelTreeDataProvider.GetLevelTreeInfo(_entityMonoComponent.UniqueId);
 
-			if (treeData.GameId == cardInfo.Tree)
+			if (info.AutomateCardRequirement.Key == eventData.Card)
 			{
+				var cardInfo = _dataProvider.CardDataProvider.GetInfo(eventData.Card);
+				
 				_effectText.text = $"x{cardInfo.ProductionBonus.ToString()}";
-			
-				_services.UiService.CloseUi<AnimalCardsPanelPresenter>();
+				
 				UpdateView();
 			}
 
-			UpgradeEffect(treeData.GameId == cardInfo.Tree);
+			UpgradeEffect(info.AutomateCardRequirement.Key == eventData.Card);
 		}
 
 		private async void UpgradeEffect(bool thisUpgrade)

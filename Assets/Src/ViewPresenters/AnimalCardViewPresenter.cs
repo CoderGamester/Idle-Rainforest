@@ -5,6 +5,7 @@ using I2.Loc;
 using Ids;
 using Infos;
 using Logic;
+using Presenters;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -64,6 +65,7 @@ namespace ViewPresenters
 		private void OnUpgradeClicked()
 		{
 			_services.CommandService.ExecuteCommand(new UpgradeCardCommand { Card = _card});
+			_services.UiService.CloseAllUi(2);
 		}
 
 		private async void UpdateView(CardInfo info)

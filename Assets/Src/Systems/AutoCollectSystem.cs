@@ -25,31 +25,32 @@ namespace Systems
 
 		protected override void OnUpdate()
 		{
+			var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+			var entities = entityManager.GetAllEntities();
 			var timeNow = _services.TimeService.DateTimeUtcNow;
-			var queue = new NativeQueue<AutoCollectCommand>(Allocator.Temp);
 
-			Entities.ForEach((ref AutoLevelTreeData data) =>
-				{
-					if (timeNow < data.ProductionEndTime)
-					{
-						return;
-					}
-
-					var timeSpan = timeNow - data.ProductionStartTime;
-					var count = (int) math.floor(timeSpan.TotalSeconds / data.ProductionTime);
-
-					data.ProductionStartTime = data.ProductionStartTime.AddSeconds(data.ProductionTime * count);
-
-					queue.Enqueue(new AutoCollectCommand { Id = data.Id, CollectCount = count });
-				})
-				.ScheduleParallel();
-
-			while (queue.Count > 0)
+			foreach (var entity in entities)
 			{
-				_services.CommandService.ExecuteCommand(queue.Dequeue());
-			}
+				if (!entityManager.HasComponent<AutoLevelTreeData>(entity))
+				{
+					continue;
+				}
 
-			queue.Dispose();
+				var data = entityManager.GetComponentData<AutoLevelTreeData>(entity);
+				
+				if (timeNow < data.ProductionEndTime)
+				{
+					continue;
+				}
+
+				var timeSpan = timeNow - data.ProductionStartTime;
+				var count = (int) math.floor(timeSpan.TotalSeconds / data.ProductionTime);
+
+				data.ProductionStartTime = data.ProductionStartTime.AddSeconds(data.ProductionTime * count);
+				
+				entityManager.SetComponentData(entity, data);
+				_services.CommandService.ExecuteCommand(new AutoCollectCommand { Id = data.Id, CollectCount = count });
+			}
 		}
 	}
 }
